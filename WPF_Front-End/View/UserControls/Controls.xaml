@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="Swapify.View.UserControls.Controls"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Swapify.View.UserControls"
+             mc:Ignorable="d">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="1" Text="Log In" FontSize="30"
+                   FontFamily="Times New Roman" Foreground="#385638" FontWeight="Bold" Margin="65, 0, 65, 20" />
+
+        <local:ClearableTextBox Grid.Row="2" Placeholder="Username" 
+        Width="250" />
+
+        <local:ClearableTextBox Grid.Row="3" Placeholder="Password" 
+        Width="250" Height="Auto" Margin="0, 3, 0, 3" />
+
+        <Button Grid.Row="4" x:Name="login" Content="Log In" Background="#385638" 
+                Foreground="White" FontSize="16" FontWeight="Bold" Height="25"
+                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="login_Click" Margin="0,0,38,0" >
+
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+
+        <TextBlock Grid.Row="5" Text="--------------------Or---------------------" 
+         VerticalAlignment="Center" Foreground="DarkSeaGreen" Margin="0, 0, 0, 0" />
+
+        <Button Grid.Row="6" x:Name="createAccount" Content="Create New Account" Background="DarkSeaGreen" 
+        Foreground="White" FontSize="16" FontWeight="Bold" Height="25"
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0, 3, 38, 0" >
+
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+
+    </Grid>
+</UserControl>
