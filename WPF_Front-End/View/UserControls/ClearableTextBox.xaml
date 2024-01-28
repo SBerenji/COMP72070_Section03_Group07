@@ -12,7 +12,7 @@
         </Grid.ColumnDefinitions>
         
         <TextBox x:Name="txtInput" VerticalContentAlignment="Center"
-                 FontSize="16" FontWeight="Light" Background="Transparent"
+                 FontSize="10" FontWeight="Light" Background="Transparent"
                  TextChanged="txtInput_TextChanged" >
 
             <TextBox.Resources>
@@ -23,11 +23,10 @@
         </TextBox>
 
         <TextBlock Grid.Column="0" x:Name="tbPlaceholder" Text="{Binding Placeholder}"
-                   FontSize="16" FontWeight="Light" Foreground="DarkGray"
+                   FontSize="10" FontWeight="Light" Foreground="DarkGray"
                    Panel.ZIndex="-1" Margin="10, 0, 0, 0" />
-
-        <Button Grid.Column="1" x:Name="btnClear" Content="X"
-                Background="Transparent" Foreground="Red" BorderThickness="0"
-                Click="btnClear_Click" FontWeight="Light" />
+        <!--<Button Grid.Column="1" x:Name="btnClear" Content="X"
+        Background="Transparent" Foreground="Red" BorderThickness="0"
+        Click="btnClear_Click" FontWeight="Light" />-->
     </Grid>
 </UserControl>

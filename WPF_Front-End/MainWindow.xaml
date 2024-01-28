@@ -14,6 +14,19 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.125*" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.125*" />
+            </Grid.ColumnDefinitions>
+
+            <Viewbox Grid.Column="1" Stretch="Fill" StretchDirection="Both" >
+                <TextBlock FontSize="40" Text="Swapify" Foreground="Black" Height="49" Width="500"
+                FontFamily="Times New Roman" Margin="0, 0, 0, 0" />
+            </Viewbox>
+        </Grid>
+
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.07*" />
@@ -26,7 +39,7 @@
 
             <Viewbox Grid.Row="1" Grid.Column="1" Stretch="Fill" StretchDirection="Both">
                 <Border Grid.Column="1" BorderBrush="#FF000000" BorderThickness="1" CornerRadius="20" Background="White" 
-        Margin="88,50,100,29" Grid.Row="1">
+        Margin="25,10,25,10" Grid.Row="1">
 
 
                     <Grid Grid.Row="1" Grid.Column="1">
@@ -37,16 +50,11 @@
 
                         <userControls:Controls Grid.Column="0" Margin="15, 10, 0, 10" />
 
-                        <Image x:Name="img" Grid.Column="1" Height="285" Source="/login_image.jpg" Margin="20,20,31,20"/>
+                        <Image x:Name="img" Grid.Column="1" Height="150" Source="/login_image.jpg" Margin="20,20,31,20"/>
 
                     </Grid>
                 </Border>
             </Viewbox>
         </Grid>
-
-        <Viewbox Grid.Row="0">
-            <TextBlock Text="Swapify" Foreground="IndianRed"
-        FontFamily="Times New Roman" Margin="0, 0, 0, 0" />
-        </Viewbox>
     </Grid>
 </Window>

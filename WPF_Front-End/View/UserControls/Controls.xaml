@@ -7,29 +7,68 @@
              mc:Ignorable="d">
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
 
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="1" Text="Log In" FontSize="30"
-                   FontFamily="Times New Roman" Foreground="#385638" FontWeight="Bold" Margin="65, 0, 65, 20" />
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-        <local:ClearableTextBox Grid.Row="2" Placeholder="Username" 
-        Width="250" />
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-        <local:ClearableTextBox Grid.Row="3" Placeholder="Password" 
-        Width="250" Height="Auto" Margin="0, 3, 0, 3" />
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Forgot your Password?" FontSize="10"
+                Foreground="Black" Margin="40, 7, 0, 10" />
 
-        <Button Grid.Row="4" x:Name="login" Content="Log In" Background="#385638" 
-                Foreground="White" FontSize="16" FontWeight="Bold" Height="25"
-                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="login_Click" Margin="0,0,38,0" >
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Reset Password" FontSize="10"
+                Foreground="RoyalBlue" Margin="3, 7, 0, 0" />
+            </Grid>
+
+            <TextBlock Grid.Row="1" Text="------------    Or    ------------" FontSize="10"
+            Foreground="Black" Margin="65, 0, 0, 10" />
+
+            <TextBlock Grid.Row="1" Text="Don't have an account?" FontSize="10" Foreground="Black"
+            Margin="80,20,92,0"/>
+
+        </Grid>
+
+        <Grid Grid.Row="6">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Text="By continuing, you agree to our" FontSize="10" Margin="65, 0, 92, 0" />
+            <TextBlock Grid.Row="1" Text="Terms of Use and Privacy Policy" FontSize="10" Foreground="Blue" Margin="65, 0, 92, 0" />
+        </Grid>
+
+        <TextBlock Grid.Row="0" Text="Log In" FontSize="20"
+                   FontFamily="Times New Roman" Foreground="#385638" FontWeight="Bold" Margin="100, 0, 65, 3" />
+
+        <local:ClearableTextBox Grid.Row="1" Placeholder="Username" 
+        Width="250" Height="23"/>
+
+        <local:ClearableTextBox Grid.Row="2" Placeholder="Password" 
+        Width="250" Height="23" Margin="0, 2, 0, 3" />
+
+        <Button Grid.Row="3" x:Name="login" Content="Log In" Background="#385638" 
+                Foreground="White" FontSize="12" Height="20"
+                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="login_Click" Margin="23,0,62,0" >
 
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -38,12 +77,11 @@
             </Button.Resources>
         </Button>
 
-        <TextBlock Grid.Row="5" Text="--------------------Or---------------------" 
-         VerticalAlignment="Center" Foreground="DarkSeaGreen" Margin="0, 0, 0, 0" />
 
-        <Button Grid.Row="6" x:Name="createAccount" Content="Create New Account" Background="DarkSeaGreen" 
-        Foreground="White" FontSize="16" FontWeight="Bold" Height="25"
-        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0, 3, 38, 0" >
+
+        <Button Grid.Row="5" x:Name="createAccount" Content="Register" Background="#D36414" 
+        Foreground="White" FontSize="10" Height="20"
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="70, 5, 105, 0" >
 
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
