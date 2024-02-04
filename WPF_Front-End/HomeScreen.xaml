@@ -8,77 +8,83 @@
         Title="HomeScreen" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="397*"/>
+            <RowDefinition Height="202*"/>
+            <RowDefinition Height="195*"/>
             <RowDefinition Height="37*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" MinWidth="410"/>
+            <ColumnDefinition Width="274.5"/>
+            <ColumnDefinition Width="135.5"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
 
-        <Rectangle Stroke="Black" Fill ="#385638" Height="85" Width="Auto" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Rectangle Margin="179,101,57,0" Stroke="Black" RadiusX="30.014" RadiusY="30.014" Grid.ColumnSpan="2" Width="Auto" Height="158" VerticalAlignment="Top"/>
+        <Rectangle Stroke="Black" Fill ="#385638" Height="85" Width="Auto" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+        <Rectangle Margin="179,101,57,0" Stroke="Black" RadiusX="30.014" RadiusY="30.014" Grid.ColumnSpan="3" Width="Auto" Height="158" VerticalAlignment="Top" Grid.RowSpan="2"/>
 
 
 
 
 
         <TextBlock x:Name="tbstatus" FontSize="40" Foreground="white" Text="Swapify" 
-                   Margin="28,20,206,0" FontFamily="Times New Roman" RenderTransformOrigin="0.077,0.51" Height="76" Width="175" VerticalAlignment="Top"/>
+                   Margin="28,20,70,0" FontFamily="Times New Roman" RenderTransformOrigin="0.077,0.51" Height="76" Width="175" VerticalAlignment="Top"/>
 
 
-        <Rectangle Margin="0,85,0,1" Stroke="Black" Height="Auto" Width="152" HorizontalAlignment="Left" Grid.RowSpan="2"/>
-        <Button x:Name="login" Content="Log In" Background="#385638" 
-                Foreground="White" Margin="14,100,0,0" FontSize="16" FontWeight="Bold" 
-                Width="124" Height="33" HorizontalAlignment="Left" VerticalAlignment="Top" >
-
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
-                </Style>
-            </Button.Resources>
-        </Button>
-        <TextBlock Margin="31,133,0,0" TextWrapping="Wrap" Text="New to Swapify?" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="89"/>
+        <Rectangle Margin="0,85,0,1" Stroke="Black" Height="Auto" Width="152" HorizontalAlignment="Left" Grid.RowSpan="3"/>
         <Button Margin="23,148,0,0" Background="white" 
-                Foreground="Blue"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="110" >
-            <TextBlock Text="Create an Account" TextDecorations="Underline" Height="24" Width="100"/>
-        </Button>
+                Foreground="Blue"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="110" />
 
-        <Button Margin="14,200,0,0" Background="white" 
-                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="118" >
+        <Button Margin="14,2,0,0" Background="white" 
+                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="118" Grid.Row="1" >
             <TextBlock HorizontalAlignment="Right" Height="24" Width="114" FontWeight="Bold" FontSize="15"><Run Text="      "/><Run Language="en-ca" Text=" "/><Run Text="Listings"/></TextBlock>
+
         </Button>
 
-        <Button Margin="12,236,0,0" Background="white" 
-                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="117" >
+        <Image x:Name="img" Source="/home.jpg" Margin="6,201,0,166" HorizontalAlignment="Left" Width="62" Height ="30" Grid.RowSpan="2"/>
+
+
+        <Button Margin="12,34,0,0" Background="white" 
+                Foreground="Black"  BorderBrush="white" HorizontalAlignment="Left" Width="117" Grid.Row="1" Height="28" VerticalAlignment="Top" >
             <TextBlock HorizontalAlignment="Right"  Height="24" Width="113" FontWeight="Bold" FontSize="15"><Run Text="      "/><Run Language="en-ca" Text=" "/><Run Text="Create Post"/></TextBlock>
         </Button>
 
-        <Button Margin="12,270,0,0" Background="white" 
-                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="117" >
+        <Image x:Name="add" Source="/add.jpg" Margin="8,34,0,0" HorizontalAlignment="Left" Width="62" Grid.Row="1" Height="24" VerticalAlignment="Top"/>
+
+
+        <Button Margin="12,68,0,0" Background="white" 
+                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="117" Grid.Row="1" >
             <TextBlock HorizontalAlignment="Right"  Height="24" Width="113" FontWeight="Bold" FontSize="15"><Run Text="      "/><Run Language="en-ca" Text=" "/><Run Text="Messages"/></TextBlock>
         </Button>
 
-        <Button Margin="12,305,0,0" Background="white" 
-                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="117" >
+        <Image x:Name="chat" Source="/chat.jpg" Margin="8,70,0,0" HorizontalAlignment="Left" Width="62" Grid.Row="1" Height="24" VerticalAlignment="Top"/>
+
+
+        <Button Margin="12,103,0,0" Background="white" 
+                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="117" Grid.Row="1" >
             <TextBlock HorizontalAlignment="Center"  Height="24" Width="113" FontWeight="Bold" FontSize="15"><Run Text="      "/><Run Language="en-ca" Text=" "/><Run Text="Saved Posts"/></TextBlock>
         </Button>
 
-        <Button Margin="12,340,0,0" Background="white" 
-                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="117" >
+        <Image x:Name="save" Source="/save.jpg" Margin="8,105,0,0" HorizontalAlignment="Left" Width="62" Grid.Row="1" Height="24" VerticalAlignment="Top"/>
+
+
+        <Button Margin="12,138,0,0" Background="white" 
+                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="117" Grid.Row="1" >
             <TextBlock HorizontalAlignment="Center"  Height="24" Width="113" FontWeight="Bold" FontSize="15"><Run Text="      "/><Run Language="en-ca" Text=" "/><Run Text="Help"/></TextBlock>
         </Button>
 
-        <Button Margin="261,33,298,0" Background="white" Height="32" VerticalAlignment="Top" Grid.ColumnSpan="2">
-            <TextBox TextWrapping="Wrap" Text="Search..." Width="171" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white"/>
+        <Image x:Name="help" Source="/help.jpg" Margin="10,138,0,0" HorizontalAlignment="Left" Width="62" Grid.Row="1" Height="24" VerticalAlignment="Top"/>
+
+
+        <Button Margin="261,33,298,0" Background="white" Height="32" VerticalAlignment="Top" Grid.ColumnSpan="3">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5" />
                 </Style>
             </Button.Resources>
         </Button>
-        <Button Margin="0,33,57,0" Background="white" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Width="74" Grid.Column="1">
+        <TextBox TextWrapping="Wrap" Text="Search..." Width="171" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white" Grid.Column="1" Grid.ColumnSpan="2" Margin="16,40,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+
+        <Button Margin="0,33,37,0" Background="white" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Width="139" Grid.Column="2">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5" />
@@ -87,7 +93,7 @@
             <TextBox  TextWrapping="Wrap" Text="Categories" Width="70" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white"/>
         </Button>
 
-        <Button Content="Request a Swap" Margin="402,225,259,0" Click="Button_Click" Background="#D36414" Foreground="white" Height="25" VerticalAlignment="Top" Grid.ColumnSpan="2">
+        <Button Content="Request a Swap" Margin="128,23,259,0" Click="Button_Click" Background="#D36414" Foreground="white" Height="25" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="1">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5" />
@@ -95,13 +101,24 @@
             </Button.Resources>
         </Button>
 
-        <TextBlock Margin="306,104,166,0"  TextWrapping="Wrap" Height="24" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="2" Language="en-ca"  Foreground="Blue" TextDecorations="Underline" />
-        <TextBlock Margin="317,126,155,0"  TextWrapping="Wrap" Height="16" VerticalAlignment="Top" FontWeight="Bold" Grid.ColumnSpan="2" Text="Estimated Worth:" Language="en-ca" Foreground="Green" />
-        <TextBlock Margin="317,143,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top" Language="en-ca" Text="Location:" FontWeight="Bold" />
-        <TextBlock Margin="317,160,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top" FontWeight="Bold" Language="en-ca" Text="Condition:"/>
-        <TextBlock Margin="317,178,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold"  Language="en-ca" Text="Delivery:"/>
-        <TextBlock Margin="317,195,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold" Text="Looking For:" Language="en-ca"/>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2" Margin="176,96,37,18" Grid.RowSpan="2"/>
+        <TextBlock Margin="32,104,166,0"  TextWrapping="Wrap" Height="24" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="2" Language="en-ca"  Foreground="Blue" TextDecorations="Underline" Grid.Column="1" />
+        <TextBlock Margin="42,126,155,0"  TextWrapping="Wrap" Height="16" VerticalAlignment="Top" FontWeight="Bold" Grid.ColumnSpan="2" Text="Estimated Worth:" Language="en-ca" Foreground="Green" Grid.Column="1" />
+        <TextBlock Margin="42,143,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top" Language="en-ca" Text="Location:" FontWeight="Bold" Grid.Column="1" />
+        <TextBlock Margin="42,160,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top" FontWeight="Bold" Language="en-ca" Text="Condition:" Grid.Column="1"/>
+        <TextBlock Margin="42,178,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold"  Language="en-ca" Text="Delivery:" Grid.Column="1"/>
+        <TextBlock Margin="42,195,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold" Text="Looking For:" Language="en-ca" Grid.RowSpan="2" Grid.Column="1"/>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="3" Margin="176,96,37,18" Grid.RowSpan="3"/>
+
+        <Button Margin="0,86,142,0" Background="white" 
+                Foreground="Black"  BorderBrush="white" HorizontalAlignment="Right" Width="118" Click="Button_Click_1" Height="93" VerticalAlignment="Top" >
+            <Image x:Name="profile" Source="/profile.jpg" HorizontalAlignment="Center" Width="56" Height="57"/>
+
+        </Button>
+        <TextBlock HorizontalAlignment="Left" Width="114" FontWeight="Bold" FontSize="15" Margin="38,160,0,0" Height="32" VerticalAlignment="Top"><Run Text="My Profile"/></TextBlock>
+        <Image x:Name="dropdown" Source="/dropdown.jpg" Margin="0,43,53,0" Grid.Column="2" Height="13" VerticalAlignment="Top" HorizontalAlignment="Right" Width="28"/>
+        <Image x:Name="hamburger" Source="/Hamburger.jpg" Margin="0,38,138,0" Grid.Column="2" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="36"/>
+        <Image x:Name="search" Source="/search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Grid.ColumnSpan="2" Height="23" VerticalAlignment="Top"/>
+
 
 
     </Grid>

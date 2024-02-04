@@ -10,10 +10,30 @@
 
   <ItemGroup>
     <None Remove="login_image.jpg" />
+	  <None Remove="add.jpg" />
+	  <None Remove="addphoto.jpg" />
+	  <None Remove="chat.jpg" />
+	  <None Remove="dropdown.jpg" />
+	  <None Remove="Hamburger.jpg" />
+	  <None Remove="help.jpg" />
+	  <None Remove="home.jpg" />
+	  <None Remove="profile.jpg" />
+	  <None Remove="save.jpg" />
+	  <None Remove="search.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="login_image.jpg" />
+	  <Resource Include="add.jpg" />
+	  <Resource Include="addphoto.jpg" />
+	  <Resource Include="chat.jpg" />
+	  <Resource Include="dropdown.jpg" />
+	  <Resource Include="Hamburger.jpg" />
+	  <Resource Include="help.jpg" />
+	  <Resource Include="home.jpg" />
+	  <Resource Include="profile.jpg" />
+	  <Resource Include="save.jpg" />
+	  <Resource Include="search.jpg" />
   </ItemGroup>
 
 </Project>
