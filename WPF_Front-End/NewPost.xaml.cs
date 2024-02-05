@@ -75,5 +75,12 @@ namespace WPF_Front_End
         {
 
         }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            var newHome = new HomeScreen(); //create your new form.
+            newHome.Show(); //show the new form.
+            this.Close(); //only if you want to close the current form.
+        }
     }
 }

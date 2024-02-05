@@ -34,7 +34,7 @@
         <Rectangle Margin="0,85,0,1" Stroke="Black" Height="Auto" Width="152" HorizontalAlignment="Left" Grid.RowSpan="2" />
 
         <Button Margin="14,200,0,0" Background="white" 
-                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="118" >
+                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="118" Click="Button_Click_7" >
             <TextBlock HorizontalAlignment="Left" Height="24" Width="114" FontWeight="Bold" FontSize="15"><Run Text="      "/><Run Language="en-ca" Text=" "/><Run Text="Listings"/></TextBlock>
         </Button>
 

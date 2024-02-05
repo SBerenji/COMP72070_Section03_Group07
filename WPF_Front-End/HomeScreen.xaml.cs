@@ -48,6 +48,23 @@ namespace WPF_Front_End
         {
 
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            var newForm = new NewPost(); //create your new form.
+            newForm.Show(); //show the new form.
+            this.Close(); //only if you want to close the current form.
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
 
