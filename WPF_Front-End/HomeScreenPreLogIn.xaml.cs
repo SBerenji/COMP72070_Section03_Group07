@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace WPF_Front_End
 {
     /// <summary>
-    /// Interaction logic for HomeScreen.xaml
+    /// Interaction logic for HomeScreenPreLogIn.xaml
     /// </summary>
-    public partial class HomeScreen : Window
+    public partial class HomeScreenPreLogIn : Window
     {
-        public HomeScreen()
+        public HomeScreenPreLogIn()
         {
             InitializeComponent();
         }
@@ -56,15 +56,49 @@ namespace WPF_Front_End
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            var newForm = new NewPost(); //create your new form.
-            newForm.Show(); //show the new form.
-            this.Close(); //only if you want to close the current form.
+
         }
 
         private void Button_Click_7(object sender, RoutedEventArgs e)
         {
 
         }
+
+        private void login_Click(object sender, RoutedEventArgs e)
+        {
+            var newForm = new MainWindow(); //create your new form.
+            newForm.Show(); //show the new form.
+            this.Close(); //only if you want to close the current form.
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click_12(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
-
