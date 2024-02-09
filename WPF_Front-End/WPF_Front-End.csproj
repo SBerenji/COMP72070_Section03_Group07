@@ -24,16 +24,16 @@
 
   <ItemGroup>
     <Resource Include="login_image.jpg" />
-	  <Resource Include="add.jpg" />
-	  <Resource Include="addphoto.jpg" />
-	  <Resource Include="chat.jpg" />
-	  <Resource Include="dropdown.jpg" />
-	  <Resource Include="Hamburger.jpg" />
-	  <Resource Include="help.jpg" />
-	  <Resource Include="home.jpg" />
-	  <Resource Include="profile.jpg" />
-	  <Resource Include="save.jpg" />
-	  <Resource Include="search.jpg" />
+	  <Resource Include="Images\add.jpg" />
+	  <Resource Include="Images\addphoto.jpg" />
+	  <Resource Include="Images\chat.jpg" />
+	  <Resource Include="Images\dropdown.jpg" />
+	  <Resource Include="Images\Hamburger.jpg" />
+	  <Resource Include="Images\help.jpg" />
+	  <Resource Include="Images\home.jpg" />
+	  <Resource Include="Images\profile.jpg" />
+	  <Resource Include="Images\save.jpg" />
+	  <Resource Include="Images\search.jpg" />
   </ItemGroup>
 
 </Project>
