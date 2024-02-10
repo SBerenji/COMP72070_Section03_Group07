@@ -1,0 +1,127 @@
+﻿<UserControl x:Class="WPF_Front_End.View.UserControls.SignUpControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPF_Front_End.View.UserControls"
+             xmlns:userControl ="clr-namespace:WPF_Front_End.View.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White" Height="248">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+
+
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="4" Margin="6,1,-5,6" Grid.RowSpan="6">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+            </Grid>
+
+            <TextBlock Grid.Row="1" Text="------------    Or    ------------" FontSize="10"
+    Foreground="Black" Margin="68,29,-2,-16" />
+
+
+            <TextBlock Grid.Row="1" Text="Already have an account?" FontSize="9" Foreground="Black"
+    Margin="81,50,91,-27"/>
+
+        </Grid>
+
+
+        <Button Grid.Row="9" x:Name="createAccount" Content="Log in" Background="#D36414" 
+Foreground="White" FontSize="10" Height="20" Click="LogIn_Click"
+VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="88,34,89,-47" >
+
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+
+
+        <Grid Grid.Row="4" Margin="6,37,-5,6" Grid.RowSpan="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="94*"/>
+                <ColumnDefinition Width="19*"/>
+                <ColumnDefinition Width="89*"/>
+                <ColumnDefinition Width="89*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="1" Text="By continuing, you agree to our" FontSize="8" Foreground="Gray" Margin="4,80,9,-78" Grid.ColumnSpan="2" Grid.Column="1" />
+            <TextBlock Grid.Row="1" Text="terms of use and privacy policy" FontSize="8" Foreground="Gray" Margin="4,91,9,-88" Grid.ColumnSpan="2" Grid.Column="1">
+                <TextBlock.TextDecorations>
+                    <TextDecorationCollection>
+                        <TextDecoration Location="Underline"/>
+                    </TextDecorationCollection>
+                </TextBlock.TextDecorations>
+            </TextBlock>
+        </Grid>
+
+        <TextBlock Grid.Row="0" Text="Register" FontSize="20"
+           FontFamily="Times New Roman" Foreground="#385638" FontWeight="Bold" Margin="110,-1,55,4" />
+
+        <userControl:ClearableTextBox Grid.Row="1" Placeholder="Username" Height="23" Margin="17,1,81,27" Grid.RowSpan="2"/>
+
+        <userControl:ClearableTextBox Grid.Row="2" Placeholder="Email Address" Height="23" Margin="17,27,81,1" />
+
+        <userControl:ClearableTextBox Grid.Row="3" Placeholder="Password" Height="23" Margin="17,2,81,39" Grid.RowSpan="2" />
+
+
+        <Button Grid.Row="4" x:Name="login" Content="Sign Up" Background="#385638" 
+        Foreground="White" FontSize="11" Height="20"
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="18,18,18,12" >
+
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+
+
+        <!--creating the add profile image rectangle to the page-->
+        <Grid HorizontalAlignment="Left" Margin="183,24,0,0" Grid.RowSpan="5" VerticalAlignment="Top">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="14*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Rectangle Width="84" Height="78" Stroke="Gray" RadiusX="8" RadiusY="8" Margin="-16,0,16,0" Grid.RowSpan="2"/>
+
+                <Image Source="addUser.png" Width="40" Height="40" Stretch="UniformToFill" Grid.Column="0" Margin="6,8,38,2"/>
+
+            </Grid>
+
+            <TextBlock Text="Please drag and drop " Foreground="Black" HorizontalAlignment="Left" FontSize="7" VerticalAlignment="Top" TextAlignment="Center" Margin="-7,54,0,0"/>
+            <TextBlock Text="your profile photo  " Foreground="Black" HorizontalAlignment="Left" FontSize="7" VerticalAlignment="Top" TextAlignment="Center" Margin="-3,64,0,0"/>
+        </Grid>
+    </Grid>
+</UserControl>

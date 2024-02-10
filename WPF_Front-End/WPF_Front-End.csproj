@@ -9,11 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="addUser.png" />
     <None Remove="login_image.jpg" />
+    <None Remove="SignUpImage.png" />
+    <None Remove="View\UserControls\addUser.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="addUser.png" />
     <Resource Include="login_image.jpg" />
+    <Resource Include="SignUpImage.png" />
+    <Resource Include="View\UserControls\addUser.png" />
   </ItemGroup>
 
 </Project>

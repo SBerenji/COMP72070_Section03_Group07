@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Swapify.View.UserControls.Controls"
+﻿<UserControl x:Class="WPF_Front_End.View.UserControls.Controls"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Swapify.View.UserControls"
+             xmlns:local="clr-namespace:WPF_Front_End.View.UserControls"
              mc:Ignorable="d">
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -79,7 +79,7 @@
 
 
 
-        <Button Grid.Row="5" x:Name="createAccount" Content="Register" Background="#D36414" 
+        <Button Click="createAccount_Click_1" Grid.Row="5" x:Name="createAccount" Content="Register" Background="#D36414" 
         Foreground="White" FontSize="10" Height="20"
         VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="70, 5, 105, 0" >
 
