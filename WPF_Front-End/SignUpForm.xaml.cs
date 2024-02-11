@@ -10,19 +10,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPF_Front_End.View.UserControls
+namespace WPF_Front_End
 {
     /// <summary>
-    /// Interaction logic for Triangle.xaml
+    /// Interaction logic for SignUpForm.xaml
     /// </summary>
-    public partial class Triangle : UserControl
+    public partial class SignUpForm : Window
     {
-        public Triangle()
+        public SignUpForm()
         {
             InitializeComponent();
+        }
+
+        private void SignUpControl_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

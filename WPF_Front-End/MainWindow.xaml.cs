@@ -23,8 +23,9 @@ namespace WPF_Front_End
         public MainWindow()
         {
             InitializeComponent();
-        }
 
+        }
+        
         private void Controls_Loaded(object sender, RoutedEventArgs e)
         {
 

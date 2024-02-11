@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Swapify.View.UserControls
+namespace WPF_Front_End.View.UserControls
 {
     /// <summary>
     /// Interaction logic for Controls.xaml
@@ -28,6 +28,17 @@ namespace Swapify.View.UserControls
         private void login_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Hello World");
+        }
+
+        private void createAccount_Click_1(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            SignUpForm signup = new SignUpForm();
+
+            signup.Show();
+
+            parentWindow.Close();
         }
     }
 }
