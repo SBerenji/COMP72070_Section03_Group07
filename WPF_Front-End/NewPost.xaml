@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF_Front_End"
-        xmlns:userControls="clr-namespace:Swapify.View.UserControls"
+        xmlns:userControls="clr-namespace:WPF_Front_End.View.UserControls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="NewPost" Height="600" Width="1000">
