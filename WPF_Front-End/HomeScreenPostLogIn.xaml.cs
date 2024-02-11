@@ -29,7 +29,8 @@ namespace WPF_Front_End
 
             Posts = new ObservableCollection<Post>
             {
-                new Post
+                                      
+            new Post
                     {
                         //ImagePath = "/Images/item1.jpg",   
                         Title = "Item 1",
@@ -37,7 +38,8 @@ namespace WPF_Front_End
                         Location = "City A",
                         Condition = "Good",
                         Delivery = "Local",
-                        LookingFor = "Item X",
+                        LookingFor = "Item X"
+
 
                     },
                 new Post
@@ -48,17 +50,8 @@ namespace WPF_Front_End
                         Location = "City B",
                         Condition = "Excellent",
                         Delivery = "Nationwide",
-                        LookingFor = "Item Y",
-                    },
-                new Post
-                    {
-                        //ImagePath = "/Images/item1.jpg",
-                        Title = "Item 3",
-                        EstimatedWorth = "$150",
-                        Location = "City C",
-                        Condition = "Well used",
-                        Delivery = "Kitchener, Ontario",
-                        LookingFor = "Item Z",
+                        LookingFor = "Item Y"
+
                     }
             };
 

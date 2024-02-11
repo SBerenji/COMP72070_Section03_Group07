@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,40 @@ namespace WPF_Front_End
     /// </summary>
     public partial class HomeScreenPreLogIn : Window
     {
+        public ObservableCollection<Post> Posts { get; set; }
+
+
         public HomeScreenPreLogIn()
         {
             InitializeComponent();
+
+            Posts = new ObservableCollection<Post>
+            {
+                new Post
+                    {
+                        //ImagePath = "/Images/item1.jpg",   
+                        Title = "Item 1",
+                        EstimatedWorth = "$100",
+                        Location = "City A",
+                        Condition = "Good",
+                        Delivery = "Local",
+                        LookingFor = "Item X",
+
+                    },
+                new Post
+                    {
+                       // ImagePath = "/Images/item1.jpg",
+                        Title = "Item 2",
+                        EstimatedWorth = "$50",
+                        Location = "City B",
+                        Condition = "Excellent",
+                        Delivery = "Nationwide",
+                        LookingFor = "Item Y",
+                    }
+            };
+
+            // Set the Items as the DataContext for the ListBox
+            listBox.DataContext = Posts;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -97,6 +129,11 @@ namespace WPF_Front_End
         }
 
         private void Button_Click_12(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

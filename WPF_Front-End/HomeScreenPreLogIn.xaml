@@ -83,21 +83,18 @@
             <TextBox  TextWrapping="Wrap" Text="Categories" Width="70" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white"/>
         </Button>
 
-        <Button Content="Request a Swap" Margin="126,0,260,12" Click="Button_Click" Background="#D36414" Foreground="white" Grid.ColumnSpan="2" Grid.Column="1" Height="25" VerticalAlignment="Bottom" Grid.RowSpan="2">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
-                </Style>
-            </Button.Resources>
-        </Button>
+        <ListBox Name="listBox" Grid.ColumnSpan="3" Margin="157,96,10,0" Grid.RowSpan="2" ItemsSource="{Binding}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <local:Post DataContext="{Binding}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
-        <TextBlock Margin="32,104,166,0"  TextWrapping="Wrap" Height="24" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="2" Language="en-ca"  Foreground="Blue" TextDecorations="Underline" Grid.Column="1" />
-        <TextBlock Margin="42,126,155,0"  TextWrapping="Wrap" Height="16" VerticalAlignment="Top" FontWeight="Bold" Grid.ColumnSpan="2" Text="Estimated Worth:" Language="en-ca" Foreground="Green" Grid.Column="1" />
-        <TextBlock Margin="42,143,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top" Language="en-ca" Text="Location:" FontWeight="Bold" Grid.Column="1" />
-        <TextBlock Margin="42,160,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top" FontWeight="Bold" Language="en-ca" Text="Condition:" Grid.Column="1"/>
-        <TextBlock Margin="42,178,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold"  Language="en-ca" Text="Delivery:" Grid.Column="1"/>
-        <TextBlock Margin="42,195,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold" Text="Looking For:" Language="en-ca" Grid.RowSpan="2" Grid.Column="1"/>
-        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="3" Margin="176,96,37,10"/>
+        <Image x:Name="image1" Source="Images/image1.jpg" Margin="203,142,0,0" HorizontalAlignment="Left" Width="173" Height="181" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
+        <Image x:Name="tv" Source="Images/tv.jpg" Margin="203,390,0,0" HorizontalAlignment="Left" Width="163" Height="145" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+
+
         <Image x:Name="img" Source="Images/home.jpg" Margin="8,196,0,0" HorizontalAlignment="Left" Width="31" Height="28" VerticalAlignment="Top"/>
         <Image x:Name="add" Source="Images/add.jpg" Margin="7,234,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
         <Image x:Name="chat" Source="Images/chat.jpg" Margin="6,270,0,0" HorizontalAlignment="Left" Width="33" Height="26" VerticalAlignment="Top"/>

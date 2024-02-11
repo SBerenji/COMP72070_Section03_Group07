@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="222" d:DesignWidth="800">
     <Grid Margin="10,10,10,0" Background="white">
-        <Image Name ="temp" Margin="25,14,578,12" RenderTransformOrigin="0.5,0.5" />
+        <Image Name ="temp" Source ="Images/vy6wcpfdk3aa1.jpg" Margin="25,14,578,12" />
         <TextBlock Margin="214,10,31,176"  TextWrapping="Wrap" FontWeight="Bold" FontSize="19" Language="en-ca" Text="{Binding Title}" Foreground="Blue"/>
         <TextBlock Margin="214,36,340,152"  TextWrapping="Wrap" FontWeight="Bold" FontSize="15" Language="en-ca" Text="Estimated Worth: " Foreground="Green" />
         <TextBlock Margin="342,36,22,152"  TextWrapping="Wrap" FontWeight="Bold" FontSize="15" Language="en-ca" Text="{Binding EstimatedWorth}" Foreground="Green" />

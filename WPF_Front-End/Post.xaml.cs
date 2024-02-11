@@ -30,7 +30,6 @@ namespace WPF_Front_End
         public string LookingFor { get; set; }
 
 
-
         public Post()
         {
             InitializeComponent();
@@ -41,8 +40,6 @@ namespace WPF_Front_End
             Condition = string.Empty;
             Delivery = string.Empty;
             LookingFor = string.Empty;
-
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
