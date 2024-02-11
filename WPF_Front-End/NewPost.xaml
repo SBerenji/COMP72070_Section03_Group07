@@ -7,7 +7,7 @@
         xmlns:userControls="clr-namespace:WPF_Front_End.View.UserControls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="NewPost" Height="600" Width="1000">
+        Title="Swapify" Height="600" Width="1000">
 
 
 
@@ -149,15 +149,15 @@
         <TextBlock Margin="206,295,266,0"  TextWrapping="Wrap" Text="Delivery Method" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold" />
         <TextBlock Margin="206,340,266,0"  TextWrapping="Wrap" Text="Looking For (Swap Idea)" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold" />
         <TextBlock Margin="65,119,-3,0"  TextWrapping="Wrap" Text="(Required)" Grid.Column="1" Height="16" VerticalAlignment="Top" Foreground="Red"/>
-        <Image x:Name="img" Source="/home.jpg" Margin="8,196,0,0" HorizontalAlignment="Left" Width="31" Height="28" VerticalAlignment="Top"/>
-        <Image x:Name="add" Source="/add.jpg" Margin="7,234,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
-        <Image x:Name="chat" Source="/chat.jpg" Margin="6,270,0,0" HorizontalAlignment="Left" Width="33" Height="26" VerticalAlignment="Top"/>
-        <Image x:Name="save" Source="/save.jpg" Margin="8,306,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
-        <Image x:Name="help" Source="/help.jpg" Margin="8,342,0,0" HorizontalAlignment="Left" Width="30" Height="25" VerticalAlignment="Top"/>
-        <Image x:Name="addphoto" Source="/addphoto.jpg" Margin="220,138,139,0" Height="52" VerticalAlignment="Top"/>
-        <Image x:Name="dropdown" Source="/dropdown.jpg" Margin="0,43,49,0" HorizontalAlignment="Right" Width="28" Grid.Column="1" Height="13" VerticalAlignment="Top"/>
-        <Image x:Name="hamburger" Source="/hamburger.jpg" Margin="0,38,145,0" HorizontalAlignment="Right" Width="36" Grid.Column="1" Height="23" VerticalAlignment="Top"/>
-        <Image x:Name="search" Source="/search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Height="23" VerticalAlignment="Top"/>
+        <Image x:Name="img" Source="/Images/home.jpg" Margin="8,196,0,0" HorizontalAlignment="Left" Width="31" Height="28" VerticalAlignment="Top"/>
+        <Image x:Name="add" Source="/Images/add.jpg" Margin="7,234,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
+        <Image x:Name="chat" Source="/Images/chat.jpg" Margin="6,270,0,0" HorizontalAlignment="Left" Width="33" Height="26" VerticalAlignment="Top"/>
+        <Image x:Name="save" Source="/Images/save.jpg" Margin="8,306,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
+        <Image x:Name="help" Source="/Images/help.jpg" Margin="8,342,0,0" HorizontalAlignment="Left" Width="30" Height="25" VerticalAlignment="Top"/>
+        <Image x:Name="addphoto" Source="/Images/addphoto.jpg" Margin="220,138,139,0" Height="52" VerticalAlignment="Top"/>
+        <Image x:Name="dropdown" Source="/Images/dropdown.jpg" Margin="0,43,49,0" HorizontalAlignment="Right" Width="28" Grid.Column="1" Height="13" VerticalAlignment="Top"/>
+        <Image x:Name="hamburger" Source="/Images/hamburger.jpg" Margin="0,38,145,0" HorizontalAlignment="Right" Width="36" Grid.Column="1" Height="23" VerticalAlignment="Top"/>
+        <Image x:Name="search" Source="/Images/search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Height="23" VerticalAlignment="Top"/>
         <Button  Margin="12,100,273,0" Background="white" Height="87" VerticalAlignment="Top" Click="Button_Click_3">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -165,7 +165,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Image x:Name="profile" Source="/profile.jpg" Margin="50,110,0,0" HorizontalAlignment="Left" Width="49" Height="47" VerticalAlignment="Top"/>
+        <Image x:Name="profile" Source="/Images/profile.jpg" Margin="50,110,0,0" HorizontalAlignment="Left" Width="49" Height="47" VerticalAlignment="Top"/>
         <TextBlock Margin="48,157,307,0" TextWrapping="Wrap" FontSize="17" FontWeight="Bold" Height="23" VerticalAlignment="Top"><Run Language="en-ca" Text="Profile"/></TextBlock>
         <Button x:Name="login" Content="Log Out" Background="#385638" 
             Foreground="White" Margin="12,3,0,15" FontSize="16" FontWeight="Bold" 

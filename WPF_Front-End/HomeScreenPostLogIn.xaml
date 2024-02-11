@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPF_Front_End"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="HomeScreenPostLogIn" Height="600" Width="1000">
+        Title="Swapify" Height="600" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="397*"/>
@@ -84,14 +84,6 @@
             <TextBox  TextWrapping="Wrap" Text="Categories" Width="70" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white"/>
         </Button>
 
-        <Button Content="Request a Swap" Margin="126,0,260,0" Click="Button_Click" Background="#D36414" Foreground="white" Grid.ColumnSpan="3" Grid.Column="1" Height="25" VerticalAlignment="Center" Grid.Row="1">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
-                </Style>
-            </Button.Resources>
-        </Button>
-
         <TextBlock Margin="32,104,166,0"  TextWrapping="Wrap" Height="24" VerticalAlignment="Top" FontWeight="Bold" FontSize="16" Grid.ColumnSpan="3" Language="en-ca"  Foreground="Blue" TextDecorations="Underline" Grid.Column="1" />
         <TextBlock Margin="42,126,155,0"  TextWrapping="Wrap" Height="16" VerticalAlignment="Top" FontWeight="Bold" Grid.ColumnSpan="3" Text="Estimated Worth:" Language="en-ca" Foreground="Green" Grid.Column="1" />
         <TextBlock Margin="42,143,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="3" Height="16" VerticalAlignment="Top" Language="en-ca" Text="Location:" FontWeight="Bold" Grid.Column="1" />
@@ -99,14 +91,14 @@
         <TextBlock Margin="42,178,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="3" Height="16" VerticalAlignment="Top"  FontWeight="Bold"  Language="en-ca" Text="Delivery:" Grid.Column="1"/>
         <TextBlock Margin="42,195,155,0"  TextWrapping="Wrap" Grid.ColumnSpan="3" Height="16" VerticalAlignment="Top"  FontWeight="Bold" Text="Looking For:" Language="en-ca" Grid.Column="1"/>
         <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="4" Margin="176,96,37,10"/>
-        <Image x:Name="img" Source="/home.jpg" Margin="8,196,0,0" HorizontalAlignment="Left" Width="31" Height="28" VerticalAlignment="Top"/>
-        <Image x:Name="add" Source="/add.jpg" Margin="7,234,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
-        <Image x:Name="chat" Source="/chat.jpg" Margin="6,270,0,0" HorizontalAlignment="Left" Width="33" Height="26" VerticalAlignment="Top"/>
-        <Image x:Name="save" Source="/save.jpg" Margin="8,306,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
-        <Image x:Name="help" Source="/help.jpg" Margin="8,342,0,0" HorizontalAlignment="Left" Width="30" Height="25" VerticalAlignment="Top"/>
-        <Image x:Name="dropdown" Source="/dropdown.jpg" Margin="0,43,53,0" Grid.Column="3" Height="13" VerticalAlignment="Top" HorizontalAlignment="Right" Width="28"/>
-        <Image x:Name="hamburger" Source="/Hamburger.jpg" Margin="0,38,138,0" Grid.Column="3" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="36"/>
-        <Image x:Name="search" Source="/search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Grid.ColumnSpan="2" Height="23" VerticalAlignment="Top"/>
+        <Image x:Name="img" Source="/Images/home.jpg" Margin="8,196,0,0" HorizontalAlignment="Left" Width="31" Height="28" VerticalAlignment="Top"/>
+        <Image x:Name="add" Source="/Images/add.jpg" Margin="7,234,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
+        <Image x:Name="chat" Source="/Images/chat.jpg" Margin="6,270,0,0" HorizontalAlignment="Left" Width="33" Height="26" VerticalAlignment="Top"/>
+        <Image x:Name="save" Source="/Images/save.jpg" Margin="8,306,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
+        <Image x:Name="help" Source="/Images/help.jpg" Margin="8,342,0,0" HorizontalAlignment="Left" Width="30" Height="25" VerticalAlignment="Top"/>
+        <Image x:Name="dropdown" Source="/Images/dropdown.jpg" Margin="0,43,53,0" Grid.Column="3" Height="13" VerticalAlignment="Top" HorizontalAlignment="Right" Width="28"/>
+        <Image x:Name="hamburger" Source="/Images/Hamburger.jpg" Margin="0,38,138,0" Grid.Column="3" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="36"/>
+        <Image x:Name="search" Source="/Images//search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Grid.ColumnSpan="2" Height="23" VerticalAlignment="Top"/>
         <Button Margin="23,148,0,0" Background="white" 
                 Foreground="Blue"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="110" />
         <Button  Margin="15,100,0,0" Background="white" Height="87" VerticalAlignment="Top" Click="Button_Click_3" HorizontalAlignment="Left" Width="123">
@@ -116,7 +108,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Image x:Name="profile" Source="/profile.jpg" Margin="50,110,0,0" HorizontalAlignment="Left" Width="49" Height="47" VerticalAlignment="Top"/>
+        <Image x:Name="profile" Source="/Images/profile.jpg" Margin="50,110,0,0" HorizontalAlignment="Left" Width="49" Height="47" VerticalAlignment="Top"/>
         <TextBlock Margin="48,157,0,0" TextWrapping="Wrap" FontSize="17" FontWeight="Bold" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"><Run Language="en-ca" Text="Profile"/></TextBlock>
         <Button x:Name="login" Content="Log Out" Background="#385638" 
             Foreground="White" Margin="12,3,0,15" FontSize="16" FontWeight="Bold" 
