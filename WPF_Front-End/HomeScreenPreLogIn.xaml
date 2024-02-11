@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPF_Front_End"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="HomeScreenPreLogIn" Height="600" Width="1000">
+        Title="Swapify" Height="600" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="397*"/>
@@ -103,6 +103,7 @@
         <Image x:Name="dropdown" Source="Images/dropdown.jpg" Margin="0,43,53,0" Grid.Column="2" Height="13" VerticalAlignment="Top" HorizontalAlignment="Right" Width="28"/>
         <Image x:Name="hamburger" Source="Images/Hamburger.jpg" Margin="0,38,138,0" Grid.Column="2" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="36"/>
         <Image x:Name="search" Source="Images/search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Grid.ColumnSpan="2" Height="23" VerticalAlignment="Top"/>
+
         <Button x:Name="login" Content="Log In" Background="#385638" 
                 Foreground="White" Margin="14,100,0,0" FontSize="16" FontWeight="Bold" 
                 Width="124" Height="33" HorizontalAlignment="Left" VerticalAlignment="Top" Click="login_Click" >

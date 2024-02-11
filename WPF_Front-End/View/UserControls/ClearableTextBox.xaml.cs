@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Swapify.View.UserControls
+namespace WPF_Front_End.View.UserControls
 {
     /// <summary>
     /// Interaction logic for ClearableTextBox.xaml
