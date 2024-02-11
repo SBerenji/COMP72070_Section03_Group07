@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPF_Front_End.View.UserControls"
              mc:Ignorable="d">
-    <Grid Background="White">
+    <Grid Background="White" Height="228">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -33,17 +33,17 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Forgot your Password?" FontSize="10"
-                Foreground="Black" Margin="40, 7, 0, 10" />
+                Foreground="Black" Margin="22,12,19,5" />
 
-                <TextBlock Grid.Row="0" Grid.Column="1" Text="Reset Password" FontSize="10"
-                Foreground="RoyalBlue" Margin="3, 7, 0, 0" />
+                <TextBlock Grid.Row="0" Text="Reset Password" FontSize="10"
+                Foreground="RoyalBlue" Margin="125,12,18,-5" Grid.ColumnSpan="2" />
             </Grid>
 
-            <TextBlock Grid.Row="1" Text="------------    Or    ------------" FontSize="10"
-            Foreground="Black" Margin="65, 0, 0, 10" />
+            <TextBlock Text="------------    Or    ------------" FontSize="10"
+            Foreground="Black" Margin="50,36,15,10" Grid.RowSpan="2" />
 
-            <TextBlock Grid.Row="1" Text="Don't have an account?" FontSize="10" Foreground="Black"
-            Margin="80,20,92,0"/>
+            <TextBlock Grid.Row="1" Text="Don't have an account?" FontSize="9" Foreground="Black"
+            Margin="65,20,107,0"/>
 
         </Grid>
 
@@ -53,12 +53,18 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="By continuing, you agree to our" FontSize="10" Margin="65, 0, 92, 0" />
-            <TextBlock Grid.Row="1" Text="Terms of Use and Privacy Policy" FontSize="10" Foreground="Blue" Margin="65, 0, 92, 0" />
+            <TextBlock Grid.Row="1" Text="By continuing, you agree to our" FontSize="8" Foreground="Gray" Margin="61,13,96,-7" />
+            <TextBlock Grid.Row="1" Text="Terms of Use and Privacy Policy" FontSize="8" Foreground="Gray" Margin="60,22,96,-19" >
+                <TextBlock.TextDecorations>
+                    <TextDecorationCollection>
+                        <TextDecoration Location="Underline"/>
+                    </TextDecorationCollection>
+                </TextBlock.TextDecorations>
+            </TextBlock>
         </Grid>
 
         <TextBlock Grid.Row="0" Text="Log In" FontSize="20"
-                   FontFamily="Times New Roman" Foreground="#385638" FontWeight="Bold" Margin="100, 0, 65, 3" />
+                   FontFamily="Times New Roman" Foreground="#385638" FontWeight="Bold" Margin="86,0,79,3" />
 
         <local:ClearableTextBox Grid.Row="1" Placeholder="Username" 
         Width="250" Height="23"/>
@@ -68,7 +74,7 @@
 
         <Button Grid.Row="3" x:Name="login" Content="Log In" Background="#385638" 
                 Foreground="White" FontSize="12" Height="20"
-                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="login_Click" Margin="23,0,62,0" >
+                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="login_Click" Margin="10,0,49,62" Grid.RowSpan="2" >
 
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -81,7 +87,7 @@
 
         <Button Click="createAccount_Click_1" Grid.Row="5" x:Name="createAccount" Content="Register" Background="#D36414" 
         Foreground="White" FontSize="10" Height="20"
-        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="70, 5, 105, 0" >
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="65,5,110,15" Grid.RowSpan="2" >
 
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">

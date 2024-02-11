@@ -23,6 +23,12 @@ namespace WPF_Front_End
         public MainWindow()
         {
             InitializeComponent();
+
         }
+
+
+
+
+
     }
 }

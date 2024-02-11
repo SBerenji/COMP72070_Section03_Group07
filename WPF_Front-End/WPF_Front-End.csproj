@@ -12,6 +12,7 @@
     <None Remove="addUser.png" />
     <None Remove="login_image.jpg" />
     <None Remove="SignUpImage.png" />
+    <None Remove="Swapify-Logo.png" />
     <None Remove="View\UserControls\addUser.png" />
   </ItemGroup>
 
@@ -19,6 +20,7 @@
     <Resource Include="addUser.png" />
     <Resource Include="login_image.jpg" />
     <Resource Include="SignUpImage.png" />
+    <Resource Include="Swapify-Logo.png" />
     <Resource Include="View\UserControls\addUser.png" />
   </ItemGroup>
 
