@@ -81,7 +81,14 @@ namespace WPF_Front_End
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
+            double windowWidth = this.ActualWidth;
+            double windowHeight = this.ActualHeight;
+
             var newForm = new NewPost(); //create your new form.
+
+            newForm.Width = windowWidth;
+            newForm.Height = windowHeight;
+
             newForm.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.
         }
@@ -108,7 +115,14 @@ namespace WPF_Front_End
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
+            double windowWidth = this.ActualWidth;
+            double windowHeight = this.ActualHeight;
+
             var newForm = new HomeScreenPreLogIn(); //create your new form.
+
+            newForm.Width = windowWidth;
+            newForm.Height = windowHeight;
+
             newForm.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.
         }

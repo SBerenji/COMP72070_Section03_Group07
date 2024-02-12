@@ -99,6 +99,13 @@ namespace WPF_Front_End
         private void login_Click(object sender, RoutedEventArgs e)
         {
             var newForm = new MainWindow(); //create your new form.
+
+            double windowWidth = this.ActualWidth;
+            double windowHeight = this.ActualHeight;
+
+            newForm.Width = windowWidth;
+            newForm.Height = windowHeight;
+
             newForm.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.
         }
@@ -142,7 +149,14 @@ namespace WPF_Front_End
         {
             Window parentWindow = Window.GetWindow(this);
 
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
             SignUpForm signup = new SignUpForm();
+
+            signup.Width = windowWidth;
+            signup.Height = windowHeight;
+
 
             signup.Show();
 

@@ -30,7 +30,13 @@ namespace WPF_Front_End.View.UserControls
         {
             Window parentWindow = Window.GetWindow(this);
 
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
             HomeScreenPostLogIn hspl = new HomeScreenPostLogIn();
+
+            hspl.Width = windowWidth;
+            hspl.Height = windowHeight;
 
             hspl.Show();
 
@@ -41,7 +47,13 @@ namespace WPF_Front_End.View.UserControls
         {
             Window parentWindow = Window.GetWindow(this);
 
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
             SignUpForm signup = new SignUpForm();
+
+            signup.Width = windowWidth;
+            signup.Height = windowHeight;
 
             signup.Show();
 
