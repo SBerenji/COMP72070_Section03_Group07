@@ -117,7 +117,7 @@
         <TextBlock Margin="31,133,0,0" TextWrapping="Wrap" Text="New to Swapify?" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left" Width="89"/>
         <Button Margin="23,148,0,0" Background="white" 
                 Foreground="Blue"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="110" >
-            <TextBlock Text="Create an Account" TextDecorations="Underline" Height="24" Width="100"/>
+            <TextBlock Text="Create an Account" TextDecorations="Underline" Height="24" Width="100" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown" />
         </Button>
 
 

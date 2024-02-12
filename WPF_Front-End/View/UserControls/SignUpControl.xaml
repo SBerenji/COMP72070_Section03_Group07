@@ -92,7 +92,7 @@ VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="92
 
         <Button Grid.Row="4" x:Name="login" Content="Sign Up" Background="#385638" 
         Foreground="White" FontSize="11" Height="20"
-        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="18,18,18,12" >
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="18,18,18,12" Click="login_Click_1" >
 
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">

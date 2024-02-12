@@ -105,8 +105,15 @@ namespace WPF_Front_End.View.UserControls
             RemoveText2.Visibility = Visibility.Visible;
         }
 
+        private void login_Click_1(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
 
+            HomeScreenPostLogIn hspl = new HomeScreenPostLogIn();
 
+            hspl.Show();
 
+            parentWindow.Close();
+        }
     }
 }

@@ -28,7 +28,13 @@ namespace WPF_Front_End.View.UserControls
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
+            Window parentWindow = Window.GetWindow(this);
 
+            HomeScreenPostLogIn hspl = new HomeScreenPostLogIn();
+
+            hspl.Show();
+
+            parentWindow.Close();
         }
 
         private void createAccount_Click_1(object sender, RoutedEventArgs e)

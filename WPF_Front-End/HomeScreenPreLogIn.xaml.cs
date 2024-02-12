@@ -137,5 +137,16 @@ namespace WPF_Front_End
         {
 
         }
+
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            SignUpForm signup = new SignUpForm();
+
+            signup.Show();
+
+            parentWindow.Close();
+        }
     }
 }
