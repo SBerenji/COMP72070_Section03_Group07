@@ -21,7 +21,6 @@
 
 
         <Rectangle Stroke="Black" Fill ="#385638" Height="85" Width="Auto" VerticalAlignment="Top" Grid.ColumnSpan="4"/>
-        <Rectangle Margin="179,101,57,0" Stroke="Black" RadiusX="30.014" RadiusY="30.014" Grid.ColumnSpan="4" Width="Auto" Height="158" VerticalAlignment="Top"/>
 
 
 
@@ -53,7 +52,7 @@
 
         <Button Margin="39,305,0,0" Background="white" 
                 Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="103" Click="Button_Click_4" >
-            <TextBlock HorizontalAlignment="Center"  Height="24" Width="99" FontWeight="Bold" FontSize="15" Text=" Saved Posts"/>
+            <TextBlock HorizontalAlignment="Center"  Height="24" Width="99" FontWeight="Bold" FontSize="15" Text=" My Posts"/>
         </Button>
 
         <Button Margin="39,340,0,0" Background="white" 
@@ -75,25 +74,16 @@
         </Button>
         <TextBox TextWrapping="Wrap" Text="Search..." Width="172" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white" Grid.Column="1" Grid.ColumnSpan="2" Margin="16,40,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
-        <Button Margin="0,33,37,0" Background="white" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Width="139" Grid.Column="3" Click="Button_Click_1">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
-                </Style>
-            </Button.Resources>
-            <TextBox  TextWrapping="Wrap" Text="Categories" Width="70" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white"/>
-        </Button>
+       
 
-        <ListBox Name="listBox" Grid.ColumnSpan="3" Margin="157,96,10,0" Grid.RowSpan="2" ItemsSource="{Binding}">
+        <ListBox Name="listBox" Grid.ColumnSpan="4" Margin="157,96,10,0" Grid.RowSpan="2" ItemsSource="{Binding}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <local:Post DataContext="{Binding}" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Image x:Name="image1" Source="Images/image1.jpg" Margin="203,142,0,0" HorizontalAlignment="Left" Width="173" Height="181" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-        <Image x:Name="tv" Source="Images/tv.jpg" Margin="203,390,0,0" HorizontalAlignment="Left" Width="163" Height="145" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-
+        
 
 
         <Image x:Name="img" Source="Images/home.jpg" Margin="8,196,0,0" HorizontalAlignment="Left" Width="31" Height="28" VerticalAlignment="Top"/>
@@ -101,8 +91,6 @@
         <Image x:Name="chat" Source="Images/chat.jpg" Margin="6,270,0,0" HorizontalAlignment="Left" Width="33" Height="26" VerticalAlignment="Top"/>
         <Image x:Name="save" Source="Images/save.jpg" Margin="8,306,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
         <Image x:Name="help" Source="Images/help.jpg" Margin="8,342,0,0" HorizontalAlignment="Left" Width="30" Height="25" VerticalAlignment="Top"/>
-        <Image x:Name="dropdown" Source="Images/dropdown.jpg" Margin="0,43,53,0" Grid.Column="2" Height="13" VerticalAlignment="Top" HorizontalAlignment="Right" Width="28"/>
-        <Image x:Name="hamburger" Source="Images/Hamburger.jpg" Margin="0,38,138,0" Grid.Column="2" Height="23" VerticalAlignment="Top" HorizontalAlignment="Right" Width="36"/>
         <Image x:Name="search" Source="Images/search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Grid.ColumnSpan="2" Height="23" VerticalAlignment="Top"/>
 
         <Button Margin="23,148,0,0" Background="white" 

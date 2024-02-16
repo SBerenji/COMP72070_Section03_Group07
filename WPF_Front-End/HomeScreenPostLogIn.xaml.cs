@@ -32,7 +32,7 @@ namespace WPF_Front_End
                                       
             new Post
                     {
-                        //ImagePath = "/Images/item1.jpg",   
+                        Image = "/Images/Image1.jpg",   
                         Title = "Item 1",
                         EstimatedWorth = "$100",
                         Location = "City A",
@@ -44,13 +44,25 @@ namespace WPF_Front_End
                     },
                 new Post
                     {
-                       // ImagePath = "/Images/item1.jpg",
+                        Image = "/Images/tv.jpg",
                         Title = "Item 2",
                         EstimatedWorth = "$50",
                         Location = "City B",
                         Condition = "Excellent",
                         Delivery = "Nationwide",
                         LookingFor = "Item Y"
+
+                    },
+
+                new Post
+                    {
+                        Image = "/Images/Image1.jpg",
+                        Title = "Item 3",
+                        EstimatedWorth = "$150",
+                        Location = "City C",
+                        Condition = "Excellent",
+                        Delivery = "Nationwide",
+                        LookingFor = "Item Z"
 
                     }
             };
@@ -100,7 +112,16 @@ namespace WPF_Front_End
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
         {
+            double windowWidth = this.ActualWidth;
+            double windowHeight = this.ActualHeight;
 
+            var newForm = new MyPostsScreen(); //create your new form.
+
+            newForm.Width = windowWidth;
+            newForm.Height = windowHeight;
+
+            newForm.Show(); //show the new form.
+            this.Close(); //only if you want to close the current form.
         }
 
         private void Button_Click_5(object sender, RoutedEventArgs e)

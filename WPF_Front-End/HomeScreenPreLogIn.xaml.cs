@@ -31,7 +31,7 @@ namespace WPF_Front_End
             {
                 new Post
                     {
-                        //ImagePath = "/Images/item1.jpg",   
+                        Image = "/Images/Image1.jpg",
                         Title = "Item 1",
                         EstimatedWorth = "$100",
                         Location = "City A",
@@ -42,13 +42,24 @@ namespace WPF_Front_End
                     },
                 new Post
                     {
-                       // ImagePath = "/Images/item1.jpg",
+                        Image = "/Images/tv.jpg",
                         Title = "Item 2",
                         EstimatedWorth = "$50",
                         Location = "City B",
                         Condition = "Excellent",
                         Delivery = "Nationwide",
                         LookingFor = "Item Y",
+                    },
+                new Post
+                    {
+                        Image = "/Images/Image1.jpg",
+                        Title = "Item 3",
+                        EstimatedWorth = "$150",
+                        Location = "City C",
+                        Condition = "Excellent",
+                        Delivery = "Nationwide",
+                        LookingFor = "Item Z"
+
                     }
             };
 

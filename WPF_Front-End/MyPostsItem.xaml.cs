@@ -16,9 +16,9 @@ using System.Windows.Shapes;
 namespace WPF_Front_End
 {
     /// <summary>
-    /// Interaction logic for Post.xaml
+    /// Interaction logic for MyPostsItem.xaml
     /// </summary>
-    public partial class Post : UserControl
+    public partial class MyPostsItem : UserControl
     {
 
         public string Image { get; set; }
@@ -30,7 +30,7 @@ namespace WPF_Front_End
         public string LookingFor { get; set; }
 
 
-        public Post()
+        public MyPostsItem()
         {
             InitializeComponent();
 
