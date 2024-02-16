@@ -98,5 +98,19 @@ namespace WPF_Front_End
             newForm.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.
         }
+
+        private void Button_Click_8(object sender, RoutedEventArgs e)
+        {
+            double windowWidth = this.ActualWidth;
+            double windowHeight = this.ActualHeight;
+
+            var newForm = new MyPostsScreen(); //create your new form.
+
+            newForm.Width = windowWidth;
+            newForm.Height = windowHeight;
+
+            newForm.Show(); //show the new form.
+            this.Close(); //only if you want to close the current form.
+        }
     }
 }
