@@ -5,6 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPF_Front_End.View.UserControls"
              mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
+    </UserControl.Resources>
+    
     <Grid Background="White" Height="228">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -69,8 +74,11 @@
         <local:ClearableTextBox Grid.Row="1" Placeholder="Username" 
         Width="250" Height="23"/>
 
-        <local:ClearableTextBox Grid.Row="2" Placeholder="Password" 
-        Width="250" Height="23" Margin="0, 2, 0, 3" />
+        <local:PasswordBox Grid.Row="2" Width="250" Height="23" Margin="0, 2, 0, 3" 
+        Password="{Binding Password}" Placeholder="Password" />
+
+        <!--<local:ClearableTextBox x:Name="PasswordBox" Grid.Row="2" Placeholder="Password"
+        Width="250" Height="23" Margin="0, 2, 0, 3" Loaded="PasswordBox_Loaded" />-->
 
         <Button Grid.Row="3" x:Name="login" Content="Log In" Background="#385638" 
                 Foreground="White" FontSize="12" Height="20"

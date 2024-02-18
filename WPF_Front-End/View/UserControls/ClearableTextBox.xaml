@@ -10,10 +10,10 @@
             <ColumnDefinition Width="50*" /> 
             <ColumnDefinition Width="40" />
         </Grid.ColumnDefinitions>
-        
+
         <TextBox x:Name="txtInput" VerticalContentAlignment="Center"
                  FontSize="10" FontWeight="Light" Background="Transparent"
-                 TextChanged="txtInput_TextChanged" >
+                 TextChanged="txtInput_TextChanged" Text="{Binding Text}">
 
             <TextBox.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -24,7 +24,7 @@
 
         <TextBlock Grid.Column="0" x:Name="tbPlaceholder" Text="{Binding Placeholder}"
                    FontSize="10" FontWeight="Light" Foreground="DarkGray"
-                   Panel.ZIndex="-1" Margin="10, 0, 0, 0" />
+                   Panel.ZIndex="-1" Margin="10, 3, 0, 0" />
         <!--<Button Grid.Column="1" x:Name="btnClear" Content="X"
         Background="Transparent" Foreground="Red" BorderThickness="0"
         Click="btnClear_Click" FontWeight="Light" />-->

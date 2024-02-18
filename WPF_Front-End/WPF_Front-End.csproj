@@ -6,6 +6,7 @@
     <RootNamespace>WPF_Front_End</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+
   </PropertyGroup>
 
   <ItemGroup>

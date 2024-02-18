@@ -20,7 +20,7 @@ namespace WPF_Front_End.View.UserControls
     /// Interaction logic for Controls.xaml
     /// </summary>
     public partial class Controls : UserControl
-    {
+    {    
         public Controls()
         {
             InitializeComponent();

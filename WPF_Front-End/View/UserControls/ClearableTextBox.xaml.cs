@@ -38,6 +38,34 @@ namespace WPF_Front_End.View.UserControls
             }
         }
 
+        //public static readonly DependencyProperty IsPasswordBoxProperty =
+        //    DependencyProperty.Register("IsPasswordBox", typeof(bool), typeof(ClearableTextBox), new PropertyMetadata(false, OnIsPasswordBoxChanged));
+
+        //public bool IsPasswordBox
+        //{
+        //    get { return (bool)GetValue(IsPasswordBoxProperty); }
+        //    set { SetValue(IsPasswordBoxProperty, value); }
+        //}
+
+
+        //private static void OnIsPasswordBoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    var txtInput = (d as ClearableTextBox)?.txtInput;
+
+        //    if (txtInput != null)
+        //    {
+        //        if ((bool)e.NewValue)
+        //        {
+        //            txtInput.PasswordChar = '*';
+        //        }
+
+        //        else
+        //        {
+        //            txtInput.PasswordChar = '\0';
+        //        }
+        //    }
+        //}
+
         private void txtInput_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (string.IsNullOrEmpty(txtInput.Text))
