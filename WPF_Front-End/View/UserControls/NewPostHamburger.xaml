@@ -7,12 +7,84 @@
              mc:Ignorable="d"
              Width="200" Height="360">
     <Grid Background="White">
-        <Button  Margin="12,100,273,0" Background="white" Height="87">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Image x:Name="profile" Grid.Row="0" Source="/Images/profile.jpg" HorizontalAlignment="Left" Width="34" Height="34" VerticalAlignment="Top" Margin="86,3,0,0"/>
+
+        <TextBox Grid.Row="0" Text="My Profile" FontSize="17" HorizontalAlignment="Left" Margin="67,37,0,0" Foreground="#000000" >
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+
+        <!--<Button  Margin="12,100,273,0" Background="white" Height="87">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5" />
                 </Style>
             </Button.Resources>
-        </Button>
+        </Button>-->
+
+        <DockPanel Grid.Row="1" LastChildFill="True" Margin="42,16,42,10">
+            <Image Source="/Images/home.jpg" Height="28" Width="47"/>
+            <TextBlock Text="Listings" Margin="5" Foreground="#000000" FontSize="17"
+        DockPanel.Dock="Left" Width="59" Height="27"/>
+        </DockPanel>
+
+        <DockPanel Grid.Row="2" LastChildFill="True" Margin="42,16,10,10">
+            <Image Source="/Images/add.jpg" Height="28" Width="47"/>
+            <TextBlock Text="Create Post" Margin="5" Foreground="#000000" FontSize="17"
+DockPanel.Dock="Left" Width="89" Height="27"/>
+        </DockPanel>
+
+
+        <DockPanel Grid.Row="3" LastChildFill="True" Margin="42,16,26,10">
+            <Image Source="/Images/chat.jpg" Height="28" Width="47"/>
+            <TextBlock Text="Messages" Margin="5" Foreground="#000000" FontSize="17"
+DockPanel.Dock="Left" Width="77" Height="27"/>
+        </DockPanel>
+
+
+        <DockPanel Grid.Row="4" LastChildFill="True" Margin="42,13,21,13">
+            <Image Source="/Images/save.jpg" Height="28" Width="47"/>
+            <TextBlock Text="Saved Posts" Margin="5" Foreground="#000000" FontSize="17"
+DockPanel.Dock="Left" Width="86" Height="25"/>
+        </DockPanel>
+
+
+        <DockPanel Grid.Row="5" LastChildFill="True" Margin="42,16,42,10">
+            <Image Source="/Images/help.jpg" Height="28" Width="47"/>
+            <TextBlock Text="Help" Margin="5" Foreground="#000000" FontSize="17"
+DockPanel.Dock="Left" Width="55" Height="28"/>
+        </DockPanel>
+
+        <!--<DockPanel Grid.Row="1" Margin="65,24,71,11" Width="100" LastChildFill="True">
+            <Image Source="/Images/home.jpg"/>
+            <Grid >
+                <TextBlock Text="Create Post" FontSize="12" DockPanel.Dock="Left"/>
+            </Grid>
+        </DockPanel>-->
+
+        <!--<TextBox Grid.Row="1" Text="Create Post" FontSize="13" HorizontalContentAlignment="Right"  Foreground="#000000" Margin="44,37,38,0" Width="118">
+          
+            
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                </Style>
+            </TextBox.Resources>
+        </TextBox>-->
+
     </Grid>
 </UserControl>
