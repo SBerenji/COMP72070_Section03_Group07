@@ -16,9 +16,9 @@ using System.Windows.Shapes;
 namespace WPF_Front_End
 {
     /// <summary>
-    /// Interaction logic for Post.xaml
+    /// Interaction logic for MyPostsItem.xaml
     /// </summary>
-    public partial class Post : UserControl
+    public partial class MyPostsItem : UserControl
     {
 
         public string Image { get; set; }
@@ -30,7 +30,7 @@ namespace WPF_Front_End
         public string LookingFor { get; set; }
 
 
-        public Post()
+        public MyPostsItem()
         {
             InitializeComponent();
 
@@ -46,23 +46,6 @@ namespace WPF_Front_End
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void RequestSwap(object sender, RoutedEventArgs e)
-        {
-            Window parentWindow = Window.GetWindow(this);
-
-            double windowWidth = parentWindow.ActualWidth;
-            double windowHeight = parentWindow.ActualHeight;
-
-            Chat c = new Chat();
-
-            c.Width = windowWidth;
-            c.Height = windowHeight;
-
-            c.Show();
-
-            parentWindow.Close();
         }
     }
 }
