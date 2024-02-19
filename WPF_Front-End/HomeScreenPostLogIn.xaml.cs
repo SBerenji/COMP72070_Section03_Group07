@@ -95,7 +95,16 @@ namespace WPF_Front_End
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
+            double windowWidth=this.ActualWidth;
+            double windowHeight=this.ActualHeight;
 
+            var newForm = new Message();
+
+            newForm.Width = windowWidth;
+            newForm.Height = windowHeight;
+
+            newForm.Show();
+            this.Close();
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)

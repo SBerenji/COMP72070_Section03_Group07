@@ -6,30 +6,59 @@
         xmlns:local="clr-namespace:WPF_Front_End"
         xmlns:userControl ="clr-namespace:WPF_Front_End.View.UserControls"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
         Title="Message" Height="600" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.2*" />
             <RowDefinition />
-            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="0.04*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.2*" />
+                <ColumnDefinition Width="0.4*" />
                 <ColumnDefinition />
-                <ColumnDefinition Width="0.2*" />
+                <ColumnDefinition Width="0.4*" />
             </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Background="#385638">
+                <Viewbox Stretch="Fill" StretchDirection="Both" Margin="0,0,10,10" >
+                    <!--<Image Source="Swapify-Logo.png" />-->
+
+                    <TextBlock FontSize="40" Foreground="white" Text="Swapify" 
+                     FontFamily="Times New Roman" RenderTransformOrigin="0.077,0.51" Height="61" Width="161" VerticalAlignment="Top" Margin="29,20,70,0" />
+                </Viewbox>
+            </Grid>
+
+            <Grid Grid.Column="2" Background="#385638">
+
+                <Viewbox Stretch="Fill" StretchDirection="Both">
+                    <Button Name="btn5" Background="White" Content="Categories" HorizontalContentAlignment="Center" Foreground="#000000" Margin="10,38,42,26" Width="94" />
+                </Viewbox>
+
+
+                <Viewbox Stretch="Fill" StretchDirection="Both">
+                    <Image Source="/Images/hamburger.jpg" Margin="14,42,172,29" Width="27" Height="13"/>
+                </Viewbox>
+
+                <Viewbox Stretch="Fill" StretchDirection="Both">
+                    <Image Source="/Images/dropdown.jpg" Margin="80,42,40,29" Height="13" Width="15" />
+                </Viewbox>
+            </Grid>
         </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.25*" />
-                <ColumnDefinition />
-                <ColumnDefinition Width="0.04*" />
+                <ColumnDefinition  />
             </Grid.ColumnDefinitions>
             <Viewbox Grid.Column="0" Stretch="Fill" StretchDirection="Both">
-                <userControl:NewPostHamburger Grid.Column="0" Grid.ColumnSpan="2" />
+                <userControl:NewPostHamburger Grid.Column="0" Loaded="NewPostHamburger_Loaded" />
+            </Viewbox>
+
+            <Viewbox Grid.Column="1" Stretch="Fill" StretchDirection="Both">
+                <userControl:PeopleAndMessage Grid.Column="1" Margin="20, 0, 0, 0"/>
             </Viewbox>
         </Grid>
 
@@ -41,6 +70,17 @@
             </Grid.ColumnDefinitions>
         </Grid>
 
+        <Grid Grid.Row="0" Margin="210,0,210,0" Background="#385638" >
+            <Viewbox Grid.Row="0" Grid.Column="1" Stretch="Uniform" StretchDirection="Both" Margin="89,24,103,10">
+                <DockPanel Grid.Row="0" LastChildFill="True" Height="52" Width="291">
+                    <Image Grid.Row="0" Grid.Column="1" Source="/Images/search.jpg" Height="28" Width="47">
+                    </Image>
+                    <!--<userControl:ClearableTextBox BorderBrush="White" Margin="-5" Placeholder="Search" FontSize="20" DockPanel.Dock="Left" Width="370" Height="28" />-->
+                    <TextBox BorderBrush="White" Text="Search" Margin="-8" Foreground="#000000" FontSize="20"
+         DockPanel.Dock="Left" Width="370" Height="28"/>
+                </DockPanel>
+            </Viewbox>
+        </Grid>
 
     </Grid>
 </Window>

@@ -24,5 +24,39 @@ namespace WPF_Front_End.View.UserControls
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
+           MainWindow main = new MainWindow();
+
+            main.Width = windowWidth;
+            main.Height = windowHeight;
+
+            main.Show();
+
+            parentWindow.Close(); 
+        }
+
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
+            NewPost np = new NewPost();
+
+            np.Width = windowWidth;
+            np.Height = windowHeight;
+
+            np.Show();
+
+            parentWindow.Close();
+        }
     }
 }

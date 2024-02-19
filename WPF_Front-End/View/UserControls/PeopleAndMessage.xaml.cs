@@ -10,23 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPF_Front_End
+namespace WPF_Front_End.View.UserControls
 {
     /// <summary>
-    /// Interaction logic for Message.xaml
+    /// Interaction logic for PeopleAndMessage.xaml
     /// </summary>
-    public partial class Message : Window
+    public partial class PeopleAndMessage : UserControl
     {
-        public Message()
+        public PeopleAndMessage()
         {
             InitializeComponent();
-        }
-
-        private void NewPostHamburger_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
