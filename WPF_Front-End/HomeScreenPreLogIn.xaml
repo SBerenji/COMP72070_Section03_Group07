@@ -64,21 +64,15 @@
 
 
 
-        <Button Margin="261,33,298,0" Background="white" Height="32" VerticalAlignment="Top" Grid.ColumnSpan="3" Click="Button_Click_11">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
-                </Style>
-            </Button.Resources>
-        </Button>
-        <TextBox TextWrapping="Wrap" Text="Search..." Width="171" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white" Grid.Column="1" Grid.ColumnSpan="2" Margin="16,40,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+
 
 
 
         <ListBox Name="listBox" Grid.ColumnSpan="3" Margin="157,96,4,0" Grid.RowSpan="2" ItemsSource="{Binding}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <local:Post DataContext="{Binding}" />
+                    
+                    <local:Post DataContext="{Binding}" /> 
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
@@ -90,7 +84,6 @@
         <Image x:Name="chat" Source="Images/chat.jpg" Margin="6,270,0,0" HorizontalAlignment="Left" Width="33" Height="26" VerticalAlignment="Top"/>
         <Image x:Name="save" Source="Images/save.jpg" Margin="8,306,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
         <Image x:Name="help" Source="Images/help.jpg" Margin="8,342,0,0" HorizontalAlignment="Left" Width="30" Height="25" VerticalAlignment="Top"/>
-        <Image x:Name="search" Source="Images/search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Grid.ColumnSpan="2" Height="23" VerticalAlignment="Top"/>
 
         <Button x:Name="login" Content="Log In" Background="#385638" 
                 Foreground="White" Margin="14,100,0,0" FontSize="16" FontWeight="Bold" 

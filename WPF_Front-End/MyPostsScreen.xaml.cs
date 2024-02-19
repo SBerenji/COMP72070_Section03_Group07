@@ -38,7 +38,7 @@ namespace WPF_Front_End
                         Title = "Item 1",
                         EstimatedWorth = "$100",
                         Location = "City A",
-                        Condition = "Good",
+                        ItemCondition = "Good",
                         Delivery = "Local",
                         LookingFor = "Item X"
 
@@ -46,23 +46,11 @@ namespace WPF_Front_End
                     },
                 new MyPostsItem
                     {
-                        Image = "/Images/tv.jpg",
-                        Title = "Item 2",
-                        EstimatedWorth = "$50",
-                        Location = "City B",
-                        Condition = "Excellent",
-                        Delivery = "Nationwide",
-                        LookingFor = "Item Y"
-
-                    },
-
-                new MyPostsItem
-                    {
                         Image = "/Images/Image1.jpg",
                         Title = "Item 3",
                         EstimatedWorth = "$150",
                         Location = "City C",
-                        Condition = "Excellent",
+                        ItemCondition = "Excellent",
                         Delivery = "Nationwide",
                         LookingFor = "Item Z"
 
@@ -138,5 +126,7 @@ namespace WPF_Front_End
         {
 
         }
+
+        
     }
 }

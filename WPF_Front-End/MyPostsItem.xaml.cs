@@ -25,10 +25,15 @@ namespace WPF_Front_End
         public string Title { get; set; }
         public string EstimatedWorth { get; set; }
         public string Location { get; set; }
-        public string Condition { get; set; }
+        public string ItemCondition { get; set; }
         public string Delivery { get; set; }
         public string LookingFor { get; set; }
 
+      
+     
+
+
+  
 
         public MyPostsItem()
         {
@@ -38,12 +43,13 @@ namespace WPF_Front_End
             Title = string.Empty;
             EstimatedWorth = string.Empty;
             Location = string.Empty;
-            Condition = string.Empty;
+            ItemCondition = string.Empty;
             Delivery = string.Empty;
             LookingFor = string.Empty;
+
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
 
         }

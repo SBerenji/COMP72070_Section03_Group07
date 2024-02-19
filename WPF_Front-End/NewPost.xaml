@@ -59,14 +59,7 @@
             <TextBlock HorizontalAlignment="Center"  Height="24" Width="99" FontWeight="Bold" FontSize="15"><Run Language="en-ca" Text=" "/><Run Text="Help"/></TextBlock>
         </Button>
 
-        <Button Margin="261,33,298,0" Background="white" Height="32" VerticalAlignment="Top" Grid.ColumnSpan="2" Click="Button_Click_5">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
-                </Style>
-            </Button.Resources>
-        </Button>
-        <TextBox TextWrapping="Wrap" Text="Search..." Width="171" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white" Grid.ColumnSpan="2" Margin="296,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+
 
         <TextBlock Margin="0,92,364,0" TextWrapping="Wrap" Text="New Post" FontSize="17" FontWeight="Bold" Height="23" VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Right" Width="79"/>
        
@@ -149,7 +142,6 @@
         <Image x:Name="save" Source="/Images/save.jpg" Margin="8,306,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
         <Image x:Name="help" Source="/Images/help.jpg" Margin="8,342,0,0" HorizontalAlignment="Left" Width="30" Height="25" VerticalAlignment="Top"/>
         <Image x:Name="addphoto" Source="/Images/addphoto.jpg" Margin="220,138,139,0" Height="52" VerticalAlignment="Top"/>
-        <Image x:Name="search" Source="/Images/search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Height="23" VerticalAlignment="Top"/>
 
         <Button  Margin="12,100,273,0" Background="white" Height="87" VerticalAlignment="Top" Click="Button_Click_3">
             <Button.Resources>

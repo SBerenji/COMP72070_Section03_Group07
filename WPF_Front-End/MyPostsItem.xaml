@@ -14,7 +14,7 @@
         <TextBlock Margin="214,62,490,127"  TextWrapping="Wrap" FontWeight="Bold" FontSize="12" Language="en-ca" Text="Location:" />
         <TextBlock Margin="270,62,19,126"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding Location}" />
         <TextBlock Margin="214,90,352,103"  TextWrapping="Wrap" FontWeight="Bold" FontSize="12" Language="en-ca" Text="Condition: " />
-        <TextBlock Margin="278,90,26,98"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding Condition}"/>
+        <TextBlock Margin="278,90,26,98"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding ItemCondition}"/>
         <TextBlock Margin="214,118,490,70"  TextWrapping="Wrap" FontWeight="Bold" FontSize="12" Language="en-ca" Text="Delivery: " />
         <TextBlock Margin="267,118,31,70"  TextWrapping="Wrap" FontSize="12" Language="en-ca" Text="{Binding Delivery}"  />
 
@@ -22,7 +22,7 @@
         <TextBlock Margin="288,147,10,41"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding LookingFor}"  />
 
 
-        <Button Content="Delete" Click="Button_Click" Background="Red" Foreground="white" Margin="316,173,316,8">
+        <Button x:Name="DeleteButton" Content="Delete" Click="DeleteButton_Click" Background="Red" Foreground="white" Margin="316,173,316,8">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5" />
