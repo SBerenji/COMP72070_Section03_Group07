@@ -24,6 +24,7 @@
     <None Remove="Images\profile.jpg" />
     <None Remove="Images\save.jpg" />
     <None Remove="Images\search.jpg" />
+    <None Remove="Images\send.jpg" />
     <None Remove="Images\Swapify-Logo-Black.jpg" />
     <None Remove="Images\tv.jpg" />
 
@@ -48,6 +49,7 @@
     <Resource Include="Images\profile.jpg" />
     <Resource Include="Images\save.jpg" />
     <Resource Include="Images\search.jpg" />
+    <Resource Include="Images\send.jpg" />
     <Resource Include="Images\Swapify-Logo-Black.jpg" />
     <Resource Include="Images\tv.jpg" />
     <Resource Include="login_image.jpg" />

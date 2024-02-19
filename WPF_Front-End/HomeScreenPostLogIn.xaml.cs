@@ -183,5 +183,22 @@ namespace WPF_Front_End
             // show the new window (pop-up)
             newForm.Show();
         }
+
+        private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
+            Chat c = new Chat();
+
+            c.Width = windowWidth;
+            c.Height = windowHeight;
+
+            c.Show();
+
+            parentWindow.Close();
+        }
     }
 }

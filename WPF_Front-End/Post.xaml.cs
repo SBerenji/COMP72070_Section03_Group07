@@ -47,5 +47,22 @@ namespace WPF_Front_End
         {
 
         }
+
+        private void RequestSwap(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
+            Chat c = new Chat();
+
+            c.Width = windowWidth;
+            c.Height = windowHeight;
+
+            c.Show();
+
+            parentWindow.Close();
+        }
     }
 }

@@ -46,7 +46,7 @@ namespace WPF_Front_End
                     },
                 new MyPostsItem
                     {
-                        Image = "/Images/profile.jpg",
+                        Image = "/Images/tv.jpg",
                         Title = "Item 2",
                         EstimatedWorth = "$50",
                         Location = "City B",
@@ -139,16 +139,29 @@ namespace WPF_Front_End
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
+            // Setting the width and height for the new window
+            double desiredWidth = 400;
+
+            double desiredHeight = 200;
+
+            // calculations to determine the margin
             double windowWidth = this.ActualWidth;
             double windowHeight = this.ActualHeight;
+            double left = this.Left + (windowWidth - desiredWidth) / 2;
+            double top = this.Top + (windowHeight - desiredHeight) / 2;
 
-            var newForm = new HomeScreenPreLogIn(); //create your new form.
 
-            newForm.Width = windowWidth;
-            newForm.Height = windowHeight;
+            // creating an instance of the new pop-up window
+            var newForm = new LogOutPopUp(this);
 
-            newForm.Show(); //show the new form.
-            this.Close(); //only if you want to close the current form.
+            // setting the margin of the new window
+            newForm.Left = left;
+            newForm.Top = top;
+            newForm.Width = desiredWidth;
+            newForm.Height = desiredHeight;
+
+            // show the new window (pop-up)
+            newForm.Show();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
@@ -159,6 +172,23 @@ namespace WPF_Front_End
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
+            Chat c = new Chat();
+
+            c.Width = windowWidth;
+            c.Height = windowHeight;
+
+            c.Show();
+
+            parentWindow.Close();
         }
     }
 }

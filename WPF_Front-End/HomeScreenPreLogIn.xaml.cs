@@ -195,5 +195,23 @@ namespace WPF_Front_End
 
             parentWindow.Close();
         }
+
+        private void createAccountClick(object sender, RoutedEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
+            SignUpForm signup = new SignUpForm();
+
+            signup.Width = windowWidth;
+            signup.Height = windowHeight;
+
+
+            signup.Show();
+
+            parentWindow.Close();
+        }
     }
 }

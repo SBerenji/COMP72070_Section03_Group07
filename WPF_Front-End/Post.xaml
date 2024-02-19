@@ -22,7 +22,7 @@
         <TextBlock Margin="288,147,10,41"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding LookingFor}"  />
 
 
-        <Button Content="Request a Swap" Click="Button_Click" Background="#D36414" Foreground="white" Margin="316,173,316,8">
+        <Button Content="Request a Swap" Background="#D36414" Foreground="white" Margin="316,173,316,8" Click="RequestSwap">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5" />

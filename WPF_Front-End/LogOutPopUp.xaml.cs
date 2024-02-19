@@ -21,22 +21,76 @@ namespace WPF_Front_End
     public partial class LogOutPopUp : Window
     {
         private HomeScreenPostLogIn PostLogIn;
+
+        private Chat CH;
+
+        private NewPost NP;
+
+        private MyPostsScreen MPS;
+
+        private string str;
         public LogOutPopUp(HomeScreenPostLogIn postLogIn)
         {
             InitializeComponent();
             PostLogIn = postLogIn;
+
+            str = "HomeScreenPostLogIn";
         }
+        public LogOutPopUp(Chat ch)
+        {
+            InitializeComponent();
+            this.CH = ch;
+
+            str = "Chat";
+        }
+
+        public LogOutPopUp(NewPost np)
+        {
+            InitializeComponent();
+
+            this.NP = np;
+
+            str = "NewPost";
+        }
+
+        public LogOutPopUp(MyPostsScreen mps)
+        {
+            InitializeComponent();
+
+            this.MPS = mps;
+
+            str = "MyPostsScreen";
+        }
+
+
+
 
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
-
             var newForm = new HomeScreenPreLogIn(); //create your new form.
 
             newForm.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.
-            PostLogIn.Close();
 
+            if (this.str == "HomeScreenPostLogIn")
+            {
+                this.PostLogIn.Close();
+            }
 
+            else if (this.str == "Chat")
+            {
+                this.CH.Close();
+            }
+
+            else if (this.str == "NewPost")
+            {
+                this.NP.Close();
+            }
+
+            else if (this.str == "MyPostsScreen")
+            {
+                this.MPS.Close();
+            }
 
         }
 
