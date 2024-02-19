@@ -22,8 +22,7 @@
             </Grid.ColumnDefinitions>
 
             <Viewbox Grid.Column="1" Stretch="Fill" StretchDirection="Both" >
-                <!--<TextBlock FontSize="40" Text="Swapify" Foreground="Black" Height="49" Width="500"
-                FontFamily="Times New Roman" Margin="0, 0, 0, 0" />-->
+           
 
                 <Image Source="Swapify-Logo.png" Height="49" Width="630" HorizontalAlignment="Left" Margin="0, 0, 0, 0"/>
 

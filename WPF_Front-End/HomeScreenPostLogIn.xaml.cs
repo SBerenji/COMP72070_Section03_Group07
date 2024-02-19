@@ -126,7 +126,29 @@ namespace WPF_Front_End
 
         private void Button_Click_5(object sender, RoutedEventArgs e)
         {
+            // Setting the width and height for the new window
+            double desiredWidth = 800;
 
+            double desiredHeight = 550;
+
+            // calculations to determine the margin
+            double windowWidth = this.ActualWidth;
+            double windowHeight = this.ActualHeight;
+            double left = this.Left + (windowWidth - desiredWidth) / 2;
+            double top = this.Top + (windowHeight - desiredHeight) / 2;
+
+
+            // creating an instance of the new pop-up window
+            var newForm = new HelpPopUp();
+
+            // setting the margin of the new window
+            newForm.Left = left;
+            newForm.Top = top;
+            newForm.Width = desiredWidth;
+            newForm.Height = desiredHeight;
+
+            // show the new window (pop-up)
+            newForm.Show();
         }
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -136,16 +158,30 @@ namespace WPF_Front_End
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
+
+            // Setting the width and height for the new window
+            double desiredWidth = 400; 
+
+            double desiredHeight = 200; 
+
+            // calculations to determine the margin
             double windowWidth = this.ActualWidth;
             double windowHeight = this.ActualHeight;
+            double left = this.Left + (windowWidth - desiredWidth) / 2; 
+            double top = this.Top + (windowHeight - desiredHeight) / 2;
 
-            var newForm = new HomeScreenPreLogIn(); //create your new form.
+         
+            // creating an instance of the new pop-up window
+            var newForm = new LogOutPopUp(this);
 
-            newForm.Width = windowWidth;
-            newForm.Height = windowHeight;
+            // setting the margin of the new window
+            newForm.Left = left;
+            newForm.Top = top;
+            newForm.Width = desiredWidth;
+            newForm.Height = desiredHeight;
 
-            newForm.Show(); //show the new form.
-            this.Close(); //only if you want to close the current form.
+            // show the new window (pop-up)
+            newForm.Show();
         }
     }
 }

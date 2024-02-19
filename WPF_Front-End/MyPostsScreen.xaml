@@ -107,14 +107,22 @@
 
         <TextBlock Margin="48,157,0,0" TextWrapping="Wrap" FontSize="17" FontWeight="Bold" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"><Run Language="en-ca" Text="Profile"/></TextBlock>
         <Button x:Name="login" Content="Log Out" Background="#385638" 
-            Foreground="White" Margin="12,3,0,15" FontSize="16" FontWeight="Bold" 
-            Width="124" HorizontalAlignment="Left" Click="login_Click" Grid.Row="1" >
-
+        Foreground="White" Margin="12,3,0,15" FontSize="16" FontWeight="Bold" 
+        Width="124" HorizontalAlignment="Left" Click="login_Click" Grid.Row="1">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5" />
                 </Style>
             </Button.Resources>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="DarkSeaGreen"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
 
 

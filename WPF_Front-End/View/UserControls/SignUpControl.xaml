@@ -46,9 +46,29 @@
         </Grid>
 
 
-        <Button Grid.Row="9" x:Name="loginButton" Content="Log in" Background="#D36414" 
-Foreground="White" FontSize="10" Height="20" Click="LogIn_Click"
-VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="92,34,85,-47" >
+        <Button Grid.Row="9" x:Name="loginButton" Content="Log in" Foreground="White" FontSize="10" Height="20" Click="LogIn_Click"
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="92,34,85,-47">
+
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#D36414" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FFA566" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
 
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -56,6 +76,7 @@ VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="92
                 </Style>
             </Button.Resources>
         </Button>
+
 
 
         <Grid Grid.Row="4" Margin="6,37,-5,6" Grid.RowSpan="6">
@@ -90,15 +111,30 @@ VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="92
         <userControl:ClearableTextBox Grid.Row="3" Placeholder="Password" Height="23" Margin="17,2,81,39" Grid.RowSpan="2" />
 
 
-        <Button Grid.Row="4" x:Name="login" Content="Sign Up" Background="#385638" 
-        Foreground="White" FontSize="11" Height="20"
-        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="18,18,18,12" Click="login_Click_1" >
+        <Button Grid.Row="4" x:Name="SignUpButton" Content="Sign Up" Foreground="White" FontSize="11" Height="20"
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="18,18,18,12" Click="login_Click_1">
 
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#385638" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="DarkSeaGreen" />
+                                        <!-- Changing the color of the button when hovering over it. Overriding the default light blue color -->
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
-            </Button.Resources>
+            </Button.Style>
         </Button>
 
 

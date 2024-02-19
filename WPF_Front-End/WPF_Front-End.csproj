@@ -11,7 +11,6 @@
   <ItemGroup>
 
     <None Remove="Images\Image1.jpg" />
-    <None Remove="Images\tv.jpg" />
 
     <None Remove="addUser.png" />
     <None Remove="Images\add.jpg" />
@@ -26,6 +25,7 @@
     <None Remove="Images\save.jpg" />
     <None Remove="Images\search.jpg" />
     <None Remove="Images\Swapify-Logo-Black.jpg" />
+    <None Remove="Images\tv.jpg" />
 
     <None Remove="login_image.jpg" />
     <None Remove="SignUpImage.png" />
@@ -36,7 +36,6 @@
   <ItemGroup>
 
     <Resource Include="Images\Image1.jpg" />
-    <Resource Include="Images\tv.jpg" />
     <Resource Include="addUser.png" />
     <Resource Include="Images\add.jpg" />
     <Resource Include="Images\addphoto.jpg" />
@@ -50,6 +49,7 @@
     <Resource Include="Images\save.jpg" />
     <Resource Include="Images\search.jpg" />
     <Resource Include="Images\Swapify-Logo-Black.jpg" />
+    <Resource Include="Images\tv.jpg" />
     <Resource Include="login_image.jpg" />
     <Resource Include="SignUpImage.png" />
     <Resource Include="Swapify-Logo.png" />

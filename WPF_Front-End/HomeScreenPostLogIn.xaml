@@ -106,9 +106,31 @@
         <Image x:Name="profile" Source="/Images/profile.jpg" Margin="50,110,0,0" HorizontalAlignment="Left" Width="49" Height="47" VerticalAlignment="Top"/>
 
         <TextBlock Margin="48,157,0,0" TextWrapping="Wrap" FontSize="17" FontWeight="Bold" Height="23" VerticalAlignment="Top" HorizontalAlignment="Left" Width="58"><Run Language="en-ca" Text="Profile"/></TextBlock>
-        <Button x:Name="login" Content="Log Out" Background="#385638" 
-            Foreground="White" Margin="12,3,0,15" FontSize="16" FontWeight="Bold" 
-            Width="124" HorizontalAlignment="Left" Click="login_Click" Grid.Row="1" >
+        <Button x:Name="login" Content="Log Out" 
+        Foreground="White" Margin="12,3,0,15" FontSize="16" FontWeight="Bold" 
+        Width="124" HorizontalAlignment="Left" Click="login_Click" Grid.Row="1" >
+
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#385638" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border x:Name="ButtonBorder" Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter TargetName="ButtonBorder" Property="Background" Value="DarkSeaGreen" />
+                                        <!-- Changing the color of the button when hovering over it -->
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
 
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -116,6 +138,7 @@
                 </Style>
             </Button.Resources>
         </Button>
+
 
 
     </Grid>

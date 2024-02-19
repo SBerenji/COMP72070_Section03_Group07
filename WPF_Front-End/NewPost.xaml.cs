@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPF_Front_End;
 
 namespace WPF_Front_End
 {
@@ -112,5 +113,38 @@ namespace WPF_Front_End
             newForm.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.
         }
+
+
+        private void Help_button(object sender, RoutedEventArgs e)
+        {
+            // Setting the width and height for the new window
+            double desiredWidth = 800;
+
+            double desiredHeight = 550;
+
+            // calculations to determine the margin
+            double windowWidth = this.ActualWidth;
+            double windowHeight = this.ActualHeight;
+            double left = this.Left + (windowWidth - desiredWidth) / 2;
+            double top = this.Top + (windowHeight - desiredHeight) / 2;
+
+
+            // creating an instance of the new pop-up window
+            var newForm = new HelpPopUp();
+
+            // setting the margin of the new window
+            newForm.Left = left;
+            newForm.Top = top;
+            newForm.Width = desiredWidth;
+            newForm.Height = desiredHeight;
+
+            // show the new window (pop-up)
+            newForm.Show();
+        }
+
+
+
+
+
     }
 }
