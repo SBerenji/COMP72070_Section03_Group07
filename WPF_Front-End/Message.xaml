@@ -15,37 +15,14 @@
             <RowDefinition Height="0.04*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.4*" />
-                <ColumnDefinition />
-                <ColumnDefinition Width="0.4*" />
-            </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0" Background="#385638">
-                <Viewbox Stretch="Fill" StretchDirection="Both" Margin="0,0,10,10" >
-                    <!--<Image Source="Swapify-Logo.png" />-->
+        <Grid Grid.Row="0" Background="#385638">
+            <Viewbox Stretch="Fill" StretchDirection="Both">
 
-                    <TextBlock FontSize="40" Foreground="white" Text="Swapify" 
-                     FontFamily="Times New Roman" RenderTransformOrigin="0.077,0.51" Height="61" Width="161" VerticalAlignment="Top" Margin="29,20,70,0" />
-                </Viewbox>
-            </Grid>
+                <TextBlock FontSize="40" Text="Swapify"
+Foreground="White" FontFamily="Times New Roman" VerticalAlignment="Top" Width="142" Height="58" Margin="30,15,845,5"/>
 
-            <Grid Grid.Column="2" Background="#385638">
-
-                <Viewbox Stretch="Fill" StretchDirection="Both">
-                    <Button Name="btn5" Background="White" Content="Categories" HorizontalContentAlignment="Center" Foreground="#000000" Margin="10,38,42,26" Width="94" />
-                </Viewbox>
-
-
-                <Viewbox Stretch="Fill" StretchDirection="Both">
-                    <Image Source="/Images/hamburger.jpg" Margin="14,42,172,29" Width="27" Height="13"/>
-                </Viewbox>
-
-                <Viewbox Stretch="Fill" StretchDirection="Both">
-                    <Image Source="/Images/dropdown.jpg" Margin="80,42,40,29" Height="13" Width="15" />
-                </Viewbox>
-            </Grid>
+            </Viewbox>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -68,18 +45,6 @@
                 <ColumnDefinition />
                 <ColumnDefinition Width="0.2*" />
             </Grid.ColumnDefinitions>
-        </Grid>
-
-        <Grid Grid.Row="0" Margin="210,0,210,0" Background="#385638" >
-            <Viewbox Grid.Row="0" Grid.Column="1" Stretch="Uniform" StretchDirection="Both" Margin="89,24,103,10">
-                <DockPanel Grid.Row="0" LastChildFill="True" Height="52" Width="291">
-                    <Image Grid.Row="0" Grid.Column="1" Source="/Images/search.jpg" Height="28" Width="47">
-                    </Image>
-                    <!--<userControl:ClearableTextBox BorderBrush="White" Margin="-5" Placeholder="Search" FontSize="20" DockPanel.Dock="Left" Width="370" Height="28" />-->
-                    <TextBox BorderBrush="White" Text="Search" Margin="-8" Foreground="#000000" FontSize="20"
-         DockPanel.Dock="Left" Width="370" Height="28"/>
-                </DockPanel>
-            </Viewbox>
         </Grid>
 
     </Grid>

@@ -23,6 +23,12 @@ namespace WPF_Front_End.View.UserControls
         public NewPostHamburger()
         {
             InitializeComponent();
+
+            if (globalVariables.username != null)
+            {
+                Profile.Text = globalVariables.username;
+            }
+            
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

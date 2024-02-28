@@ -15,20 +15,22 @@ using System.Windows.Shapes;
 
 namespace WPF_Front_End
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+
     public partial class MainWindow : Window
     {
+        string username;
+
         public MainWindow()
         {
             InitializeComponent();
-
         }
         
         private void Controls_Loaded(object sender, RoutedEventArgs e)
         {
 
+            //this.username = LogInControl.getUserInputtedUsername();
+
+            //globalVariables.username = this.username;
         }
 
         private void Triangle_Loaded(object sender, RoutedEventArgs e)
@@ -41,6 +43,12 @@ namespace WPF_Front_End
             var newHome = new HomeScreenPostLogIn(); //create your new form.
             newHome.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.
+        }
+
+
+        public string getUsername()
+        {
+            return this.username;
         }
     }
 }

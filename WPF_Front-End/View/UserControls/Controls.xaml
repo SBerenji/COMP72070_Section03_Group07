@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
     </UserControl.Resources>
-    
+
     <Grid Background="White" Height="228">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -71,18 +71,38 @@
         <TextBlock Grid.Row="0" Text="Log In" FontSize="20"
                    FontFamily="Times New Roman" Foreground="#385638" FontWeight="Bold" Margin="86,0,79,3" />
 
-        <local:ClearableTextBox Grid.Row="1" Placeholder="Username" 
-        Width="250" Height="23"/>
+        <local:ClearableTextBox x:Name="username" Grid.Row="1" Placeholder="Username" 
+        Width="250" Height="23" MouseLeftButtonDown="username_MouseLeftButtonDown" />
 
-        <local:PasswordBox Grid.Row="2" Width="250" Height="23" Margin="0, 2, 0, 3" 
+        <local:PasswordBox Grid.Row="2" Height="23" Margin="9,2,49,3" 
         Password="{Binding Password}" Placeholder="Password" />
 
         <!--<local:ClearableTextBox x:Name="PasswordBox" Grid.Row="2" Placeholder="Password"
         Width="250" Height="23" Margin="0, 2, 0, 3" Loaded="PasswordBox_Loaded" />-->
 
-        <Button Grid.Row="3" x:Name="login" Content="Log In" Background="#385638" 
-                Foreground="White" FontSize="12" Height="20"
-                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="login_Click" Margin="10,0,49,62" Grid.RowSpan="2" >
+        <Button Grid.Row="3" x:Name="login" Content="Log In" Foreground="White" FontSize="12" Height="20"
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="login_Click" Margin="10,0,49,62" Grid.RowSpan="2">
+
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#385638" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="DarkSeaGreen" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
 
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -92,10 +112,30 @@
         </Button>
 
 
+        <Button Click="createAccount_Click_1" Grid.Row="5" x:Name="createAccount" Content="Register" Foreground="White" FontSize="10" Height="20"
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="65,5,110,15" Grid.RowSpan="2">
 
-        <Button Click="createAccount_Click_1" Grid.Row="5" x:Name="createAccount" Content="Register" Background="#D36414" 
-        Foreground="White" FontSize="10" Height="20"
-        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="65,5,110,15" Grid.RowSpan="2" >
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#D36414" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="5">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FFA566" />
+                                        <!-- Lighter shade of orange -->
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
 
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -103,6 +143,7 @@
                 </Style>
             </Button.Resources>
         </Button>
+
 
     </Grid>
 </UserControl>

@@ -20,6 +20,19 @@ namespace WPF_Front_End
     /// </summary>
     public partial class HomeScreenPostLogIn : Window
     {
+        private string username;
+
+        public string getUsername()
+        {
+            return this.username;
+        }
+
+
+        public void setUsername(string username)
+        {
+            this.username = username;
+        }
+
         public ObservableCollection<Post> Posts { get; set; }
 
 
@@ -84,7 +97,7 @@ namespace WPF_Front_End
             double windowWidth = this.ActualWidth;
             double windowHeight = this.ActualHeight;
 
-            var newForm = new NewPost(); //create your new form.
+            var newForm = new CreatePost(); //create your new form.
 
             newForm.Width = windowWidth;
             newForm.Height = windowHeight;

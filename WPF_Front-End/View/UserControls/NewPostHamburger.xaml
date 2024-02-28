@@ -4,31 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPF_Front_End.View.UserControls"
-             mc:Ignorable="d"
-             Width="200" Height="360">
+             mc:Ignorable="d">
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="100" />
-            <RowDefinition Height="35" />
-            <RowDefinition Height="35" />
-            <RowDefinition Height="35" />
-            <RowDefinition Height="35" />
-            <RowDefinition Height="35" />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image x:Name="profile" Source="/Images/profile.jpg" HorizontalAlignment="Left" Width="56" Height="52" VerticalAlignment="Top" Margin="90,5,0,0"/>
+        <Image x:Name="profile" Source="/Images/profile.jpg" HorizontalAlignment="Left" Width="56" Height="52" VerticalAlignment="Top" Margin="80,5,0,50"/>
 
-        <TextBox Grid.Row="0" Text="My Profile" FontSize="17" HorizontalContentAlignment="Center" HorizontalAlignment="Left" Margin="58,62,0,10" Foreground="#000000" Width="116" >
-            <TextBox.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="BorderThickness" Value="0" />
-                    <Setter Property="BorderBrush" Value="Transparent" />
-                </Style>
-            </TextBox.Resources>
-        </TextBox>
+        <TextBlock Grid.Row="0" x:Name="Profile" Text="My Profile" FontSize="17" VerticalAlignment="Center" TextAlignment="Center"
+        HorizontalAlignment="Center" Margin="0,62,0,0" Foreground="DarkGoldenrod" Width="195" />
+
 
         <!--<Button  Margin="12,100,273,0" Background="white" Height="87">
             <Button.Resources>
@@ -38,42 +30,54 @@
             </Button.Resources>
         </Button>-->
 
-        <DockPanel Grid.Row="1" LastChildFill="True" Margin="42,0,42,0">
+        <DockPanel Grid.Row="1" LastChildFill="True" Margin="38,0,46,0">
             <Image Source="/Images/home.jpg" Height="28" Width="47"/>
-            <TextBlock Text="Listings" Margin="5" Foreground="#000000" FontSize="17"
-        DockPanel.Dock="Left" Width="59" Height="27"/>
+            <Button Content="Listings" Margin="5" Foreground="#000000" FontSize="17" Background="White"
+        DockPanel.Dock="Left" Width="70" Height="27" BorderThickness="0"  
+    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
+            <!--<Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="BorderBrush" Value="White" />
+                    </Style>
+                </Button.Resources>-->
+
         </DockPanel>
 
-        <DockPanel Grid.Row="1" LastChildFill="True" Margin="42,32,10,0" Grid.RowSpan="2">
+        <DockPanel Grid.Row="2" LastChildFill="True" Margin="38,10,25,0">
             <Image Source="/Images/add.jpg" Height="28" Width="47"/>
-            <TextBlock Text="Create Post" Margin="5" Foreground="#000000" FontSize="17" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"
-DockPanel.Dock="Left" Width="89" Height="27"/>
+            <Button Content="Create Post" Margin="5" Foreground="#000000" FontSize="17" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"
+DockPanel.Dock="Left" Width="89" Height="27" BorderThickness="0"  
+    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
         </DockPanel>
 
 
-        <DockPanel Grid.Row="3" LastChildFill="True" Margin="42,0,26,2" RenderTransformOrigin="0.5,0.5">
+        <DockPanel Grid.Row="3" LastChildFill="True" Margin="38,10,28,0" RenderTransformOrigin="0.5,0.5">
             <Image Source="/Images/chat.jpg" Height="28" Width="47"/>
-            <TextBlock Text="Messages" Margin="5" Foreground="#000000" FontSize="17"
-DockPanel.Dock="Left" Width="77" Height="27"/>
+            <Button Content="Messages" Margin="5" Foreground="#000000" FontSize="17"
+DockPanel.Dock="Left" Width="77" Height="27" BorderThickness="0"  
+    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
         </DockPanel>
 
 
-        <DockPanel Grid.Row="3" LastChildFill="True" Margin="42,35,21,0" Grid.RowSpan="2">
+        <DockPanel Grid.Row="4" LastChildFill="True" Margin="38,10,23,0">
             <Image Source="/Images/save.jpg" Height="28" Width="47"/>
-            <TextBlock Text="Saved Posts" Margin="5" Foreground="#000000" FontSize="17"
-DockPanel.Dock="Left" Width="86" Height="25"/>
+            <Button Content="Saved Posts" Margin="5" Foreground="#000000" FontSize="17"
+DockPanel.Dock="Left" Width="94" Height="25" BorderThickness="0"  
+    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
         </DockPanel>
 
 
-        <DockPanel Grid.Row="5" LastChildFill="True" Margin="42,0,42,0" Height="33" VerticalAlignment="Center">
+        <DockPanel Grid.Row="5" LastChildFill="True" Margin="38,10,42,0" Height="33" VerticalAlignment="Center">
             <Image Source="/Images/help.jpg" Height="28" Width="47"/>
-            <TextBlock Text="Help" Margin="5" Foreground="#000000" FontSize="17"
-DockPanel.Dock="Left" Width="55" Height="28"/>
+            <Button Content="Help" Margin="5" Foreground="#000000" FontSize="17"
+DockPanel.Dock="Left" Width="55" Height="28" BorderThickness="0"  
+    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
         </DockPanel>
 
 
-        <Grid Grid.Row="8">
-            <Button Content="Log Out" FontSize="17" FontWeight="Bold" Background="#385638" Foreground="White" Margin="26,4,26,4" Click="Button_Click" />
+        <Grid Grid.Row="6">
+            <Button Content="Log Out" FontSize="17" FontWeight="Bold" Background="#385638" Foreground="White" Margin="43,40,26,4" Click="Button_Click" />
         </Grid>
 
         <!--<DockPanel Grid.Row="1" Margin="65,24,71,11" Width="100" LastChildFill="True">

@@ -20,14 +20,21 @@ namespace WPF_Front_End.View.UserControls
     /// Interaction logic for Controls.xaml
     /// </summary>
     public partial class Controls : UserControl
-    {    
+    {
+        string userinputUsernameText;
+
         public Controls()
         {
             InitializeComponent();
         }
 
+
+
+
         private void login_Click(object sender, RoutedEventArgs e)
         {
+            globalVariables.username = username.txtInput.Text;
+
             Window parentWindow = Window.GetWindow(this);
 
             double windowWidth = parentWindow.ActualWidth;
@@ -58,6 +65,17 @@ namespace WPF_Front_End.View.UserControls
             signup.Show();
 
             parentWindow.Close();
+        }
+
+        private void username_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.userinputUsernameText = username.txtInput.Text;
+        }
+
+
+        public string getUserInputtedUsername()
+        {
+            return this.userinputUsernameText;
         }
     }
 }
