@@ -45,58 +45,50 @@
         </Button>
 
         <Button Margin="40,269,0,0" Background="white" 
-                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="102" >
+                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="102" Click="Button_Click_Message">
             <TextBlock HorizontalAlignment="Center"  Height="24" Width="98" FontWeight="Bold" FontSize="15"><Run Text=" "/><Run Text="Messages"/></TextBlock>
         </Button>
 
         <Button Margin="39,305,0,0" Background="white" 
-                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="103" >
-            <TextBlock HorizontalAlignment="Center"  Height="24" Width="99" FontWeight="Bold" FontSize="15" Text=" Saved Posts"/>
+                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="103" Click="Button_Click_8" >
+            <TextBlock HorizontalAlignment="Center"  Height="24" Width="99" FontWeight="Bold" FontSize="15" Text=" My Posts"/>
         </Button>
 
         <Button Margin="39,340,0,0" Background="white" 
-                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="103" >
+                Foreground="Black"  BorderBrush="white" Height="28" VerticalAlignment="Top" HorizontalAlignment="Left" Width="103" Click="Help_button">
             <TextBlock HorizontalAlignment="Center"  Height="24" Width="99" FontWeight="Bold" FontSize="15"><Run Language="en-ca" Text=" "/><Run Text="Help"/></TextBlock>
         </Button>
 
         <Button Margin="261,33,298,0" Background="white" Height="32" VerticalAlignment="Top" Grid.ColumnSpan="2" Click="Button_Click_5">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
         </Button>
         <TextBox TextWrapping="Wrap" Text="Search..." Width="171" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white" Grid.ColumnSpan="2" Margin="296,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
         <TextBlock Margin="0,92,364,0" TextWrapping="Wrap" Text="New Post" FontSize="17" FontWeight="Bold" Height="23" VerticalAlignment="Top" Grid.Column="1" HorizontalAlignment="Right" Width="79"/>
-        <Button Margin="0,33,39,0" Background="white" Height="32" VerticalAlignment="Top" HorizontalAlignment="Right" Width="138" Grid.Column="1" Click="Button_Click_4">
-            <Button.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
-                </Style>
-            </Button.Resources>
-            <TextBox  TextWrapping="Wrap" Text="Categories" Width="70" TextChanged="TextBox_TextChanged" Height="18" BorderBrush="white"/>
-        </Button>
 
-        <Button Content="Post" Margin="11,0,281,20" Click="Button_Click" Background="#D36414" Foreground="white" Height="26" VerticalAlignment="Bottom" Grid.Column="1" Grid.RowSpan="2">
+
+        <Button Content="Post" Margin="10,0,282,20" Click="Button_Click" Background="#D36414" Foreground="white" Height="26" VerticalAlignment="Bottom" Grid.Column="1">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
         </Button>
-        <Button  Margin="206,127,0,0" Background="white" Height="79" VerticalAlignment="Top" Click="Button_Click_3">
+        <Button  Margin="206,127,10,0" Background="white" Height="140" VerticalAlignment="Top" Click="Button_Click_3">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
-            <TextBox  TextWrapping="Wrap" Text="Add photos/video" Width="74" TextChanged="TextBox_TextChanged" Height="58" BorderBrush="white" VerticalAlignment="Center" RenderTransformOrigin="0.515,0.576" FontWeight="Bold"/>
         </Button>
-        <Button Margin="6,181,56,0" Background="white" Grid.Column="1" Height="27" VerticalAlignment="Top">
+        <Button Margin="8,192,54,0" Background="white" Grid.Column="1" Height="27" VerticalAlignment="Top">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
 
@@ -104,50 +96,49 @@
         <Button Margin="5,135,57,0" Click="Button_Click_1" Background="white" Grid.Column="1" Height="28" VerticalAlignment="Top" >
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
 
         </Button>
-        <Button Margin="206,224,57,0" Background="white" Grid.ColumnSpan="2" Height="27" VerticalAlignment="Top">
+        <Button Margin="10,251,58,0" Background="white" Height="27" VerticalAlignment="Top" Grid.Column="1">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
 
         </Button>
-        <Button Margin="206,267,57,0" Click="Button_Click_2" Background="white" Grid.ColumnSpan="2" Height="27" VerticalAlignment="Top">
+        <Button Margin="204,305,59,0" Click="Button_Click_2" Background="white" Grid.ColumnSpan="2" Height="27" VerticalAlignment="Top">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
 
         </Button>
-        <Button Margin="206,312,56,0" Background="white" Grid.ColumnSpan="2" Height="27" VerticalAlignment="Top">
+        <Button Margin="206,366,56,0" Background="white" Grid.ColumnSpan="2" Height="27" VerticalAlignment="Top">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
 
         </Button>
-        <Button Margin="206,355,57,15" Background="white" Grid.ColumnSpan="2">
+        <Button Margin="203,428,60,63" Background="white" Grid.ColumnSpan="2">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="CornerRadius" Value="3" />
                 </Style>
             </Button.Resources>
 
         </Button>
-        <TextBlock Margin="151,164,-89,0"  TextWrapping="Wrap" Text="(Required)" Grid.Column="1" Height="16" VerticalAlignment="Top" Foreground="Red" />
+        <TextBlock Margin="159,171,-97,0"  TextWrapping="Wrap" Text="(Required)" Grid.Column="1" Height="16" VerticalAlignment="Top" Foreground="Red" />
         <TextBlock Margin="8,119,54,0"  TextWrapping="Wrap" Height="16" VerticalAlignment="Top" Grid.Column="1" FontWeight="Bold"><Run Language="en-ca" Text="Post "/><Run Text="Title"/></TextBlock>
-        <TextBlock Margin="5,164,57,0"  TextWrapping="Wrap" Grid.Column="1" Height="16" VerticalAlignment="Top" FontWeight="Bold"  ><Run Text="Estimated "/><Run Language="en-ca" Text="Product "/><Run Text="Worth"/></TextBlock>
-        <TextBlock Margin="206,208,266,0"  TextWrapping="Wrap" Text="Condition of Product" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top" FontWeight="Bold"  />
-        <TextBlock Margin="205,251,267,0"  TextWrapping="Wrap" Text="Location of Product" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top" FontWeight="Bold"  />
-        <TextBlock Margin="206,295,266,0"  TextWrapping="Wrap" Text="Delivery Method" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold" />
-        <TextBlock Margin="206,340,266,0"  TextWrapping="Wrap" Text="Looking For (Swap Idea)" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold" />
+        <TextBlock Margin="10,174,52,0"  TextWrapping="Wrap" Grid.Column="1" Height="16" VerticalAlignment="Top" FontWeight="Bold"  ><Run Text="Estimated "/><Run Language="en-ca" Text="Product "/><Run Text="Worth"/></TextBlock>
+        <TextBlock Margin="205,282,267,0"  TextWrapping="Wrap" Text="Condition of Product" Height="16" VerticalAlignment="Top" FontWeight="Bold" Grid.ColumnSpan="2"  />
+        <TextBlock Margin="206,345,266,0"  TextWrapping="Wrap" Text="Delivery Method" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold" />
+        <TextBlock Margin="204,407,268,0"  TextWrapping="Wrap" Text="Looking For (Swap Idea)" Grid.ColumnSpan="2" Height="16" VerticalAlignment="Top"  FontWeight="Bold" />
         <TextBlock Margin="65,119,-3,0"  TextWrapping="Wrap" Text="(Required)" Grid.Column="1" Height="16" VerticalAlignment="Top" Foreground="Red"/>
 
         <Image x:Name="img" Source="/Images/home.jpg" Margin="8,196,0,0" HorizontalAlignment="Left" Width="31" Height="28" VerticalAlignment="Top"/>
@@ -155,9 +146,7 @@
         <Image x:Name="chat" Source="/Images/chat.jpg" Margin="6,270,0,0" HorizontalAlignment="Left" Width="33" Height="26" VerticalAlignment="Top"/>
         <Image x:Name="save" Source="/Images/save.jpg" Margin="8,306,0,0" HorizontalAlignment="Left" Width="31" Height="25" VerticalAlignment="Top"/>
         <Image x:Name="help" Source="/Images/help.jpg" Margin="8,342,0,0" HorizontalAlignment="Left" Width="30" Height="25" VerticalAlignment="Top"/>
-        <Image x:Name="addphoto" Source="/Images/addphoto.jpg" Margin="220,138,139,0" Height="52" VerticalAlignment="Top"/>
-        <Image x:Name="dropdown" Source="/Images/dropdown.jpg" Margin="0,43,49,0" HorizontalAlignment="Right" Width="28" Grid.Column="1" Height="13" VerticalAlignment="Top"/>
-        <Image x:Name="hamburger" Source="/Images/hamburger.jpg" Margin="0,38,145,0" HorizontalAlignment="Right" Width="36" Grid.Column="1" Height="23" VerticalAlignment="Top"/>
+        <Image x:Name="addphoto" Source="/Images/addphoto.jpg" Margin="255,138,59,0" Height="79" VerticalAlignment="Top"/>
         <Image x:Name="search" Source="/Images/search.jpg" Margin="262,38,0,0" HorizontalAlignment="Left" Width="36" Height="23" VerticalAlignment="Top"/>
 
         <Button  Margin="12,100,273,0" Background="white" Height="87" VerticalAlignment="Top" Click="Button_Click_3">
@@ -167,6 +156,9 @@
                 </Style>
             </Button.Resources>
         </Button>
+
+        <TextBlock Margin="248,215,28,296" FontSize="17" FontWeight="Bold">Add a photo</TextBlock>
+
 
         <Image x:Name="profile" Source="/Images/profile.jpg" Margin="50,110,0,0" HorizontalAlignment="Left" Width="49" Height="47" VerticalAlignment="Top"/>
 
@@ -181,6 +173,8 @@
                 </Style>
             </Button.Resources>
         </Button>
+        <TextBlock Margin="10,231,52,0"  TextWrapping="Wrap" Text="Location of Product" Height="16" VerticalAlignment="Top" FontWeight="Bold" Grid.Column="1"  />
+        <TextBlock Margin="128,231,-66,0"  TextWrapping="Wrap" Text="(Required)" Grid.Column="1" Height="16" VerticalAlignment="Top" Foreground="Red" />
 
 
     </Grid>

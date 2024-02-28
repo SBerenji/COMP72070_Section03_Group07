@@ -1,0 +1,57 @@
+﻿<Window x:Class="WPF_Front_End.HelpPopUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_Front_End"
+        ResizeMode="NoResize"
+        mc:Ignorable="d"
+        Title="Swapify Help Center" Height="550" Width="800">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Image Source="Swapify-Logo.png" Width="3000" Height="80" VerticalAlignment="Top"/>
+
+
+
+
+            <TextBlock TextWrapping="Wrap" FontSize="16" Margin="20,90" >
+                <Run FontWeight="Bold">        Welcome to the Swapify Help Center</Run>
+                <LineBreak/><LineBreak/>
+                <Run>        Thank you for choosing Swapify, the premier platform for hassle-free item swapping! We're here to ensure your experience on our app is seamless and enjoyable. Below, you'll find detailed information on navigating through Swapify's various features and functionalities.</Run>
+                <LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">        Listings</Run>
+                <LineBreak/>
+                <Run>        Browse through a diverse array of available listings where users showcase their items for potential swaps. You can explore these listings without the need for registration, allowing you to discover exciting swap opportunities effortlessly.</Run>
+                <LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">        Creating Posts</Run>
+                <LineBreak/>
+                <Run>        Registered users have the privilege to create their own postings, showcasing items they're keen on swapping. Share the details of your items with our vibrant community and initiate swap discussions with fellow users.</Run>
+                <LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">        Messages</Run>
+                <LineBreak/>
+                <Run>        Engage in meaningful conversations with other users to facilitate swaps. By clicking on the "Swap" button on a specific listing, you'll be seamlessly redirected to our messaging platform, where you can negotiate terms and finalize your swap arrangements securely.</Run>
+                <LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">        My Posts</Run>
+                <LineBreak/>
+                <Run>        Manage your posted listings efficiently through the "My Posts" section. Here, registered users can view their listings, mark items as swapped, or remove listings that are no longer available. Deleting a post from this section will promptly remove it from the main listings, ensuring accurate and up-to-date content for all users.</Run>
+                <LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">        Contact Us</Run>
+                <LineBreak/>
+                <Run>        Should you encounter any issues or have suggestions for improving your Swapify experience, please do not hesitate to reach out to our dedicated customer service team at </Run>
+                <Hyperlink NavigateUri="mailto:customerservice@swapify.com"><Run Text="customerservice@swapify.com"/></Hyperlink>
+                <Run>. We're committed to addressing your queries promptly and enhancing our platform based on your feedback.</Run>
+                <LineBreak/><LineBreak/>
+                <Run>        At Swapify, we're passionate about fostering a vibrant community where users can connect, swap, and explore new opportunities. Thank you for being a part of our journey, and happy swapping!</Run>
+                <LineBreak/><LineBreak/>
+                <Run FontWeight="Bold">        Sincerely,</Run>
+                <LineBreak/>
+                <Run FontWeight="Bold">        The Swapify Team</Run>
+            </TextBlock>
+        </Grid>
+    </ScrollViewer>
+</Window>
