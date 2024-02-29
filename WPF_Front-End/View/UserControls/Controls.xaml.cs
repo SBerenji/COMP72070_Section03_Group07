@@ -40,7 +40,7 @@ namespace WPF_Front_End.View.UserControls
             double windowWidth = parentWindow.ActualWidth;
             double windowHeight = parentWindow.ActualHeight;
 
-            HomeScreenPostLogIn hspl = new HomeScreenPostLogIn();
+            NewHomeScreenPostLogin hspl = new NewHomeScreenPostLogin();
 
             hspl.Width = windowWidth;
             hspl.Height = windowHeight;

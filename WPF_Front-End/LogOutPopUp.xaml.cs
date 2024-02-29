@@ -20,40 +20,40 @@ namespace WPF_Front_End
     /// </summary>
     public partial class LogOutPopUp : Window
     {
-        private HomeScreenPostLogIn PostLogIn;
+        private NewHomeScreenPostLogin PostLogIn;
 
-        private Chat CH;
+        private Message m;
 
-        private NewPost NP;
+        private CreatePost cp;
 
-        private MyPostsScreen MPS;
+        private NewMyPostsScreen MPS;
 
         private string str;
-        public LogOutPopUp(HomeScreenPostLogIn postLogIn)
+        public LogOutPopUp(NewHomeScreenPostLogin postLogIn)
         {
             InitializeComponent();
             PostLogIn = postLogIn;
 
-            str = "HomeScreenPostLogIn";
+            str = "NewHomeScreenPostLogIn";
         }
-        public LogOutPopUp(Chat ch)
+        public LogOutPopUp(Message m)
         {
             InitializeComponent();
-            this.CH = ch;
+            this.m = m;
 
-            str = "Chat";
+            str = "Message";
         }
 
-        public LogOutPopUp(NewPost np)
+        public LogOutPopUp(CreatePost cp)
         {
             InitializeComponent();
 
-            this.NP = np;
+            this.cp = cp;
 
-            str = "NewPost";
+            str = "CreatePost";
         }
 
-        public LogOutPopUp(MyPostsScreen mps)
+        public LogOutPopUp(NewMyPostsScreen mps)
         {
             InitializeComponent();
 
@@ -67,24 +67,24 @@ namespace WPF_Front_End
 
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
-            var newForm = new HomeScreenPreLogIn(); //create your new form.
+            var newForm = new NewHomeScreenPreLogin(); //create your new form.
 
             newForm.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.
 
-            if (this.str == "HomeScreenPostLogIn")
+            if (this.str == "NewHomeScreenPostLogIn")
             {
                 this.PostLogIn.Close();
             }
 
-            else if (this.str == "Chat")
+            else if (this.str == "Message")
             {
-                this.CH.Close();
+                this.m.Close();
             }
 
-            else if (this.str == "NewPost")
+            else if (this.str == "CreatePost")
             {
-                this.NP.Close();
+                this.cp.Close();
             }
 
             else if (this.str == "MyPostsScreen")
@@ -99,7 +99,7 @@ namespace WPF_Front_End
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
 
-            var newForm = new HomeScreenPostLogIn(); //create your new form.
+            //var newForm = new NewHomeScreenPostLogin(); //create your new form.
 
             this.Close(); //only if you want to close the current form.
         }

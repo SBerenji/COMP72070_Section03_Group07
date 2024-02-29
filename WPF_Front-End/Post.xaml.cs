@@ -55,12 +55,12 @@ namespace WPF_Front_End
             double windowWidth = parentWindow.ActualWidth;
             double windowHeight = parentWindow.ActualHeight;
 
-            Chat c = new Chat();
+            Message m = new Message();
 
-            c.Width = windowWidth;
-            c.Height = windowHeight;
+            m.Width = windowWidth;
+            m.Height = windowHeight;
 
-            c.Show();
+            m.Show();
 
             parentWindow.Close();
         }

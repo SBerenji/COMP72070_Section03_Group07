@@ -12,11 +12,16 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.2*" />
             <RowDefinition />
-            <RowDefinition Height="0.04*"/>
         </Grid.RowDefinitions>
 
 
         <Grid Grid.Row="0" Background="#385638">
+            <!--<Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*" />
+                <ColumnDefinition Width="0.6*"/>
+                <ColumnDefinition Width="0.2*" />
+            </Grid.ColumnDefinitions>-->
+
             <Viewbox Stretch="Fill" StretchDirection="Both">
 
                 <TextBlock FontSize="40" Text="Swapify"
@@ -27,25 +32,37 @@ Foreground="White" FontFamily="Times New Roman" VerticalAlignment="Top" Width="1
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.25*" />
-                <ColumnDefinition  />
+                <ColumnDefinition Width="0.3*" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="0.04*" />
             </Grid.ColumnDefinitions>
+
+            
+
+            <Viewbox Grid.Column="0" Stretch="Fill" StretchDirection="Both" Grid.ColumnSpan="1">
+                <userControl:NewPostHamburger x:Name="Hamburger" Margin="-36,20,51,-46" Height="496" />
+            </Viewbox>
+
             <Viewbox Grid.Column="0" Stretch="Fill" StretchDirection="Both">
-                <userControl:NewPostHamburger Grid.Column="0" Loaded="NewPostHamburger_Loaded" />
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Width="2" Height="100" Margin="162,0,58,0" Background="Black" >
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                </StackPanel>
+
             </Viewbox>
 
             <Viewbox Grid.Column="1" Stretch="Fill" StretchDirection="Both">
-                <userControl:PeopleAndMessage Grid.Column="1" Margin="20, 0, 0, 0"/>
+                <userControl:PeopleAndMessage Grid.Column="1" Margin="-45, 0, 0, 5"/>
             </Viewbox>
         </Grid>
 
-        <Grid Grid.Row="2">
+        <!--<Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.2*" />
                 <ColumnDefinition />
                 <ColumnDefinition Width="0.2*" />
             </Grid.ColumnDefinitions>
-        </Grid>
+        </Grid>-->
 
     </Grid>
 </Window>

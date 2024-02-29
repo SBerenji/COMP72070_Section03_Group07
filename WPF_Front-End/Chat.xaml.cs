@@ -156,28 +156,28 @@ namespace WPF_Front_End
         private void logout_Click_1(object sender, RoutedEventArgs e)
         {
             // Setting the width and height for the new window
-            double desiredWidth = 400;
+            //double desiredWidth = 400;
 
-            double desiredHeight = 200;
+            //double desiredHeight = 200;
 
-            // calculations to determine the margin
-            double windowWidth = this.ActualWidth;
-            double windowHeight = this.ActualHeight;
-            double left = this.Left + (windowWidth - desiredWidth) / 2;
-            double top = this.Top + (windowHeight - desiredHeight) / 2;
+            //// calculations to determine the margin
+            //double windowWidth = this.ActualWidth;
+            //double windowHeight = this.ActualHeight;
+            //double left = this.Left + (windowWidth - desiredWidth) / 2;
+            //double top = this.Top + (windowHeight - desiredHeight) / 2;
 
 
-            // creating an instance of the new pop-up window
-            var newForm = new LogOutPopUp(this);
+            //// creating an instance of the new pop-up window
+            //var newForm = new LogOutPopUp(this);
 
-            // setting the margin of the new window
-            newForm.Left = left;
-            newForm.Top = top;
-            newForm.Width = desiredWidth;
-            newForm.Height = desiredHeight;
+            //// setting the margin of the new window
+            //newForm.Left = left;
+            //newForm.Top = top;
+            //newForm.Width = desiredWidth;
+            //newForm.Height = desiredHeight;
 
-            // show the new window (pop-up)
-            newForm.Show();
+            //// show the new window (pop-up)
+            //newForm.Show();
         }
     }
 }
