@@ -29,6 +29,8 @@ namespace WPF_Front_End
 
             CollapseHamburgerProfile();
 
+            Hamburger.Listings.Background = Brushes.LightGray;
+
             Posts = new ObservableCollection<Post>
             {
                 new Post

@@ -20,6 +20,9 @@ namespace WPF_Front_End
     /// </summary>
     public partial class LogOutPopUp : Window
     {
+        private double windowWidth;
+        private double windowHeight;
+
         private NewHomeScreenPostLogin PostLogIn;
 
         private Message m;
@@ -35,6 +38,9 @@ namespace WPF_Front_End
             PostLogIn = postLogIn;
 
             str = "NewHomeScreenPostLogIn";
+
+            this.windowWidth = postLogIn.ActualWidth;
+            this.windowHeight = postLogIn.ActualHeight;
         }
         public LogOutPopUp(Message m)
         {
@@ -42,6 +48,9 @@ namespace WPF_Front_End
             this.m = m;
 
             str = "Message";
+
+            this.windowWidth = m.ActualWidth;
+            this.windowHeight = m.ActualHeight;
         }
 
         public LogOutPopUp(CreatePost cp)
@@ -51,6 +60,9 @@ namespace WPF_Front_End
             this.cp = cp;
 
             str = "CreatePost";
+
+            this.windowWidth = cp.ActualWidth;
+            this.windowHeight = cp.ActualHeight;
         }
 
         public LogOutPopUp(NewMyPostsScreen mps)
@@ -60,6 +72,9 @@ namespace WPF_Front_End
             this.MPS = mps;
 
             str = "MyPostsScreen";
+
+            this.windowWidth = mps.ActualWidth;
+            this.windowHeight = mps.ActualHeight;
         }
 
 
@@ -68,6 +83,9 @@ namespace WPF_Front_End
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
             var newForm = new NewHomeScreenPreLogin(); //create your new form.
+
+            newForm.Width = this.windowWidth;
+            newForm.Height = this.windowHeight;
 
             newForm.Show(); //show the new form.
             this.Close(); //only if you want to close the current form.

@@ -11,6 +11,8 @@
 
   <ItemGroup>
 
+    <None Remove="Images\BackButton.png" />
+
     <None Remove="Images\Image1.jpg" />
 
     <None Remove="addUser.png" />
@@ -36,6 +38,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Emoji.Wpf" Version="0.3.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <Resource Include="Images\BackButton.png" />
 
     <Resource Include="Images\Image1.jpg" />
     <Resource Include="addUser.png" />

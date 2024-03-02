@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WPF_Front_End.View.UserControls"
+             xmlns:local="clr-namespace:WPF_Front_End"
              mc:Ignorable="d">
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -32,8 +32,8 @@
 
         <DockPanel Grid.Row="1" LastChildFill="True" Margin="38,0,46,0">
             <Image Source="/Images/home.jpg" Height="28" Width="47"/>
-            <Button Content="Listings" Margin="5" Foreground="#000000" FontSize="17" Background="White" Click="ListingsClick"
-        DockPanel.Dock="Left" Width="70" Height="27" BorderThickness="0"  
+            <Button x:Name="Listings" Content="Listings" Margin="5" Foreground="#000000" FontSize="17" Background="White" Click="ListingsClick"
+        DockPanel.Dock="Left" Width="70" Height="27" BorderThickness="0"
     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
             <!--<Button.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -46,7 +46,7 @@
 
         <DockPanel Grid.Row="2" LastChildFill="True" Margin="38,10,25,0">
             <Image Source="/Images/add.jpg" Height="28" Width="47"/>
-            <Button Content="Create Post" Margin="5" Foreground="#000000" FontSize="17" Click="CreatePostClick"
+            <Button x:Name="CreatePost" Content="Create Post" Margin="5" Foreground="#000000" FontSize="17" Click="CreatePostClick"
 DockPanel.Dock="Left" Width="89" Height="27" BorderThickness="0"  
     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
         </DockPanel>
@@ -54,7 +54,7 @@ DockPanel.Dock="Left" Width="89" Height="27" BorderThickness="0"
 
         <DockPanel Grid.Row="3" LastChildFill="True" Margin="38,10,28,0" RenderTransformOrigin="0.5,0.5">
             <Image Source="/Images/chat.jpg" Height="28" Width="47"/>
-            <Button Content="Messages" Margin="5" Foreground="#000000" FontSize="17" Click="MessageClick"
+            <Button x:Name="Messages" Content="Messages" Margin="5" Foreground="#000000" FontSize="17" Click="MessageClick"
 DockPanel.Dock="Left" Width="77" Height="27" BorderThickness="0"  
     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
         </DockPanel>
@@ -62,7 +62,7 @@ DockPanel.Dock="Left" Width="77" Height="27" BorderThickness="0"
 
         <DockPanel Grid.Row="4" LastChildFill="True" Margin="38,10,23,0">
             <Image Source="/Images/save.jpg" Height="28" Width="47"/>
-            <Button Content="Saved Posts" Margin="5" Foreground="#000000" FontSize="17" Click="SavedPostsClick"
+            <Button x:Name="MyPosts" Content="My Posts" Margin="5" Foreground="#000000" FontSize="17" Click="MyPostsClick"
 DockPanel.Dock="Left" Width="94" Height="25" BorderThickness="0"  
     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
         </DockPanel>
@@ -70,14 +70,15 @@ DockPanel.Dock="Left" Width="94" Height="25" BorderThickness="0"
 
         <DockPanel Grid.Row="5" LastChildFill="True" Margin="38,10,42,0" Height="33" VerticalAlignment="Center">
             <Image Source="/Images/help.jpg" Height="28" Width="47"/>
-            <Button Content="Help" Margin="5" Foreground="#000000" FontSize="17" Click="HelpClick"
+            <Button x:Name="Help" Content="Help" Margin="5" Foreground="#000000" FontSize="17" Click="HelpClick"
 DockPanel.Dock="Left" Width="55" Height="28" BorderThickness="0"
     Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
         </DockPanel>
 
 
         <Grid Grid.Row="6">
-            <Button x:Name="LogOut" Content="Log Out" FontSize="17" FontWeight="Bold" Background="#385638" Foreground="White" Margin="43,40,26,4" Click="LogOutClick" />
+            <Button x:Name="LogOut" Content="Log Out" FontSize="13" FontWeight="Bold" Background="#385638" 
+             Foreground="White" Margin="43,40,26,4" Click="LogOutClick" local:CornerRadiusSetter.CornerRadius="5" Height="40" Width="125" />
         </Grid>
 
         <!--<DockPanel Grid.Row="1" Margin="65,24,71,11" Width="100" LastChildFill="True">

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPF_Front_End.View.UserControls"
+             xmlns:outDir="clr-namespace:WPF_Front_End"
              mc:Ignorable="d" 
              Height="Auto" Width="723">
     <Grid Background="White">
@@ -56,8 +57,12 @@
 
         <Grid Grid.Column="1">
 
-            <TextBox Text="Type your message ..." FontFamily="Lato" VerticalAlignment="Top" Margin="20,317,20,0" Height="30" VerticalContentAlignment="Center"
-            Foreground="Black" Background="LightGray" />
+            <local:ClearableTextBox x:Name="TypeMessage" Margin="20,317,20,0" Height="30" Placeholder="Type your message ..." />
+
+            <!--<TextBox Text="Type your message ..." FontFamily="Lato" VerticalAlignment="Top" Margin="20,317,20,0" Height="30" VerticalContentAlignment="Center"
+            Foreground="Black" Background="LightGray" />-->
+
+            <Image Source="/Images/send.jpg" Margin="484,326,66,9" />
         </Grid>
     </Grid>
 </UserControl>

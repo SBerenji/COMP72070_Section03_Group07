@@ -23,6 +23,18 @@ namespace WPF_Front_End.View.UserControls
         public PeopleAndMessage()
         {
             InitializeComponent();
+
+            CustomiseClearableTextBox();
+        }
+
+
+        private void CustomiseClearableTextBox()
+        {
+            TypeMessage.tbPlaceholder.Foreground = Brushes.Black;
+
+            CornerRadius cr = new CornerRadius(0.1);
+
+            CornerRadiusSetter.SetCornerRadius(TypeMessage.txtInput, cr);
         }
     }
 }

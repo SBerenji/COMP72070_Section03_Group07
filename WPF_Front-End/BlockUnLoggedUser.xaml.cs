@@ -15,20 +15,13 @@ using System.Windows.Shapes;
 namespace WPF_Front_End
 {
     /// <summary>
-    /// Interaction logic for Message.xaml
+    /// Interaction logic for BlockUnLoggedUser.xaml
     /// </summary>
-    public partial class Message : Window
+    public partial class BlockUnLoggedUser : Window
     {
-        public Message()
+        public BlockUnLoggedUser()
         {
             InitializeComponent();
-
-            Hamburger.Messages.Background = Brushes.LightGray;
-        }
-
-        private void NewPostHamburger_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

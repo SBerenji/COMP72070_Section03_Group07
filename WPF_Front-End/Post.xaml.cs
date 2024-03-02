@@ -52,17 +52,27 @@ namespace WPF_Front_End
         {
             Window parentWindow = Window.GetWindow(this);
 
-            double windowWidth = parentWindow.ActualWidth;
-            double windowHeight = parentWindow.ActualHeight;
+            if (parentWindow.GetType().FullName != "WPF_Front_End.NewHomeScreenPreLogin")
+            {
+                double windowWidth = parentWindow.ActualWidth;
+                double windowHeight = parentWindow.ActualHeight;
 
-            Message m = new Message();
+                Message m = new Message();
 
-            m.Width = windowWidth;
-            m.Height = windowHeight;
+                m.Width = windowWidth;
+                m.Height = windowHeight;
 
-            m.Show();
+                m.Show();
 
-            parentWindow.Close();
+                parentWindow.Close();
+            }
+
+            else
+            {
+                BlockUnLoggedUser unauthorized = new BlockUnLoggedUser();
+
+                unauthorized.ShowDialog();
+            }
         }
     }
 }

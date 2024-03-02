@@ -26,6 +26,8 @@ namespace WPF_Front_End
         {
             InitializeComponent();
 
+            Hamburger.Listings.Background = Brushes.LightGray;
+
             Posts = new ObservableCollection<Post>
             {
                 new Post

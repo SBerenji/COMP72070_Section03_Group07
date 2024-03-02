@@ -79,14 +79,14 @@ namespace WPF_Front_End.View.UserControls
             newForm.Height = desiredHeight;
 
             // show the new window (pop-up)
-            newForm.Show();
+            newForm.ShowDialog();
         }
 
         private void CreatePostClick(object sender, RoutedEventArgs e)
         {
             Window parentWindow = Window.GetWindow(this);
 
-            if ((parentWindow.GetType()).FullName != "WPF_Front_End.NewHomeScreenPreLogin")
+            if (((parentWindow.GetType()).FullName != "WPF_Front_End.NewHomeScreenPreLogin") && (parentWindow.GetType().FullName != "WPF_Front_End.CreatePost"))
             {
                 double windowWidth = parentWindow.ActualWidth;
                 double windowHeight = parentWindow.ActualHeight;
@@ -100,13 +100,20 @@ namespace WPF_Front_End.View.UserControls
 
                 parentWindow.Close();
             }
+
+            else if (parentWindow.GetType().FullName != "WPF_Front_End.CreatePost")
+            {
+                BlockUnLoggedUser unauthorized = new BlockUnLoggedUser();
+
+                unauthorized.ShowDialog();
+            }
         }
 
         private void MessageClick(object sender, RoutedEventArgs e)
         {
             Window parentWindow = Window.GetWindow(this);
 
-            if ((parentWindow.GetType()).FullName != "WPF_Front_End.NewHomeScreenPreLogin")
+            if (((parentWindow.GetType()).FullName != "WPF_Front_End.NewHomeScreenPreLogin") && (parentWindow.GetType().FullName != "WPF_Front_End.Message"))
             {
                 double windowWidth = parentWindow.ActualWidth;
                 double windowHeight = parentWindow.ActualHeight;
@@ -119,6 +126,13 @@ namespace WPF_Front_End.View.UserControls
                 m.Show();
 
                 parentWindow.Close();
+            }
+
+            else if (parentWindow.GetType().FullName != "WPF_Front_End.Message")
+            {
+                BlockUnLoggedUser unauthorized = new BlockUnLoggedUser();
+
+                unauthorized.ShowDialog();
             }
         }
 
@@ -151,7 +165,7 @@ namespace WPF_Front_End.View.UserControls
             newForm.Height = desiredHeight;
 
             // show the new window (pop-up)
-            newForm.Show();
+            newForm.ShowDialog();
         }
 
         private void ListingsClick(object sender, RoutedEventArgs e)
@@ -174,7 +188,7 @@ namespace WPF_Front_End.View.UserControls
             }
         }
 
-        private void SavedPostsClick(object sender, RoutedEventArgs e)
+        private void MyPostsClick(object sender, RoutedEventArgs e)
         {
             Window parentWindow = Window.GetWindow(this);
 
@@ -191,6 +205,13 @@ namespace WPF_Front_End.View.UserControls
                 nmps.Show();
 
                 parentWindow.Close();
+            }
+
+            else if ((parentWindow.GetType()).FullName == "WPF_Front_End.NewHomeScreenPreLogin")
+            {
+                BlockUnLoggedUser unauthorized = new BlockUnLoggedUser();
+
+                unauthorized.ShowDialog();
             }
         }
     }

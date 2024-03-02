@@ -77,5 +77,22 @@ namespace WPF_Front_End.View.UserControls
         {
             return this.userinputUsernameText;
         }
+
+        private void BackButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Window parentWindow = Window.GetWindow(this);
+
+            double windowWidth = parentWindow.ActualWidth;
+            double windowHeight = parentWindow.ActualHeight;
+
+            NewHomeScreenPreLogin nhspl = new NewHomeScreenPreLogin();
+
+            nhspl.Width = windowWidth;
+            nhspl.Height = windowHeight;
+
+            nhspl.Show();
+
+            parentWindow.Close();
+        }
     }
 }

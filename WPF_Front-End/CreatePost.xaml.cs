@@ -24,6 +24,8 @@ namespace WPF_Front_End
             InitializeComponent();
 
             //Hamburger.Profile.Text = globalVariables.username;
+
+            Hamburger.CreatePost.Background = Brushes.LightGray;
         }
 
         private void hamburger_Click(object sender, RoutedEventArgs e)
