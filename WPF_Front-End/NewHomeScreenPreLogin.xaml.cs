@@ -25,13 +25,13 @@ namespace WPF_Front_End
     {
 
         [DllImport("TCP_Client.dll")]
-        public static extern int Print2();
+        public static extern int setupConnection();
 
         private void ClientConnection()
         {
             if (globalVariables.initialLogin)
             {
-                Print2();
+                setupConnection();
 
                 globalVariables.initialLogin = false;
             }

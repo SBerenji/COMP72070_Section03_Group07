@@ -6,20 +6,18 @@
 #include <fstream>
 #include <string>
 
-extern "C" __declspec(dllexport) void Print();
-extern "C" __declspec(dllexport) void Print2();
 extern "C" __declspec(dllexport) int setupConnection();
 // extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket);
-extern "C" __declspec(dllexport) int main(int argc, char* argv[]);
+//extern "C" __declspec(dllexport) int main(int argc, char* argv[]);
 
-void Print() {  
-    std::cout << "Hello World!!" << std::endl;
-}
-
-void Print2() {
-    std::cout << "Hello World!!" << std::endl;
-}
-
+//void Print() {  
+//    std::cout << "Hello World!!" << std::endl;
+//}
+//
+//void Print2() {
+//    std::cout << "Hello World!!" << std::endl;
+//}
+//
 int sendData(SOCKET ClientSocket) {
     // The order matters, therefore the send is before receive on Client side.
     // Send
@@ -129,49 +127,52 @@ int setupConnection() {
     }
 
 
-    sendData(ClientSocket);
-}
-
-
-
-
-
-int main(int argc, char* argv[]) {
     
+    int returnVal = sendData(ClientSocket);
 
-    //// Receive
-    //char recvBuffer[17];
-    //// creating a receive buffer
-
-    //int recvSize = recv(ClientSocket, recvBuffer, sizeof(recvBuffer), 0);
-    //// using the recv to get the message from the server.
-
-    //if (recvSize < 0)
-    //{
-    //    std::cout << "Receiving Failed";
-
-    //    closesocket(ClientSocket);
-
-    //    WSACleanup();
-
-    //    return 0;
-    //}
-
-    //else
-    //{
-    //    std::cout << "Message Succesfully Received: " << recvBuffer << std::endl;
-    //}
-
-    //closesocket(ClientSocket);
-    //// Cleaning up the socket
-
-    //std::cout << "Client Socket Closed" << std::endl;
-
-    //WSACleanup();
-    //// Cleaning up the winsock library
-
-    //std::cout << "WSA Closed" << std::endl;
-
-    //return 1;
-    // returning 1 upon successful completion.
+    return returnVal;
 }
+
+
+
+
+
+//int main(int argc, char* argv[]) {
+//    
+//
+//    //// Receive
+//    //char recvBuffer[17];
+//    //// creating a receive buffer
+//
+//    //int recvSize = recv(ClientSocket, recvBuffer, sizeof(recvBuffer), 0);
+//    //// using the recv to get the message from the server.
+//
+//    //if (recvSize < 0)
+//    //{
+//    //    std::cout << "Receiving Failed";
+//
+//    //    closesocket(ClientSocket);
+//
+//    //    WSACleanup();
+//
+//    //    return 0;
+//    //}
+//
+//    //else
+//    //{
+//    //    std::cout << "Message Succesfully Received: " << recvBuffer << std::endl;
+//    //}
+//
+//    //closesocket(ClientSocket);
+//    //// Cleaning up the socket
+//
+//    //std::cout << "Client Socket Closed" << std::endl;
+//
+//    //WSACleanup();
+//    //// Cleaning up the winsock library
+//
+//    //std::cout << "WSA Closed" << std::endl;
+//
+//    //return 1;
+//    // returning 1 upon successful completion.
+//}
