@@ -6,6 +6,9 @@
     <RootNamespace>WPF_Front_End</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <BaseOutputPath></BaseOutputPath>
+    <Platforms>AnyCPU</Platforms>
+    <PlatformTarget>AnyCPU</PlatformTarget>
 
   </PropertyGroup>
 
@@ -39,6 +42,7 @@
 
   <ItemGroup>
     <PackageReference Include="Emoji.Wpf" Version="0.3.4" />
+    <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +22,9 @@ namespace WPF_Front_End.View.UserControls
     /// </summary>
     public partial class Controls : UserControl
     {
+        [DllImport("TCP_Client.dll")]
+        public static extern void Print();
+
         string userinputUsernameText;
 
         public Controls()
@@ -48,6 +52,10 @@ namespace WPF_Front_End.View.UserControls
             hspl.Show();
 
             parentWindow.Close();
+
+
+            Print();
+            Console.ReadLine();
         }
 
         private void createAccount_Click_1(object sender, RoutedEventArgs e)

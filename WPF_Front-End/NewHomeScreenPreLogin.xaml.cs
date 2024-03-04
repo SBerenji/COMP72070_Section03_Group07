@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,11 +23,27 @@ namespace WPF_Front_End
     /// </summary>
     public partial class NewHomeScreenPreLogin : Window
     {
+
+        [DllImport("TCP_Client.dll")]
+        public static extern int Print2();
+
+        private void ClientConnection()
+        {
+            if (globalVariables.initialLogin)
+            {
+                Print2();
+
+                globalVariables.initialLogin = false;
+            }
+        }
+
         public ObservableCollection<Post> Posts { get; set; }
 
         public NewHomeScreenPreLogin()
         {
             InitializeComponent();
+
+            ClientConnection();
 
             CollapseHamburgerProfile();
 

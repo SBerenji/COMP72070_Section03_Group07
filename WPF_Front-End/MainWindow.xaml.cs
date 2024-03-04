@@ -12,12 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices;
 
 namespace WPF_Front_End
 {
 
     public partial class MainWindow : Window
     {
+        
+
         string username;
 
         public MainWindow()
