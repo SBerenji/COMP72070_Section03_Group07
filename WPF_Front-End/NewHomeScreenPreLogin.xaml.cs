@@ -24,14 +24,39 @@ namespace WPF_Front_End
     public partial class NewHomeScreenPreLogin : Window
     {
 
+        [DllImport("TCP_Client.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr setupConnection2();
+
+
         [DllImport("TCP_Client.dll")]
-        public static extern int setupConnection();
+        public static extern int sendData(MySocket ClientSocket);
+
+
+        
+
 
         private void ClientConnection()
         {
             if (globalVariables.initialLogin)
             {
-                setupConnection();
+                // Call the setupConnection function from the C++ DLL
+                IntPtr socketHandle = setupConnection2();
+
+                // Convert the IntPtr to MySocket
+                MySocket mySocket = new MySocket();
+                mySocket.SetHandle(socketHandle);
+
+                MySocket.ClientSocket = mySocket;
+
+                // Use mySocket as needed
+                //sendData(MySocket.ClientSocket);
+
+
+                // Remember to release the resources when done
+                //mySocket.Dispose();
+
+
+                //setupConnection();
 
                 globalVariables.initialLogin = false;
             }

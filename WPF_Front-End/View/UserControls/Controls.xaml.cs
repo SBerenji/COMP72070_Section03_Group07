@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,8 +23,6 @@ namespace WPF_Front_End.View.UserControls
     /// </summary>
     public partial class Controls : UserControl
     {
-        [DllImport("TCP_Client.dll")]
-        public static extern void Print();
 
         string userinputUsernameText;
 
@@ -39,6 +38,26 @@ namespace WPF_Front_End.View.UserControls
         {
             globalVariables.username = username.txtInput.Text;
 
+            IntPtr PktPtr = Packet.CreatePacket();
+
+            byte[] listingData = new byte[20];
+
+            listingData[0] = (byte)'H';
+            listingData[1] = (byte)'e';
+            listingData[2] = (byte)'l';
+            listingData[3] = (byte)'l';
+            listingData[4] = (byte)'o';
+
+            Packet.SetData(PktPtr, listingData, Encoding.ASCII.GetBytes(globalVariables.username), listingData.Length, globalVariables.username.Length);
+
+            IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
+
+            //byte[] TxBuffer = new byte[Packet.totalPktSize];
+
+            Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
+
+            Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+
             Window parentWindow = Window.GetWindow(this);
 
             double windowWidth = parentWindow.ActualWidth;
@@ -52,10 +71,6 @@ namespace WPF_Front_End.View.UserControls
             hspl.Show();
 
             parentWindow.Close();
-
-
-            Print();
-            Console.ReadLine();
         }
 
         private void createAccount_Click_1(object sender, RoutedEventArgs e)

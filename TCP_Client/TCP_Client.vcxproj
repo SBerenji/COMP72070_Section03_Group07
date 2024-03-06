@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Packet.h" />
+    <ClInclude Include="PacketWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />

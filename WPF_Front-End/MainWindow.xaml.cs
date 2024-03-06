@@ -19,7 +19,6 @@ namespace WPF_Front_End
 
     public partial class MainWindow : Window
     {
-        
 
         string username;
 
