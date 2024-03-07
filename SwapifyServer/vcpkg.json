@@ -1,0 +1,6 @@
+{
+  "dependencies": [
+    "sqlite3"
+  ],
+  "builtin-baseline": "a58271747fd00c2f53342f20c2d9fd944fbaa386"
+}

@@ -1,0 +1,6 @@
+C:/Users/Bryan/source/repos/SwapifyServer/SwapifyServer/vcpkg_installed/x64-windows/vcpkg/blds/sqlite3/x64-windows-dbg/CMakeFiles/sqlite3.dir
+C:/Users/Bryan/source/repos/SwapifyServer/SwapifyServer/vcpkg_installed/x64-windows/vcpkg/blds/sqlite3/x64-windows-dbg/CMakeFiles/edit_cache.dir
+C:/Users/Bryan/source/repos/SwapifyServer/SwapifyServer/vcpkg_installed/x64-windows/vcpkg/blds/sqlite3/x64-windows-dbg/CMakeFiles/rebuild_cache.dir
+C:/Users/Bryan/source/repos/SwapifyServer/SwapifyServer/vcpkg_installed/x64-windows/vcpkg/blds/sqlite3/x64-windows-dbg/CMakeFiles/list_install_components.dir
+C:/Users/Bryan/source/repos/SwapifyServer/SwapifyServer/vcpkg_installed/x64-windows/vcpkg/blds/sqlite3/x64-windows-dbg/CMakeFiles/install.dir
+C:/Users/Bryan/source/repos/SwapifyServer/SwapifyServer/vcpkg_installed/x64-windows/vcpkg/blds/sqlite3/x64-windows-dbg/CMakeFiles/install/local.dir
