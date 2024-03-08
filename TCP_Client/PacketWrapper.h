@@ -14,8 +14,7 @@ extern "C" {
 	__declspec(dllexport) Packet* CreatePacket() {
 		Packet* Pkt = new Packet();
 		
-		Pkt->GetBody()->Listing = nullptr;
-		Pkt->GetBody()->Message = nullptr;
+		Pkt->GetBody()->Data = nullptr;
 
 
 		memset(Pkt->GetHead(), 0, sizeof(*(Pkt->GetHead())));
@@ -31,6 +30,22 @@ extern "C" {
 	}
 
 
+	__declspec(dllexport) void FreeBuffer(char* Buffer) {
+		delete Buffer;
+	}
+
+
+	__declspec(dllexport) char* AllocateHeaderPtr() {
+		Packet p;
+
+		char* ptr =  new char[sizeof(p.Head)];
+
+		memset(ptr, 0, sizeof(p.Head));
+
+		return ptr;
+	}
+
+
 	__declspec(dllexport) void Display(Packet* Pkt, std::ostream& os)
 	{
 		os << std::dec;
@@ -41,8 +56,7 @@ extern "C" {
 		os << "Length:  " << Pkt->GetHead()->Length << std::endl;
 
 		os << "User:  " << Pkt->GetBody()->User << std::endl;
-		os << "Listing:  " << *(Pkt->GetBody()->Listing) << std::endl;
-		os << "Message:  " << *(Pkt->GetBody()->Message) << std::endl;
+		os << "Data:  " << Pkt->GetBody()->Data << std::endl;
 
 		os << "Checksum  " << std::hex << Pkt->GetTail()->Checksum << std::endl;
 	}
@@ -50,32 +64,33 @@ extern "C" {
 	__declspec(dllexport) void Deserialization(Packet* Pkt, char* src) {
 		memcpy(Pkt->GetHead(), src, sizeof(*(Pkt->GetHead())));
 
-		Pkt->GetBody()->Listing = new char[(unsigned int)(Pkt->GetHead()->Length / 2)];
-		Pkt->GetBody()->Message = new char[(unsigned int)(Pkt->GetHead()->Length / 2)];
+		Pkt->GetBody()->Data = new char[Pkt->GetHead()->Length];
 
 		memcpy(&(Pkt->GetBody()->User), src + sizeof(*(Pkt->GetHead())), sizeof(Pkt->GetBody()->User));
-		memcpy(Pkt->GetBody()->Listing, src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User), (unsigned int)(Pkt->GetHead()->Length / 2));
-		memcpy(Pkt->GetBody()->Message, src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + (unsigned int)(Pkt->GetHead()->Length / 2), (unsigned int)(Pkt->GetHead()->Length / 2));
+		memcpy(Pkt->GetBody()->Data, src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User), Pkt->GetHead()->Length);
 
 		memcpy(Pkt->GetTail(), src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length, sizeof(*(Pkt->GetTail())));
 	}
 
 
-	__declspec(dllexport) void SetData(Packet* Pkt, char* ListingsData, char* MessageData, int ListingSize, int MessageSize) {
-		ListingSize++;
-		MessageSize++;
-
-		Pkt->GetBody()->Listing = new char[ListingSize];
-		Pkt->GetBody()->Listing[ListingSize - 1] = '\0';
-
-		Pkt->GetBody()->Message = new char[MessageSize];
-		Pkt->GetBody()->Message[MessageSize - 1] = '\0';
+	__declspec(dllexport) void SetHeader(Packet* Pkt, void* Head) {
+		memcpy(Pkt->GetHead(), Head, sizeof(*(Pkt->GetHead())));
+	}
 
 
-		memcpy(Pkt->GetBody()->Listing, ListingsData, ListingSize);
-		memcpy(Pkt->GetBody()->Message, MessageData, MessageSize);
+	__declspec(dllexport) void SetBody(Packet* Pkt, unsigned char User, char* Data, int DataSize) {
+		Pkt->GetBody()->User = User;
+		
 
-		Pkt->GetHead()->Length = MessageSize + ListingSize;
+		DataSize++;
+
+		Pkt->GetBody()->Data = new char[DataSize];
+		Pkt->GetBody()->Data[DataSize - 1] = '\0';
+
+
+		memcpy(Pkt->GetBody()->Data, Data, DataSize);
+
+		Pkt->GetHead()->Length = DataSize;
 	}
 
 
@@ -95,6 +110,7 @@ extern "C" {
 			delete[] Pkt->GetTxBuffer();
 		}
 
+		Pkt->GetTail()->Checksum = CalculateChecksum();
 
 		TotalSize = sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length + sizeof(*(Pkt->GetTail()));
 
@@ -104,11 +120,8 @@ extern "C" {
 		memcpy(Pkt->GetTxBuffer(), Pkt->GetHead(), sizeof(*(Pkt->GetHead())));
 
 		memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())), &(Pkt->GetBody()->User), sizeof(Pkt->GetBody()->User));
-		memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User), Pkt->GetBody()->Listing, (unsigned int)(Pkt->GetHead()->Length) / 2);
-		memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + (unsigned int)((Pkt->GetHead()->Length) / 2), Pkt->GetBody()->Message, (unsigned int)(Pkt->GetHead()->Length) / 2);
-
-
-		Pkt->GetTail()->Checksum = CalculateChecksum();
+		memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User), Pkt->GetBody()->Data, Pkt->GetHead()->Length);
+		
 
 		memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length, Pkt->GetTail(), sizeof(*(Pkt->GetTail())));
 

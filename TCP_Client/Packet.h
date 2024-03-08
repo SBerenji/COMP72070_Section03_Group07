@@ -4,18 +4,19 @@
 #include <fstream>
 
 class __declspec(dllexport) Packet {
+public:
 	struct Header {
 		char Source[20];
 		char Destination[20];
-		char Route[20];
+		char Route[10];
 		bool Authorization;
-		unsigned char Length;
+		unsigned int Length;
 	} Head;
 
+private:
 	struct Body {
 		unsigned char User;
-		char* Listing;
-		char* Message;
+		char* Data;
 	} BodyContents;
 
 	struct Tail {

@@ -28,8 +28,8 @@ namespace WPF_Front_End
         public static extern IntPtr setupConnection2();
 
 
-        [DllImport("TCP_Client.dll")]
-        public static extern int sendData(MySocket ClientSocket);
+        //[DllImport("TCP_Client.dll")]
+        //public static extern int sendData(MySocket ClientSocket);
 
 
         
@@ -69,6 +69,8 @@ namespace WPF_Front_End
             InitializeComponent();
 
             ClientConnection();
+
+            Closing += CloseClient.Client_Closing;
 
             CollapseHamburgerProfile();
 
@@ -135,6 +137,9 @@ namespace WPF_Front_End
             newForm.Height = windowHeight;
 
             newForm.Show(); //show the new form.
+
+            Closing -= CloseClient.Client_Closing;
+
             this.Close(); //only if you want to close the current form.
         }
 

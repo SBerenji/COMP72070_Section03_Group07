@@ -9,6 +9,7 @@
     <BaseOutputPath></BaseOutputPath>
     <Platforms>AnyCPU</Platforms>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 
   </PropertyGroup>
 

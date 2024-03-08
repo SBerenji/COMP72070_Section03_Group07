@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
 using System.Net.Security;
 using System.Runtime.InteropServices;
@@ -40,25 +41,47 @@ namespace WPF_Front_End.View.UserControls
 
             IntPtr PktPtr = Packet.CreatePacket();
 
-            byte[] listingData = new byte[20];
+            IntPtr Head = Packet.AllocateHeaderPtr();
 
-            listingData[0] = (byte)'H';
-            listingData[1] = (byte)'e';
-            listingData[2] = (byte)'l';
-            listingData[3] = (byte)'l';
-            listingData[4] = (byte)'o';
+            //IntPtr Head = Marshal.AllocHGlobal(Marshal.SizeOf<Header>());
 
-            Packet.SetData(PktPtr, listingData, Encoding.ASCII.GetBytes(globalVariables.username), listingData.Length, globalVariables.username.Length);
+            Packet.SetHeaderInformation(ref Head , "127.0.0.1", "127.0.0.1", Route.LOGIN, true);
+
+            Packet.SetHeader(PktPtr, Head);
+
+            Packet.SetBody(PktPtr, '1', Encoding.ASCII.GetBytes(globalVariables.username), globalVariables.username.Length);
 
             IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
 
             //byte[] TxBuffer = new byte[Packet.totalPktSize];
 
+            //Packet.DeallocateMemoryGivenToIntPtr(Head);
+
+            Packet.TxBuffer = new byte[Packet.totalPktSize];
+
+
             Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
 
             Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
 
-            Window parentWindow = Window.GetWindow(this);
+
+            Packet.TxBuffer = null;
+
+            Packet.FreeBuffer(Head);
+            Head = IntPtr.Zero;
+
+            Packet.FreeBuffer(serializedRecv);
+            serializedRecv = IntPtr.Zero;
+            
+            Packet.DestroyPacket(PktPtr);
+            PktPtr = IntPtr.Zero;
+
+            Marshal.FreeHGlobal(Head);
+            Head = IntPtr.Zero;
+
+            //Packet.DeallocateMemoryGivenToIntPtr(Head);
+
+             Window parentWindow = Window.GetWindow(this);
 
             double windowWidth = parentWindow.ActualWidth;
             double windowHeight = parentWindow.ActualHeight;

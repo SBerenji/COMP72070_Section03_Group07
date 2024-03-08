@@ -12,11 +12,12 @@
 extern "C" __declspec(dllexport) int setupConnection();
 extern "C" __declspec(dllexport) SOCKET setupConnection2();
 extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket, char* TxBuffer, int totalSize);
+extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket);
 
-extern "C" {
-
-    __declspec(dllexport) Packet* CreatePacket();
-}
+//extern "C" {
+//
+//    __declspec(dllexport) Packet* CreatePacket();
+//}
 
 // extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket);
 //extern "C" __declspec(dllexport) int main(int argc, char* argv[]);
@@ -29,6 +30,20 @@ extern "C" {
 //    std::cout << "Hello World!!" << std::endl;
 //}
 //
+int CloseSocket(SOCKET ClientSocket) {
+    closesocket(ClientSocket);
+    // Cleaning up the socket
+
+    std::cout << "Client Socket Closed" << std::endl;
+
+    WSACleanup();
+    // Cleaning up the winsock library
+
+    std::cout << "WSA Closed" << std::endl;
+
+    return 1;
+}
+
 int sendData(SOCKET ClientSocket, char* TxBuffer, int totalSize) {
     // The order matters, therefore the send is before receive on Client side.
     // Send
@@ -56,16 +71,6 @@ int sendData(SOCKET ClientSocket, char* TxBuffer, int totalSize) {
 
         std::cout << "Message Succesfully sent: " << TxBuffer << std::endl;
     }
-
-    closesocket(ClientSocket);
-    // Cleaning up the socket
-
-    std::cout << "Client Socket Closed" << std::endl;
-
-    WSACleanup();
-    // Cleaning up the winsock library
-
-    std::cout << "WSA Closed" << std::endl;
 
     return 1;
     // returning 1 upon successful completion.
@@ -118,7 +123,7 @@ int setupConnection() {
     SvrAddr.sin_family = AF_INET;
     // The family which specifies the protocol that will be used.
 
-    SvrAddr.sin_port = htons(27500);
+    SvrAddr.sin_port = htons(27000);
     // The client is using the port 27500.
 
     SvrAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
@@ -193,7 +198,7 @@ SOCKET setupConnection2() {
     SvrAddr.sin_family = AF_INET;
     // The family which specifies the protocol that will be used.
 
-    SvrAddr.sin_port = htons(27500);
+    SvrAddr.sin_port = htons(27000);
     // The client is using the port 27500.
 
     SvrAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
