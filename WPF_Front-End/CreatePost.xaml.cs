@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +28,11 @@ namespace WPF_Front_End
             //Hamburger.Profile.Text = globalVariables.username;
 
             Hamburger.CreatePost.Background = Brushes.LightGray;
+
+            Cursor = Cursors.Arrow;
+
+            AddImage.MouseEnter += AddImage_MouseEnter;
+            AddImage.MouseLeave += AddImage_MouseLeave;
         }
 
         private void hamburger_Click(object sender, RoutedEventArgs e)
@@ -80,12 +87,16 @@ namespace WPF_Front_End
 
 
                 BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
-                DropAreaImage.Source = bitmap;
+                DropAreaImage2.Source = bitmap;
 
                 // once the image is dropped, show the remove button and replace it with the text
                 RemoveButton.Visibility = Visibility.Visible;
                 RemoveText1.Visibility = Visibility.Collapsed;
+                AddImage.Visibility = Visibility.Collapsed;
 
+
+                // converting the image to byte array
+                byte[] byteArray = getJPGFromImageControl(bitmap);
 
             }
         }
@@ -94,9 +105,68 @@ namespace WPF_Front_End
         // Event handler for the Click event of the RemoveButton
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
-            DropAreaImage.Source = null;
+            DropAreaImage2.Source = null;
+            SelectedImage2.Source = null;
+
             RemoveButton.Visibility = Visibility.Collapsed;
             RemoveText1.Visibility = Visibility.Visible;
+            AddImage.Visibility = Visibility.Visible;
         }
+
+
+        // A function that enables file browsing for adding a profile image
+        private void AddImage_MouseDown(object sender, MouseButtonEventArgs m)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+
+            // Set the filter for default file extension 
+            dialog.Filter = "Image files (*png; *jpeg; *jpg) |*.png; *.jpeg; *.jpg |All files (*.*) | *.*";
+
+            if (dialog.ShowDialog() == true)
+            {
+                string selectedFileName = dialog.FileName;
+                BitmapImage bitmap = new BitmapImage(new Uri(selectedFileName));
+                // Show the selected image
+                SelectedImage2.Source = bitmap;
+                SelectedImage2.Visibility = Visibility.Visible;
+
+                RemoveButton.Visibility = Visibility.Visible;
+                RemoveText1.Visibility = Visibility.Collapsed;
+                AddImage.Visibility = Visibility.Collapsed;
+
+                // converting the image to byte array
+                byte[] byteArray = getJPGFromImageControl(bitmap);
+            }
+
+        }
+
+
+        // The following two functions will change the shape of the cursor when the cursor enter the area that clicking on it will enable folder browsing
+        private void AddImage_MouseEnter(object sender, MouseEventArgs e)
+        {
+            // Change the shape of the cursor to indicate browsing is enabled
+            Cursor = Cursors.Hand;
+        }
+
+        private void AddImage_MouseLeave(object sender, MouseEventArgs e)
+        {
+            // Revert the shape of the cursor to default when mouse leaves the rectangle
+            Cursor = Cursors.Arrow;
+        }
+
+
+        // source code from: Jonathan Escobedo 
+        // changed JpegBitmapEncoder to PngBitmapEncoder so it will be compatible with all image file types
+        // https://stackoverflow.com/questions/553611/wpf-image-to-byte
+        private byte[] getJPGFromImageControl(BitmapImage imageC)
+        {
+            MemoryStream memStream = new MemoryStream();
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(imageC));
+            encoder.Save(memStream);
+            return memStream.ToArray();
+        }
+
+
     }
 }

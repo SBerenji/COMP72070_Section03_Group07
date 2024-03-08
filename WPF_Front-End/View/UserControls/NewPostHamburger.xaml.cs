@@ -21,6 +21,9 @@ namespace WPF_Front_End.View.UserControls
     /// </summary>
     public partial class NewPostHamburger : UserControl
     {
+        //public Image ImagePlaceHolder { get { return ProfileImage; } }   //this variable will store the profile image of the user
+
+
         public NewPostHamburger()
         {
             InitializeComponent();
@@ -29,7 +32,23 @@ namespace WPF_Front_End.View.UserControls
             {
                 Profile.Text = globalVariables.username;
             }
-            
+
+
+            // These code are to show the uploaded profile photo (when signing up) in all the windows (where the profile icon is)
+            //if (globalVariables.profileImageSelected != null)
+            //{
+            //    profile_icon.Visibility = Visibility.Collapsed;
+            //    ProfileImage.Source = globalVariables.profileImageSelected;
+            //    ProfileImage.Visibility = Visibility.Visible;
+            //}
+
+            //else if (globalVariables.profileImageDropped != null)
+            //{
+            //    profile_icon.Visibility = Visibility.Collapsed;
+            //    ProfileImage.Source = globalVariables.profileImageDropped;
+            //    ProfileImage.Visibility = Visibility.Visible;
+            //}
+
         }
 
         private void LogOutClick(object sender, RoutedEventArgs e)
@@ -55,6 +74,7 @@ namespace WPF_Front_End.View.UserControls
             if ((parentWindow.GetType()).FullName == "WPF_Front_End.NewHomeScreenPostLogin")
             {
                 newForm = new LogOutPopUp((NewHomeScreenPostLogin)parentWindow);
+
             }
 
             else if ((parentWindow.GetType()).FullName == "WPF_Front_End.CreatePost")
@@ -72,6 +92,7 @@ namespace WPF_Front_End.View.UserControls
                 newForm = new LogOutPopUp((NewMyPostsScreen)parentWindow);
             }
 
+
             // setting the margin of the new window
             newForm.Left = left;
             newForm.Top = top;
@@ -80,6 +101,7 @@ namespace WPF_Front_End.View.UserControls
 
             // show the new window (pop-up)
             newForm.ShowDialog();
+
         }
 
         private void CreatePostClick(object sender, RoutedEventArgs e)
@@ -214,5 +236,14 @@ namespace WPF_Front_End.View.UserControls
                 unauthorized.ShowDialog();
             }
         }
+
+
+       
+
+
+
+
+
+
     }
 }

@@ -41,6 +41,12 @@ namespace WPF_Front_End
 
             this.windowWidth = postLogIn.ActualWidth;
             this.windowHeight = postLogIn.ActualHeight;
+            
+            //if (PostLogIn != null && PostLogIn.ImagePlaceHolder != null)
+            //{
+            //    PostLogIn.ImagePlaceHolder.Visibility = Visibility.Collapsed;
+            //}
+
         }
         public LogOutPopUp(Message m)
         {

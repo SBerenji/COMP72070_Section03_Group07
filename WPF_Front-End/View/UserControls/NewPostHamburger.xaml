@@ -16,10 +16,12 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image x:Name="profile_icon" Source="/Images/profile.jpg" HorizontalAlignment="Left" Width="56" Height="52" VerticalAlignment="Top" Margin="80,5,0,50"/>
+        <Image x:Name="profile_icon" Source="/Images/profile.jpg" HorizontalAlignment="Left" Width="56" Height="52" VerticalAlignment="Top" Margin="80,5,0,50" Visibility="Visible"/>
 
-        <TextBlock Grid.Row="0" x:Name="Profile" Text="My Profile" FontSize="17" VerticalAlignment="Center" TextAlignment="Center"
-        HorizontalAlignment="Center" Margin="0,62,0,0" Foreground="DarkGoldenrod" Width="195" />
+        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Width="56" Height="52" VerticalAlignment="Top"  Stretch="UniformToFill" Margin="80,5,0,50" Visibility="Collapsed"/>
+
+        <TextBlock Grid.Row="0" x:Name="Profile" Text="My Profile" FontSize="17" VerticalAlignment="Top" TextAlignment="Center"
+        HorizontalAlignment="Left" Margin="10,62,0,0" Foreground="DarkGoldenrod" Width="195" />
 
 
         <!--<Button  Margin="12,100,273,0" Background="white" Height="87">
@@ -77,7 +79,7 @@ DockPanel.Dock="Left" Width="55" Height="28" BorderThickness="0"
 
 
         <Grid Grid.Row="6">
-            <Button x:Name="LogOut" Content="Log Out" FontSize="13" FontWeight="Bold" Background="#385638" 
+            <Button x:Name="LogOut" Content="Log Out" FontSize="16" FontWeight="Bold" Background="#385638" 
              Foreground="White" Margin="43,40,26,4" Click="LogOutClick" local:CornerRadiusSetter.CornerRadius="5" Height="40" Width="125" />
         </Grid>
 

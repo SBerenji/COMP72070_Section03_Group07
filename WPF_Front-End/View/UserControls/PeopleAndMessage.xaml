@@ -33,10 +33,10 @@
                 DockPanel.Dock="Left" Width="87" Height="20"/>
             </DockPanel>
 
-            <Grid Grid.Column="0" Grid.Row="1">
+            <!--<Grid Grid.Column="0" Grid.Row="1">
                 <Ellipse HorizontalAlignment="Right" Height="20" Fill="#25D366" Width="22"/>
                 <TextBlock Text="1" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="13" Foreground="Black" Background="#25D366" Margin="130,0,0,4" Height="15" />
-            </Grid>
+            </Grid>-->
 
             <!--<StackPanel Grid.Column="0" Grid.Row="1">
                 <TextBlock Text="1" Foreground="Black" Width="22" Height="20" Background="#25D366" />
@@ -62,7 +62,7 @@
             <!--<TextBox Text="Type your message ..." FontFamily="Lato" VerticalAlignment="Top" Margin="20,317,20,0" Height="30" VerticalContentAlignment="Center"
             Foreground="Black" Background="LightGray" />-->
 
-            <Image Source="/Images/send.jpg" Margin="484,326,66,9" />
+            <Image Source="/Images/send.jpg" Margin="487,329,71,12" />
         </Grid>
     </Grid>
 </UserControl>

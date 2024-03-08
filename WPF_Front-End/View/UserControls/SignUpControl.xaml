@@ -112,7 +112,7 @@
 
 
         <Button Grid.Row="4" x:Name="SignUpButton" Content="Sign Up" Foreground="White" FontSize="11" Height="20"
-        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="18,18,18,12" Click="login_Click_1">
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="18,18,18,12" Click="SignUp_Click">
 
             <Button.Style>
                 <Style TargetType="Button">
@@ -150,7 +150,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Rectangle Width="84" Height="78" Stroke="Gray" RadiusX="8" RadiusY="8" Margin="-16,0,16,0" Grid.RowSpan="2"/>
+                <Rectangle x:Name="Rectangle" Width="84" Height="78" Stroke="Gray" RadiusX="8" RadiusY="8" Margin="-16,0,16,0" Grid.RowSpan="2" />
 
                 
                 <Button x:Name="RemoveButton" Background="Gray" Foreground="White" Width="60" Height="13" FontSize="7" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Margin="6,62,38,2" Click="RemoveButton_Click" Visibility="Collapsed">
@@ -164,15 +164,19 @@
                     </Button.Resources>
                 </Button>
 
-                <Image Source="addUser.png" Width="40" Height="40" Stretch="UniformToFill" Grid.Column="0" Margin="6,5,38,2" 
-                       AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="DropArea_DragOver"/>
+                <Image Source="/Images/addUser.png" x:Name="AddUserImage" Width="40" Height="40" Stretch="UniformToFill" Grid.Column="0" Margin="6,5,38,2" 
+                       AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="DropArea_DragOver"  Visibility="Visible" MouseDown="AddUserImage_MouseDown" MouseEnter="AddUserImage_MouseEnter" Cursor="Hand"/>
 
-                <Image x:Name="DropAreaImage" Width="55" Height="55" Stretch="UniformToFill" Grid.Column="0" Margin="6,-10,38,2" AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="DropArea_DragOver"/>
+                <Image x:Name="DropAreaImage" Width="55" Height="55" Stretch="UniformToFill" Grid.Column="0" Margin="6,-10,38,2"/>
+
+                <!--this is for the image that the user will add using browsing-->
+                <Image x:Name="SelectedImage" Width="55" Height="55" Stretch="UniformToFill" Grid.Column="0" Margin="6,-10,38,2" Visibility="Collapsed"/>
+
 
 
             </Grid>
 
-            <TextBlock Text="Please drag and drop " Name="RemoveText1" Foreground="Black" HorizontalAlignment="Left" FontSize="7" VerticalAlignment="Top" TextAlignment="Center" Margin="0,54,0,0" Visibility="Collapsed"/>
+            <TextBlock Text="Please browse/drop " Name="RemoveText1" Foreground="Black" HorizontalAlignment="Left" FontSize="7" VerticalAlignment="Top" TextAlignment="Center" Margin="0,54,0,0" Visibility="Collapsed"/>
             <TextBlock Text="your profile photo  " Name="RemoveText2" Foreground="Black" HorizontalAlignment="Left" FontSize="7" VerticalAlignment="Top" TextAlignment="Center" Margin="3,64,0,0" Visibility="Collapsed"/>
         </Grid>
     </Grid>
