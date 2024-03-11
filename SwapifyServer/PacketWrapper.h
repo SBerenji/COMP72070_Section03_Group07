@@ -2,13 +2,12 @@
 #include <memory>
 #include <iostream>
 #include <fstream>
-
 #include "Packet.h"
-
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 	__declspec(dllexport) Packet* CreatePacket() {
 		Packet* Pkt = new Packet();
@@ -114,10 +113,6 @@ extern "C" {
 
 		return Pkt->GetTxBuffer();
 	}
-
-
-
-
 #ifdef __cplusplus
 }
 #endif

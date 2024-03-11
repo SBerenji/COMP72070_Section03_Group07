@@ -1,4 +1,6 @@
 #pragma once
+#include "Packet.h"
+#include "PacketWrapper.h"
 #include <iostream>
 #include <sqlite3.h>
 #include <string>
