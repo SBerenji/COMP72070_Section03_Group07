@@ -23,6 +23,8 @@ namespace WPF_Front_End
         {
             InitializeComponent();
 
+            Closing += CloseClient.Client_Closing;
+
             Hamburger.Messages.Background = Brushes.LightGray;
         }
 

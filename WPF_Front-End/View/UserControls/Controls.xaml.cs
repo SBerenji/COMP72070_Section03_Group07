@@ -93,6 +93,8 @@ namespace WPF_Front_End.View.UserControls
 
             hspl.Show();
 
+            parentWindow.Closing -= CloseClient.Client_Closing;
+
             parentWindow.Close();
         }
 
@@ -109,6 +111,8 @@ namespace WPF_Front_End.View.UserControls
             signup.Height = windowHeight;
 
             signup.Show();
+
+            parentWindow.Closing -= CloseClient.Client_Closing;
 
             parentWindow.Close();
         }
@@ -137,6 +141,8 @@ namespace WPF_Front_End.View.UserControls
             nhspl.Height = windowHeight;
 
             nhspl.Show();
+
+            parentWindow.Closing -= CloseClient.Client_Closing;
 
             parentWindow.Close();
         }
