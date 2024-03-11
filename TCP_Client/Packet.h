@@ -2,6 +2,19 @@
 #include <memory>
 #include <iostream>
 #include <fstream>
+#include <iostream>
+
+#include <windows.networking.sockets.h>
+#pragma comment(lib, "Ws2_32.lib")
+
+#include <fstream>
+#include <string>
+
+
+typedef int (*WSAStartupFunc)(WORD, LPWSADATA);
+typedef SOCKET (*socketFunc)(int, int, int);
+typedef int (*connectFunc)(SOCKET, const struct sockaddr*, int);
+
 
 class __declspec(dllexport) Packet {
 public:
@@ -47,60 +60,60 @@ public:
 		return this->TxBuffer;
 	}
 
-	Packet* CreatePacket() {
+	/*Packet* CreatePacket() {
 		return new Packet();
-	}
+	}*/
 
-	void DestroyPacket(Packet* Pkt) {
-		/*delete Pkt;*/
-	}
+	//void DestroyPacket(Packet* Pkt) {
+	//	delete Pkt;
+	//}
 
-	void Display(Packet* Pkt, std::ostream& os)
-	{
-		/*os << std::dec;
-		os << "Source:  " << this->Head.Source << std::endl;
-		os << "Destination: " << this->Head.Destination << std::endl;
-		os << "Route:  " << this->Head.Route << std::endl;
-		os << "Authorization:  " << this->Head.Authorization<< std::endl;
-		os << "Length:  " << this->Head.Length << std::endl;
+	//void Display(Packet* Pkt, std::ostream& os)
+	//{
+	//	/*os << std::dec;
+	//	os << "Source:  " << this->Head.Source << std::endl;
+	//	os << "Destination: " << this->Head.Destination << std::endl;
+	//	os << "Route:  " << this->Head.Route << std::endl;
+	//	os << "Authorization:  " << this->Head.Authorization<< std::endl;
+	//	os << "Length:  " << this->Head.Length << std::endl;
 
-		os << "User:  " << this->Body.User << std::endl;
-		os << "Listing:  " << this->Body.Listing << std::endl;
-		os << "Message:  " << this->Body.Message << std::endl;
+	//	os << "User:  " << this->Body.User << std::endl;
+	//	os << "Listing:  " << this->Body.Listing << std::endl;
+	//	os << "Message:  " << this->Body.Message << std::endl;
 
-		os << "Checksum  " << std::hex << this->Tail.Checksum << std::endl;*/
-	}
-
-
-	Packet(char* src) {
-		/*memcpy(&(this->Head), src, sizeof(Header));
-
-		this->Body.Listing = new char[this->Head.Length];
-		this->Body.Message = new char[this->Head.Length];
-
-		memcpy(&(this->Body.User), src + sizeof(Header), sizeof(this->Body.User));
-		memcpy(this->Body.Listing, src + sizeof(Header) + sizeof(this->Body.User), (unsigned int)(this->Head.Length / 2));
-		memcpy(this->Body.Message, src + sizeof(Header) + sizeof(this->Body.User) + (this->Head.Length / 2), (this->Head.Length / 2));
-
-		memcpy(&(this->Tail), src + sizeof(this->Head) + sizeof(this->Body.User) + (this->Head.Length), sizeof(this->Tail));*/
-	}
+	//	os << "Checksum  " << std::hex << this->Tail.Checksum << std::endl;*/
+	//}
 
 
-	void SetData(char* ListingsData, char* MessageData, int ListingSize, int MessageSize) {
-		/*ListingSize++;
-		MessageSize++;
+	//Packet(char* src) {
+	//	/*memcpy(&(this->Head), src, sizeof(Header));
 
-		this->Body.Listing = new char[ListingSize];
-		this->Body.Listing[ListingSize - 1] = '\0';
+	//	this->Body.Listing = new char[this->Head.Length];
+	//	this->Body.Message = new char[this->Head.Length];
 
-		this->Body.Message = new char[MessageSize];
-		this->Body.Message[MessageSize - 1] = '\0';
+	//	memcpy(&(this->Body.User), src + sizeof(Header), sizeof(this->Body.User));
+	//	memcpy(this->Body.Listing, src + sizeof(Header) + sizeof(this->Body.User), (unsigned int)(this->Head.Length / 2));
+	//	memcpy(this->Body.Message, src + sizeof(Header) + sizeof(this->Body.User) + (this->Head.Length / 2), (this->Head.Length / 2));
 
-		memcpy(this->Body.Listing, ListingsData, ListingSize);
-		memcpy(this->Body.Message, MessageData, MessageSize);
+	//	memcpy(&(this->Tail), src + sizeof(this->Head) + sizeof(this->Body.User) + (this->Head.Length), sizeof(this->Tail));*/
+	//}
 
-		this->Head.Length = MessageSize + ListingSize;*/
-	}
+
+	//void SetData(char* ListingsData, char* MessageData, int ListingSize, int MessageSize) {
+	//	/*ListingSize++;
+	//	MessageSize++;
+
+	//	this->Body.Listing = new char[ListingSize];
+	//	this->Body.Listing[ListingSize - 1] = '\0';
+
+	//	this->Body.Message = new char[MessageSize];
+	//	this->Body.Message[MessageSize - 1] = '\0';
+
+	//	memcpy(this->Body.Listing, ListingsData, ListingSize);
+	//	memcpy(this->Body.Message, MessageData, MessageSize);
+
+	//	this->Head.Length = MessageSize + ListingSize;*/
+	//}
 
 
 	/*char* SerializeData(int& TotalSize) {
