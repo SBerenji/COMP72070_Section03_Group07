@@ -1,15 +1,15 @@
 #ifndef LISTING_H
 #define LISTING_H
 
+#include "SQLiteDatabase.h"
 #include <string>
 #include <vector>
 #include <ctime>
 #include <sstream>
 
-
 class Listing {
 public:
-    Listing();
+    Listing() {};
     Listing(int id, const std::string& title, const std::string& description,
         const std::string& category, double price, const std::string& condition,
         const std::string& location, const std::string& seller, const std::string& status,

@@ -1,6 +1,4 @@
-
 #include "TCPServer.h"
-#include "SQLiteDatabase.h"
 
 int main(void) {
 	TCPServer server = TCPServer(2750);

@@ -3,8 +3,7 @@
 
 #include <fstream>
 #include <string>
-#include "Packet.h" 
-#include "PacketWrapper.h"
+#include "SQLiteDatabase.h"
 class RequestLogger {
 public:
     RequestLogger(const std::string& filename) : filename(filename) {}

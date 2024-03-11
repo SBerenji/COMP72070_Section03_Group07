@@ -1,8 +1,5 @@
 
 #include "SQLiteDatabase.h"
-#include <sqlite3.h>
-#include <iostream>
-#include <string>
 #include <fstream>
 
 //database.db

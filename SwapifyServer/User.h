@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <Windows.h>
 #include "bcrypt.h"
+#include "SQLiteDatabase.h"
 class User {
 private:
 	int id_;

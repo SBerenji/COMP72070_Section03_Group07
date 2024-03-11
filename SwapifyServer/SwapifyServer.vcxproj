@@ -132,7 +132,6 @@
   <ItemGroup>
     <ClCompile Include="ListingRoutes.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="server.cpp" />
     <ClCompile Include="SQLiteDatabase.cpp" />
     <ClCompile Include="TCPServer.cpp" />
     <ClCompile Include="UserRoutes.cpp" />
@@ -143,7 +142,6 @@
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PacketWrapper.h" />
     <ClInclude Include="RequestLogger.h" />
-    <ClInclude Include="Route.h" />
     <ClInclude Include="SQLiteDatabase.h" />
     <ClInclude Include="TCPServer.h" />
     <ClInclude Include="User.h" />

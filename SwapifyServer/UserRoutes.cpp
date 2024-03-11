@@ -1,11 +1,9 @@
 
 #include "UsersRoute.h"
-#include "User.h"
-#include "SQLiteDatabase.h"
 #include <iostream>
 #include <string>
 
-Packet* UserRoutes::handleRequest(Packet& packet, SOCKET clientSocket, std::string action) {
+Packet* UserRoutes::handleUserRequest(Packet& packet, SOCKET clientSocket, std::string action) {
 	//parse string to user object
 	User user;
 	user.parseUser(packet.GetBody()->User);
