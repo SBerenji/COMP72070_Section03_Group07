@@ -65,10 +65,10 @@ public:
 		return dateCreated_;
 	}
 	std::string getDateCreatedAsString() const {
-		// Convert dateCreated_ to string representation
-		std::tm* timeinfo = std::localtime(&dateCreated_);
+		std::tm timeinfo;
+		localtime_s(&timeinfo, &dateCreated_);
 		std::stringstream ss;
-		ss << std::put_time(timeinfo, "%Y-%m-%d %H:%M:%S");
+		ss << std::put_time(&timeinfo, "%Y-%m-%d %H:%M:%S");
 		return ss.str();
 	}
 	const std::string& getPassword() const {
