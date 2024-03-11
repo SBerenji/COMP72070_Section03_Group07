@@ -132,6 +132,7 @@
   <ItemGroup>
     <ClCompile Include="ListingRoutes.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PacketWrapper.cpp" />
     <ClCompile Include="SQLiteDatabase.cpp" />
     <ClCompile Include="TCPServer.cpp" />
     <ClCompile Include="UserRoutes.cpp" />
