@@ -15,4 +15,8 @@ public:
 
     bool executeQuery(const std::string& query);
 
+    sqlite3* getDB();
+
+    bool isOpen();
+
 };

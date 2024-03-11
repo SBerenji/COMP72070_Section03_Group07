@@ -9,14 +9,11 @@
 
 class UserRoutes : public Route {
 public:
-    void handleRequest(Packet& packet, SOCKET clientSocket, std::string action) override;
+    Packet* handleRequest(Packet& packet, SOCKET clientSocket, std::string action) override;
 
 private:
-    void handleLogin(User user);
-    void handleRegister(User user);
-    User handleGetUser(User user);
-    void handleUpdateUser(User user);
-    void handleDeleteUser(User user);
-
-
+    Packet* handleLogin(User user);
+    Packet* handleRegister(User user);
+    Packet* handleUpdateUser(User user);
+    Packet* handleDeleteUser(User user);
 };

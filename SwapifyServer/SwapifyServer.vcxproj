@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ListingRoutes.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="server.cpp" />
     <ClCompile Include="SQLiteDatabase.cpp" />
@@ -138,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Listing.h" />
+    <ClInclude Include="ListingRoutes.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PacketWrapper.h" />
     <ClInclude Include="RequestLogger.h" />

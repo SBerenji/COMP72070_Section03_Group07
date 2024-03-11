@@ -93,7 +93,8 @@
 
         if (tokens[0] == "user") {
             UserRoutes userRoutes;
-            userRoutes.handleRequest(*RxPkt, clientSocket, tokens[1]);
+            Packet* resultPacket = userRoutes.handleRequest(*RxPkt, clientSocket, tokens[1]);
+            //return here to socket
         }
         else if (tokens[0] == "listing") {
             // Handle listing request

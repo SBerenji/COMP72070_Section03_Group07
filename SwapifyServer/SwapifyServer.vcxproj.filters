@@ -30,6 +30,9 @@
     <ClCompile Include="UserRoutes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ListingRoutes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SQLiteDatabase.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Listing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ListingRoutes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

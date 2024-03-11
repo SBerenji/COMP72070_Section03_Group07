@@ -41,6 +41,13 @@ SQLiteDatabase::~SQLiteDatabase() {
         return true;
     }
 
+    sqlite3* SQLiteDatabase::getDB()  {
+        return db;
+    }
+
+    bool SQLiteDatabase::isOpen()  {
+        return db != nullptr;
+    }
 
 
 

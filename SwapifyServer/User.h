@@ -8,8 +8,7 @@
 #include <sstream>
 #include <iomanip>
 #include <Windows.h>
-#include <bcrypt.h>
-
+#include "bcrypt.h"
 class User {
 private:
 	int id_;
@@ -57,8 +56,20 @@ public:
 		return user;
 	}
 
+	std::string getIdAsString() const {
+		// Convert id_ to string representation
+		return std::to_string(id_);
+	}
+
 	time_t getDateCreated() const {
 		return dateCreated_;
+	}
+	std::string getDateCreatedAsString() const {
+		// Convert dateCreated_ to string representation
+		std::tm* timeinfo = std::localtime(&dateCreated_);
+		std::stringstream ss;
+		ss << std::put_time(timeinfo, "%Y-%m-%d %H:%M:%S");
+		return ss.str();
 	}
 	const std::string& getPassword() const {
 		return password_;
@@ -70,6 +81,10 @@ public:
 
 	const std::string& getLastName() const {
 		return lastName_;
+	}
+
+	const std::string& getEmailAddress() const {
+		return emailAddress_;
 	}
 
 	const std::string& getProfilePicture() const {
@@ -103,47 +118,6 @@ public:
 
 	void setAccountStatus(const std::string& accountStatus) {
 		accountStatus_ = accountStatus;
-	}
-
-	bool authenticateUser(const std::string& providedPassword, const std::string& storedHashedPassword) {
-		BCRYPT_ALG_HANDLE hAlg;
-		NTSTATUS status = BCryptOpenAlgorithmProvider(&hAlg, BCRYPT_SHA256_ALGORITHM, NULL, 0);
-		if (status != 0) {
-			std::cerr << "Error opening algorithm provider: " << status << std::endl;
-			return false;
-		}
-
-		DWORD cbHashSize = 0;
-		status = BCryptGetProperty(hAlg, BCRYPT_HASH_LENGTH, (PBYTE)&cbHashSize, sizeof(DWORD), &cbHashSize, 0);
-		if (status != 0) {
-			std::cerr << "Error getting hash length: " << status << std::endl;
-			BCryptCloseAlgorithmProvider(hAlg, 0);
-			return false;
-		}
-
-		PBYTE pbHash = (PBYTE)malloc(cbHashSize);
-		if (pbHash == NULL) {
-			std::cerr << "Memory allocation error" << std::endl;
-			BCryptCloseAlgorithmProvider(hAlg, 0);
-			return false;
-		}
-
-		status = BCryptHashData(hAlg, (PUCHAR)providedPassword.c_str(), (ULONG)providedPassword.length(), 0);
-		if (status != 0) {
-			std::cerr << "Error hashing provided password: " << status << std::endl;
-			free(pbHash);
-			BCryptCloseAlgorithmProvider(hAlg, 0);
-			return false;
-		}
-
-		// Compare the hashed passwords
-		bool passwordsMatch = (memcmp(pbHash, storedHashedPassword.c_str(), cbHashSize) == 0);
-
-		// Clean up
-		free(pbHash);
-		BCryptCloseAlgorithmProvider(hAlg, 0);
-
-		return passwordsMatch;
 	}
 
 	User getUserFromDatabase(sqlite3* db, int userId) {
@@ -185,6 +159,18 @@ public:
 
 		return user;
 	}
+
+	bool validatePassword(const std::string& inputPassword, const std::string& storedPassword) {
+		// Placeholder function for password validation
+		// Compare the input password directly with the stored password (plaintext comparison)
+		return inputPassword == storedPassword;
+	}
+
+	std::string generateHash(const std::string& input) {
+		// Placeholder function for generating a hash (returns the input string itself)
+		return input;
+	}
+
 
 };
 
