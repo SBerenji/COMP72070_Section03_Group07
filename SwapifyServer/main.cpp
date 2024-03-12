@@ -1,7 +1,7 @@
 #include "TCPServer.h"
 
 int main(void) {
-	TCPServer server = TCPServer(2750);
+	TCPServer server = TCPServer(27000);
 	server.start();
 	return 1;
 }

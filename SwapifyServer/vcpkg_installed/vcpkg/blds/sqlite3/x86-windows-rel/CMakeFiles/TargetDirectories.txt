@@ -1,6 +1,0 @@
-C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/blds/sqlite3/x86-windows-rel/CMakeFiles/sqlite3.dir
-C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/blds/sqlite3/x86-windows-rel/CMakeFiles/edit_cache.dir
-C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/blds/sqlite3/x86-windows-rel/CMakeFiles/rebuild_cache.dir
-C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/blds/sqlite3/x86-windows-rel/CMakeFiles/list_install_components.dir
-C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/blds/sqlite3/x86-windows-rel/CMakeFiles/install.dir
-C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/blds/sqlite3/x86-windows-rel/CMakeFiles/install/local.dir
