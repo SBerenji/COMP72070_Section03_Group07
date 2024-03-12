@@ -3,13 +3,13 @@
   "spdxVersion": "SPDX-2.2",
   "dataLicense": "CC0-1.0",
   "SPDXID": "SPDXRef-DOCUMENT",
-  "documentNamespace": "https://spdx.org/spdxdocs/sqlite3-x64-windows-3.45.0-ebd4a4e0-a208-4280-8278-6866e169d235",
-  "name": "sqlite3:x64-windows@3.45.0 187b71cc4f317d35c9233192133f5ee4a67414a62f16ff6272a75cb5245c7c6e",
+  "documentNamespace": "https://spdx.org/spdxdocs/sqlite3-x64-windows-3.45.0-b4406b06-5e5f-4e7c-a338-19f748b3875b",
+  "name": "sqlite3:x64-windows@3.45.0 156ebd6b7afeda364eaee2276aa7d177b8b34152b4332e4379baac97e4975668",
   "creationInfo": {
     "creators": [
-      "Tool: vcpkg-ac02a9f660977426b8ec6392919fbb1d51b10998"
+      "Tool: vcpkg-8a83681f921b10d86ae626fd833c253f4f8c355b"
     ],
-    "created": "2024-02-14T04:12:53Z"
+    "created": "2024-03-12T04:27:16Z"
   },
   "relationships": [
     {
@@ -118,7 +118,7 @@
       "name": "sqlite3",
       "SPDXID": "SPDXRef-port",
       "versionInfo": "3.45.0",
-      "downloadLocation": "git+https://github.com/microsoft/vcpkg@537fe5086cb7cad8b2c24f4182b0777b81d7c175",
+      "downloadLocation": "git+https://github.com/Microsoft/vcpkg@537fe5086cb7cad8b2c24f4182b0777b81d7c175",
       "homepage": "https://sqlite.org/",
       "licenseConcluded": "blessing",
       "licenseDeclared": "NOASSERTION",
@@ -129,7 +129,7 @@
     {
       "name": "sqlite3:x64-windows",
       "SPDXID": "SPDXRef-binary",
-      "versionInfo": "187b71cc4f317d35c9233192133f5ee4a67414a62f16ff6272a75cb5245c7c6e",
+      "versionInfo": "156ebd6b7afeda364eaee2276aa7d177b8b34152b4332e4379baac97e4975668",
       "downloadLocation": "NONE",
       "licenseConcluded": "blessing",
       "licenseDeclared": "NOASSERTION",
@@ -154,7 +154,7 @@
   ],
   "files": [
     {
-      "fileName": "./C:/Users/Bryan/AppData/Local/vcpkg/registries/git-trees/537fe5086cb7cad8b2c24f4182b0777b81d7c175/add-config-include.patch",
+      "fileName": "./C:/DEV/vcpkg/buildtrees/versioning_/versions/sqlite3/537fe5086cb7cad8b2c24f4182b0777b81d7c175/add-config-include.patch",
       "SPDXID": "SPDXRef-file-0",
       "checksums": [
         {
@@ -166,7 +166,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/Bryan/AppData/Local/vcpkg/registries/git-trees/537fe5086cb7cad8b2c24f4182b0777b81d7c175/CMakeLists.txt",
+      "fileName": "./C:/DEV/vcpkg/buildtrees/versioning_/versions/sqlite3/537fe5086cb7cad8b2c24f4182b0777b81d7c175/CMakeLists.txt",
       "SPDXID": "SPDXRef-file-1",
       "checksums": [
         {
@@ -178,7 +178,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/Bryan/AppData/Local/vcpkg/registries/git-trees/537fe5086cb7cad8b2c24f4182b0777b81d7c175/fix-arm-uwp.patch",
+      "fileName": "./C:/DEV/vcpkg/buildtrees/versioning_/versions/sqlite3/537fe5086cb7cad8b2c24f4182b0777b81d7c175/fix-arm-uwp.patch",
       "SPDXID": "SPDXRef-file-2",
       "checksums": [
         {
@@ -190,7 +190,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/Bryan/AppData/Local/vcpkg/registries/git-trees/537fe5086cb7cad8b2c24f4182b0777b81d7c175/portfile.cmake",
+      "fileName": "./C:/DEV/vcpkg/buildtrees/versioning_/versions/sqlite3/537fe5086cb7cad8b2c24f4182b0777b81d7c175/portfile.cmake",
       "SPDXID": "SPDXRef-file-3",
       "checksums": [
         {
@@ -202,7 +202,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/Bryan/AppData/Local/vcpkg/registries/git-trees/537fe5086cb7cad8b2c24f4182b0777b81d7c175/sqlite3-config.in.cmake",
+      "fileName": "./C:/DEV/vcpkg/buildtrees/versioning_/versions/sqlite3/537fe5086cb7cad8b2c24f4182b0777b81d7c175/sqlite3-config.in.cmake",
       "SPDXID": "SPDXRef-file-4",
       "checksums": [
         {
@@ -214,7 +214,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/Bryan/AppData/Local/vcpkg/registries/git-trees/537fe5086cb7cad8b2c24f4182b0777b81d7c175/sqlite3-vcpkg-config.h.in",
+      "fileName": "./C:/DEV/vcpkg/buildtrees/versioning_/versions/sqlite3/537fe5086cb7cad8b2c24f4182b0777b81d7c175/sqlite3-vcpkg-config.h.in",
       "SPDXID": "SPDXRef-file-5",
       "checksums": [
         {
@@ -226,7 +226,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/Bryan/AppData/Local/vcpkg/registries/git-trees/537fe5086cb7cad8b2c24f4182b0777b81d7c175/sqlite3.pc.in",
+      "fileName": "./C:/DEV/vcpkg/buildtrees/versioning_/versions/sqlite3/537fe5086cb7cad8b2c24f4182b0777b81d7c175/sqlite3.pc.in",
       "SPDXID": "SPDXRef-file-6",
       "checksums": [
         {
@@ -238,7 +238,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/Bryan/AppData/Local/vcpkg/registries/git-trees/537fe5086cb7cad8b2c24f4182b0777b81d7c175/usage",
+      "fileName": "./C:/DEV/vcpkg/buildtrees/versioning_/versions/sqlite3/537fe5086cb7cad8b2c24f4182b0777b81d7c175/usage",
       "SPDXID": "SPDXRef-file-7",
       "checksums": [
         {
@@ -250,7 +250,7 @@
       "copyrightText": "NOASSERTION"
     },
     {
-      "fileName": "./C:/Users/Bryan/AppData/Local/vcpkg/registries/git-trees/537fe5086cb7cad8b2c24f4182b0777b81d7c175/vcpkg.json",
+      "fileName": "./C:/DEV/vcpkg/buildtrees/versioning_/versions/sqlite3/537fe5086cb7cad8b2c24f4182b0777b81d7c175/vcpkg.json",
       "SPDXID": "SPDXRef-file-8",
       "checksums": [
         {

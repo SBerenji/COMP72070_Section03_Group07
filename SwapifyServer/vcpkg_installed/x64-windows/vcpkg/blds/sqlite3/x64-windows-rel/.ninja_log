@@ -1,6 +1,0 @@
-# ninja log v5
-7	100	7295871653721155	CMakeFiles/sqlite3.dir/sqlite3.rc.res	e866ddda322c94ff
-3	8049	7295871733091591	CMakeFiles/sqlite3.dir/sqlite3.c.obj	c9febf76ae94e2af
-8050	8201	7295871734512884	sqlite3.dll	f8543d0bdb22d812
-8050	8201	7295871734512884	sqlite3.lib	f8543d0bdb22d812
-8201	8282	0	CMakeFiles/install.util	65e2fd406afecb0e

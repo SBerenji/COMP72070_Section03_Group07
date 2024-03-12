@@ -1,0 +1,8 @@
+C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/pkgs/sqlite3_x86-windows/lib/sqlite3.lib
+C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/pkgs/sqlite3_x86-windows/bin/sqlite3.dll
+C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/pkgs/sqlite3_x86-windows/include/sqlite3.h
+C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/pkgs/sqlite3_x86-windows/include/sqlite3ext.h
+C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/pkgs/sqlite3_x86-windows/include/sqlite3-vcpkg-config.h
+C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/pkgs/sqlite3_x86-windows/share/unofficial-sqlite3/unofficial-sqlite3-targets.cmake
+C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/pkgs/sqlite3_x86-windows/share/unofficial-sqlite3/unofficial-sqlite3-targets-release.cmake
+C:/Users/sudha/OneDrive/Desktop/College/Semester 4/Project 4/Swapify_Integration/SwapifyServer/vcpkg_installed/vcpkg/pkgs/sqlite3_x86-windows/lib/pkgconfig/sqlite3.pc
