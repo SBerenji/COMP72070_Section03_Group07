@@ -3,6 +3,12 @@
 #include <iostream>
 #include <fstream>
 
+struct __declspec(dllexport) LogIn
+{
+	char username[10];
+	char password[20];
+};
+
 class __declspec(dllexport) Packet {
 public:
 	struct Header {

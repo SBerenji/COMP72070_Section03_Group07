@@ -43,6 +43,10 @@ namespace WPF_Front_End
         public const uint Source_Destination_ByteArraySize = 20;
 
         public const uint Route_ByteArraySize = 10;
+
+        public const uint username_ByteArraySize = 10;
+
+        public const uint password_ByteArraySize = 20;
     }
 
 
@@ -55,6 +59,13 @@ namespace WPF_Front_End
         public uint Length;
     }
 
+
+    public struct LogIn
+    {
+        public byte[] username;
+        public byte[] password;
+    }
+
     
     public class Packet
     {
@@ -63,6 +74,14 @@ namespace WPF_Front_End
         public static int totalPktSize;
 
         public static byte[] TxBuffer; 
+
+
+        public static void SetLoginBodyInformation(ref IntPtr BodyBuffer, LogIn login)
+        {
+            Marshal.Copy(login.username, 0, BodyBuffer, login.username.Length);
+
+            Marshal.Copy(login.password, 0, BodyBuffer + (int)ConstantVariables.username_ByteArraySize * sizeof(byte), login.password.Length);
+        }
 
         public static void SetHeaderInformation(ref IntPtr HeadPtr, String Source, String Destination, Route r, bool Auth) {
             //var VarTypeHead = Marshal.PtrToStructure(HeadPtr, typeof(Header));
@@ -131,6 +150,10 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
+        public static extern IntPtr AllocateLoginPtr();
+
+
+        [DllImport(dllpath)]
         public static extern void DestroyPacket(IntPtr Pkt);
 
 
@@ -143,7 +166,11 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
-        public static extern void SetBody(IntPtr Pkt, char User, byte[] Data, int DataSize);
+        public static extern IntPtr serializeLoginData(LogIn login);
+
+
+        [DllImport(dllpath)]
+        public static extern void SetBody(IntPtr Pkt, char User, IntPtr Data, int DataSize);
 
 
         [DllImport(dllpath)]
@@ -160,9 +187,12 @@ namespace WPF_Front_End
 
     public static class globalVariables
     {
+        public static string bodyBuffer {  get; set; }
+
         public static string username { get; set; }
 
         public static bool initialLogin = true;
+        public static string password { get; set; }
     }
 
 

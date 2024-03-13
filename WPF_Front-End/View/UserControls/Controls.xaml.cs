@@ -37,65 +37,100 @@ namespace WPF_Front_End.View.UserControls
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            globalVariables.username = username.txtInput.Text;
+            if (username.txtInput.Text == "" || password.Password == "")
+            {
+                MessageBox.Show("Please enter Username AND Password!!");
+            }
 
-            IntPtr PktPtr = Packet.CreatePacket();
+            else
+            {
+                LogIn login = new LogIn();
 
-            IntPtr Head = Packet.AllocateHeaderPtr();
+                login.username = new byte[10];
+                login.password = new byte[20];
 
-            //IntPtr Head = Marshal.AllocHGlobal(Marshal.SizeOf<Header>());
+                globalVariables.username = username.txtInput.Text;
 
-            Packet.SetHeaderInformation(ref Head , "127.0.0.1", "127.0.0.1", Route.LOGIN, true);
+                globalVariables.password = password.Password;
 
-            Packet.SetHeader(PktPtr, Head);
-
-            Packet.SetBody(PktPtr, '1', Encoding.ASCII.GetBytes(globalVariables.username), globalVariables.username.Length);
-
-            IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
-
-            //byte[] TxBuffer = new byte[Packet.totalPktSize];
-
-            //Packet.DeallocateMemoryGivenToIntPtr(Head);
-
-            Packet.TxBuffer = new byte[Packet.totalPktSize];
+                login.username = Encoding.ASCII.GetBytes(globalVariables.username);
+                login.password = Encoding.ASCII.GetBytes(globalVariables.password);
 
 
-            Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
 
-            Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+                //IntPtr BodyBuffer = Packet.serializeLoginData(login);
+
+                IntPtr BodyBuffer = Packet.AllocateLoginPtr();
+
+                Packet.SetLoginBodyInformation(ref BodyBuffer, login);
 
 
-            Packet.TxBuffer = null;
+                IntPtr PktPtr = Packet.CreatePacket();
 
-            Packet.FreeBuffer(Head);
-            Head = IntPtr.Zero;
+                IntPtr Head = Packet.AllocateHeaderPtr();
 
-            Packet.FreeBuffer(serializedRecv);
-            serializedRecv = IntPtr.Zero;
-            
-            Packet.DestroyPacket(PktPtr);
-            PktPtr = IntPtr.Zero;
+                //IntPtr Head = Marshal.AllocHGlobal(Marshal.SizeOf<Header>());
 
-            Marshal.FreeHGlobal(Head);
-            Head = IntPtr.Zero;
+                Packet.SetHeaderInformation(ref Head, "127.0.0.1", "127.0.0.1", Route.LOGIN, true);
 
-            //Packet.DeallocateMemoryGivenToIntPtr(Head);
+                Packet.SetHeader(PktPtr, Head);
 
-             Window parentWindow = Window.GetWindow(this);
 
-            double windowWidth = parentWindow.ActualWidth;
-            double windowHeight = parentWindow.ActualHeight;
+                int size = ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize) * sizeof(byte);
 
-            NewHomeScreenPostLogin hspl = new NewHomeScreenPostLogin();
 
-            hspl.Width = windowWidth;
-            hspl.Height = windowHeight;
+                Packet.SetBody(PktPtr, '1', BodyBuffer, size);
 
-            hspl.Show();
 
-            parentWindow.Closing -= CloseClient.Client_Closing;
+                IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
 
-            parentWindow.Close();
+                //byte[] TxBuffer = new byte[Packet.totalPktSize];
+
+                //Packet.DeallocateMemoryGivenToIntPtr(Head);
+
+                Packet.TxBuffer = new byte[Packet.totalPktSize];
+
+
+                Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
+
+                Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+
+
+                Packet.TxBuffer = null;
+
+                Packet.FreeBuffer(Head);
+                Head = IntPtr.Zero;
+
+                Packet.FreeBuffer(BodyBuffer);
+                BodyBuffer = IntPtr.Zero;
+
+                Packet.FreeBuffer(serializedRecv);
+                serializedRecv = IntPtr.Zero;
+
+                Packet.DestroyPacket(PktPtr);
+                PktPtr = IntPtr.Zero;
+
+                Marshal.FreeHGlobal(Head);
+                Head = IntPtr.Zero;
+
+                //Packet.DeallocateMemoryGivenToIntPtr(Head);
+
+                Window parentWindow = Window.GetWindow(this);
+
+                double windowWidth = parentWindow.ActualWidth;
+                double windowHeight = parentWindow.ActualHeight;
+
+                NewHomeScreenPostLogin hspl = new NewHomeScreenPostLogin();
+
+                hspl.Width = windowWidth;
+                hspl.Height = windowHeight;
+
+                hspl.Show();
+
+                parentWindow.Closing -= CloseClient.Client_Closing;
+
+                parentWindow.Close();
+            }
         }
 
         private void createAccount_Click_1(object sender, RoutedEventArgs e)

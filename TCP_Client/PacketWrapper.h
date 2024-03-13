@@ -11,6 +11,18 @@
 extern "C" {
 #endif
 
+	__declspec (dllexport) void serializeLoginData(char* BodyBuffer, struct LogIn login) {
+		memcpy(BodyBuffer, &login, sizeof(login));
+	}
+
+	__declspec(dllexport) char* AllocateLoginPtr() {
+		char* BodyBuffer = new char[sizeof(LogIn)];
+
+		memset(BodyBuffer, 0, sizeof(LogIn));
+
+		return BodyBuffer;
+	}
+
 	__declspec(dllexport) Packet* CreatePacket() {
 		Packet* Pkt = new Packet();
 		
