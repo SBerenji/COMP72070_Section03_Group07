@@ -85,7 +85,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>Powershell.exe -file sqlite3_script.ps1</Command>
+      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope Current -ExecutionPolicy Unrestricted
+Powershell.exe -file sqlite3_script.ps1</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -104,7 +105,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>Powershell.exe -file sqlite3_script.ps1</Command>
+      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope Current -ExecutionPolicy Unrestricted
+Powershell.exe -file sqlite3_script.ps1</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -119,7 +121,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>Powershell.exe -file sqlite3_script.ps1</Command>
+      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope Current -ExecutionPolicy Unrestricted
+Powershell.exe -file sqlite3_script.ps1</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -138,7 +141,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>Powershell.exe -file sqlite3_script.ps1</Command>
+      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope Current -ExecutionPolicy Unrestricted
+Powershell.exe -file sqlite3_script.ps1</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
