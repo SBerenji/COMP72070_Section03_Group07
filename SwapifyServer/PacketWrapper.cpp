@@ -52,7 +52,9 @@ void Deserialization(Packet* Pkt, char* src) {
 	memcpy(Pkt->GetTail(), src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length, sizeof(*(Pkt->GetTail())));
 }
 
-
+void SetDataUser(Packet* Pkt, char* UserData) {
+	memcpy(Pkt->GetBody()->User, UserData, sizeof(UserData));
+}
 
 void SetData(Packet* Pkt, char* ListingsData, char* MessageData, int ListingSize, int MessageSize) {
 	ListingSize++;
@@ -64,13 +66,12 @@ void SetData(Packet* Pkt, char* ListingsData, char* MessageData, int ListingSize
 	Pkt->GetBody()->Message = new char[MessageSize];
 	Pkt->GetBody()->Message[MessageSize - 1] = '\0';
 
-
+	//memcpy(Pkt->GetBody()->User, UserData, sizeof(UserData));
 	memcpy(Pkt->GetBody()->Listing, ListingsData, ListingSize);
 	memcpy(Pkt->GetBody()->Message, MessageData, MessageSize);
 
 	Pkt->GetHead()->Length = MessageSize + ListingSize;
 }
-
 
 unsigned int CalculateChecksum() {
 	unsigned int checksum;

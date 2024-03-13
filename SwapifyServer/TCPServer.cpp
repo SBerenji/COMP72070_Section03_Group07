@@ -2,6 +2,7 @@
 #include <sstream>
 #include <vector>
 #include "TCPServer.h"
+#include "ListingRoutes.h"
 
 #pragma comment(lib, "ws2_32.lib")
 
@@ -82,14 +83,15 @@
         }
 
         if (tokens[0] == "user") {
+            std::cout << "Handling user action" << std::endl;
             UserRoutes userRoutes;
             Packet* resultPacket = userRoutes.handleUserRequest(*RxPkt, clientSocket, tokens[1]);
             //return here to socket
         }
         else if (tokens[0] == "listing") {
             // Handle listing request
-           /* ListingRoutes listingRoutes;
-            Packet* resultPacket = listingRoutes.handleListingRequest(*RxPkt, clientSocket, tokens[1]);*/
+            ListingRoutes listingRoutes;
+            Packet* resultPacket = listingRoutes.handleListingRequest(*RxPkt, clientSocket, tokens[1]);
         }
         else {
             // Handle unknown request

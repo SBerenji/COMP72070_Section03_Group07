@@ -146,6 +146,7 @@ Powershell.exe -file sqlite3_script.ps1</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="file_utils.cpp" />
     <ClCompile Include="ListingRoutes.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PacketWrapper.cpp" />
@@ -154,6 +155,7 @@ Powershell.exe -file sqlite3_script.ps1</Command>
     <ClCompile Include="UserRoutes.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="file_utils.h" />
     <ClInclude Include="Listing.h" />
     <ClInclude Include="ListingRoutes.h" />
     <ClInclude Include="Packet.h" />
