@@ -125,9 +125,9 @@ AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="D
 
 
                         <Viewbox Stretch="Fill" StretchDirection="Both">
-                            <TextBlock Text="Browse/Drop a photo " Name="RemoveText1" Foreground="Black" HorizontalAlignment="Left" 
+                            <TextBlock Text="Browse/Drop a JPEG photo of your Item" TextWrapping="Wrap" Name="RemoveText1" Foreground="Black" HorizontalAlignment="Left" 
                             FontSize="30" VerticalAlignment="Top" TextAlignment="Center" Margin="56,150,110,30" 
-                            Visibility="Visible" Width="350" Height="60"/>
+                            Visibility="Visible" Width="350" Height="84"/>
 
                         </Viewbox>
 

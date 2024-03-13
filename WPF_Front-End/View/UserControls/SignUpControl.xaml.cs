@@ -112,7 +112,7 @@ namespace WPF_Front_End.View.UserControls
                 //globalVariables.profileImageDropped = DropAreaImage.Source;
 
                 // converting the image to byte array
-                byte[] byteArray = getJPGFromImageControl(bitmap);
+                byte[] byteArray = getJPEGFromImageControl(bitmap);
 
 
             }
@@ -137,7 +137,7 @@ namespace WPF_Front_End.View.UserControls
             OpenFileDialog dialog = new OpenFileDialog();
 
             // Set the filter for default file extension 
-            dialog.Filter = "Image files (*png; *jpeg; *jpg) |*.png; *.jpeg; *.jpg |All files (*.*) | *.*"; 
+            dialog.Filter = "Image files (*jpeg) |*.jpeg"; 
 
             if(dialog.ShowDialog() == true) 
             {
@@ -157,7 +157,7 @@ namespace WPF_Front_End.View.UserControls
                 //globalVariables.profileImageSelected = SelectedImage.Source;
 
                 // converting the image to byte array
-                byte[] byteArray = getJPGFromImageControl(bitmap);
+                byte[] byteArray = getJPEGFromImageControl(bitmap);
             }
 
 
@@ -210,10 +210,10 @@ namespace WPF_Front_End.View.UserControls
         // source code from: Jonathan Escobedo 
         // changed JpegBitmapEncoder to PngBitmapEncoder so it will be compatible with all image file types
         // https://stackoverflow.com/questions/553611/wpf-image-to-byte
-        private byte[] getJPGFromImageControl(BitmapImage imageC)
+        private byte[] getJPEGFromImageControl(BitmapImage imageC)
         {
             MemoryStream memStream = new MemoryStream();
-            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(imageC));
             encoder.Save(memStream);
             return memStream.ToArray();

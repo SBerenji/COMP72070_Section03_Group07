@@ -177,7 +177,7 @@
             </Grid>
 
             <TextBlock Text="Please browse/drop " Name="RemoveText1" Foreground="Black" HorizontalAlignment="Left" FontSize="7" VerticalAlignment="Top" TextAlignment="Center" Margin="0,54,0,0" Visibility="Collapsed"/>
-            <TextBlock Text="your profile photo  " Name="RemoveText2" Foreground="Black" HorizontalAlignment="Left" FontSize="7" VerticalAlignment="Top" TextAlignment="Center" Margin="3,64,0,0" Visibility="Collapsed"/>
+            <TextBlock Text="your JPEG profile photo  " Name="RemoveText2" Foreground="Black" HorizontalAlignment="Left" FontSize="7" VerticalAlignment="Top" TextAlignment="Center" Margin="-3,64,0,0" Visibility="Collapsed"/>
         </Grid>
     </Grid>
 </UserControl>
