@@ -25,6 +25,8 @@ namespace WPF_Front_End
         {
             InitializeComponent();
 
+            Closing += CloseClient.Client_Closing;
+
             //Hamburger.Profile.Text = globalVariables.username;
 
             Hamburger.CreatePost.Background = Brushes.LightGray;

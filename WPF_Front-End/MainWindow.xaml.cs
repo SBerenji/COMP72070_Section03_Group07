@@ -12,17 +12,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices;
 
 namespace WPF_Front_End
 {
 
     public partial class MainWindow : Window
     {
+
         string username;
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Closing += CloseClient.Client_Closing;
         }
         
         private void Controls_Loaded(object sender, RoutedEventArgs e)
@@ -37,13 +41,6 @@ namespace WPF_Front_End
         {
 
         }
-
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    var newHome = new HomeScreenPostLogIn(); //create your new form.
-        //    newHome.Show(); //show the new form.
-        //    this.Close(); //only if you want to close the current form.
-        //}
 
 
         public string getUsername()

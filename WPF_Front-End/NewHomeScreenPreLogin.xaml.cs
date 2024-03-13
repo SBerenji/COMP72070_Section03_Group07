@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,11 +23,54 @@ namespace WPF_Front_End
     /// </summary>
     public partial class NewHomeScreenPreLogin : Window
     {
+
+        [DllImport("TCP_Client.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr setupConnection2();
+
+
+        //[DllImport("TCP_Client.dll")]
+        //public static extern int sendData(MySocket ClientSocket);
+
+
+        
+
+
+        private void ClientConnection()
+        {
+            if (globalVariables.initialLogin)
+            {
+                // Call the setupConnection function from the C++ DLL
+                IntPtr socketHandle = setupConnection2();
+
+                // Convert the IntPtr to MySocket
+                MySocket mySocket = new MySocket();
+                mySocket.SetHandle(socketHandle);
+
+                MySocket.ClientSocket = mySocket;
+
+                // Use mySocket as needed
+                //sendData(MySocket.ClientSocket);
+
+
+                // Remember to release the resources when done
+                //mySocket.Dispose();
+
+
+                //setupConnection();
+
+                globalVariables.initialLogin = false;
+            }
+        }
+
         public ObservableCollection<Post> Posts { get; set; }
 
         public NewHomeScreenPreLogin()
         {
             InitializeComponent();
+
+            ClientConnection();
+
+            Closing += CloseClient.Client_Closing;
 
             CollapseHamburgerProfile();
 
@@ -92,6 +137,9 @@ namespace WPF_Front_End
             newForm.Height = windowHeight;
 
             newForm.Show(); //show the new form.
+
+            Closing -= CloseClient.Client_Closing;
+
             this.Close(); //only if you want to close the current form.
         }
 

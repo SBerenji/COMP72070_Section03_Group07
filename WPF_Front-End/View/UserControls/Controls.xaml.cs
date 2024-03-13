@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
+using System.Net.Security;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +24,7 @@ namespace WPF_Front_End.View.UserControls
     /// </summary>
     public partial class Controls : UserControl
     {
+
         string userinputUsernameText;
 
         public Controls()
@@ -33,21 +37,100 @@ namespace WPF_Front_End.View.UserControls
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            globalVariables.username = username.txtInput.Text;
+            if (username.txtInput.Text == "" || password.Password == "")
+            {
+                MessageBox.Show("Please enter Username AND Password!!");
+            }
 
-            Window parentWindow = Window.GetWindow(this);
+            else
+            {
+                LogIn login = new LogIn();
 
-            double windowWidth = parentWindow.ActualWidth;
-            double windowHeight = parentWindow.ActualHeight;
+                login.username = new byte[10];
+                login.password = new byte[20];
 
-            NewHomeScreenPostLogin hspl = new NewHomeScreenPostLogin();
+                globalVariables.username = username.txtInput.Text;
 
-            hspl.Width = windowWidth;
-            hspl.Height = windowHeight;
+                globalVariables.password = password.Password;
 
-            hspl.Show();
+                login.username = Encoding.ASCII.GetBytes(globalVariables.username);
+                login.password = Encoding.ASCII.GetBytes(globalVariables.password);
 
-            parentWindow.Close();
+
+
+                //IntPtr BodyBuffer = Packet.serializeLoginData(login);
+
+                IntPtr BodyBuffer = Packet.AllocateLoginPtr();
+
+                Packet.SetLoginBodyInformation(ref BodyBuffer, login);
+
+
+                IntPtr PktPtr = Packet.CreatePacket();
+
+                IntPtr Head = Packet.AllocateHeaderPtr();
+
+                //IntPtr Head = Marshal.AllocHGlobal(Marshal.SizeOf<Header>());
+
+                Packet.SetHeaderInformation(ref Head, "127.0.0.1", "127.0.0.1", Route.LOGIN, true);
+
+                Packet.SetHeader(PktPtr, Head);
+
+
+                int size = ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize) * sizeof(byte);
+
+
+                Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+
+
+                IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
+
+                //byte[] TxBuffer = new byte[Packet.totalPktSize];
+
+                //Packet.DeallocateMemoryGivenToIntPtr(Head);
+
+                Packet.TxBuffer = new byte[Packet.totalPktSize];
+
+
+                Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
+
+                Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+
+
+                Packet.TxBuffer = null;
+
+                Packet.FreeBuffer(Head);
+                Head = IntPtr.Zero;
+
+                Packet.FreeBuffer(BodyBuffer);
+                BodyBuffer = IntPtr.Zero;
+
+                Packet.FreeBuffer(serializedRecv);
+                serializedRecv = IntPtr.Zero;
+
+                Packet.DestroyPacket(PktPtr);
+                PktPtr = IntPtr.Zero;
+
+                Marshal.FreeHGlobal(Head);
+                Head = IntPtr.Zero;
+
+                //Packet.DeallocateMemoryGivenToIntPtr(Head);
+
+                Window parentWindow = Window.GetWindow(this);
+
+                double windowWidth = parentWindow.ActualWidth;
+                double windowHeight = parentWindow.ActualHeight;
+
+                NewHomeScreenPostLogin hspl = new NewHomeScreenPostLogin();
+
+                hspl.Width = windowWidth;
+                hspl.Height = windowHeight;
+
+                hspl.Show();
+
+                parentWindow.Closing -= CloseClient.Client_Closing;
+
+                parentWindow.Close();
+            }
         }
 
         private void createAccount_Click_1(object sender, RoutedEventArgs e)
@@ -63,6 +146,8 @@ namespace WPF_Front_End.View.UserControls
             signup.Height = windowHeight;
 
             signup.Show();
+
+            parentWindow.Closing -= CloseClient.Client_Closing;
 
             parentWindow.Close();
         }
@@ -91,6 +176,8 @@ namespace WPF_Front_End.View.UserControls
             nhspl.Height = windowHeight;
 
             nhspl.Show();
+
+            parentWindow.Closing -= CloseClient.Client_Closing;
 
             parentWindow.Close();
         }

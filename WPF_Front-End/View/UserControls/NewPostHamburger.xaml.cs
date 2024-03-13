@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -120,6 +121,8 @@ namespace WPF_Front_End.View.UserControls
 
                 cp.Show();
 
+                parentWindow.Closing -= CloseClient.Client_Closing;
+
                 parentWindow.Close();
             }
 
@@ -146,6 +149,8 @@ namespace WPF_Front_End.View.UserControls
                 m.Height = windowHeight;
 
                 m.Show();
+
+                parentWindow.Closing -= CloseClient.Client_Closing;
 
                 parentWindow.Close();
             }
@@ -206,6 +211,8 @@ namespace WPF_Front_End.View.UserControls
 
                 nhspl.Show();
 
+                parentWindow.Closing -= CloseClient.Client_Closing;
+
                 parentWindow.Close();
             }
         }
@@ -225,6 +232,8 @@ namespace WPF_Front_End.View.UserControls
                 nmps.Height = windowHeight;
 
                 nmps.Show();
+
+                parentWindow.Closing -= CloseClient.Client_Closing;
 
                 parentWindow.Close();
             }

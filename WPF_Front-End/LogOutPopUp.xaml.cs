@@ -35,6 +35,7 @@ namespace WPF_Front_End
         public LogOutPopUp(NewHomeScreenPostLogin postLogIn)
         {
             InitializeComponent();
+
             PostLogIn = postLogIn;
 
             str = "NewHomeScreenPostLogIn";
@@ -51,6 +52,7 @@ namespace WPF_Front_End
         public LogOutPopUp(Message m)
         {
             InitializeComponent();
+
             this.m = m;
 
             str = "Message";
@@ -94,25 +96,34 @@ namespace WPF_Front_End
             newForm.Height = this.windowHeight;
 
             newForm.Show(); //show the new form.
+
             this.Close(); //only if you want to close the current form.
 
             if (this.str == "NewHomeScreenPostLogIn")
             {
+                this.PostLogIn.Closing -= CloseClient.Client_Closing;
+
                 this.PostLogIn.Close();
             }
 
             else if (this.str == "Message")
             {
+                this.m.Closing -= CloseClient.Client_Closing;
+
                 this.m.Close();
             }
 
             else if (this.str == "CreatePost")
             {
+                this.cp.Closing -= CloseClient.Client_Closing;
+
                 this.cp.Close();
             }
 
             else if (this.str == "MyPostsScreen")
             {
+                this.MPS.Closing -= CloseClient.Client_Closing;
+
                 this.MPS.Close();
             }
 

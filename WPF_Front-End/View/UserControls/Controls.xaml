@@ -76,7 +76,7 @@
         <local:ClearableTextBox x:Name="username" Grid.Row="1" Placeholder="Username" 
         Width="250" Height="23" MouseLeftButtonDown="username_MouseLeftButtonDown" />
 
-        <local:PasswordBox Grid.Row="2" Height="23" Margin="9,2,49,3" 
+        <local:PasswordBox x:Name="password" Grid.Row="2" Height="23" Margin="9,2,49,3" 
         Password="{Binding Password}" Placeholder="Password" />
 
         <!--<local:ClearableTextBox x:Name="PasswordBox" Grid.Row="2" Placeholder="Password"
