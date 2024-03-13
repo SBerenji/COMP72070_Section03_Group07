@@ -68,7 +68,7 @@
             </TextBlock>
         </Grid>
 
-        <Image Source="/Images/BackButton.png" Grid.Row="0" Width="25" HorizontalAlignment="Left" MouseLeftButtonDown="BackButton_MouseLeftButtonDown" />
+        <Image Source="/Images/home.png" Grid.Row="0" Width="24" HorizontalAlignment="Left" MouseLeftButtonDown="BackButton_MouseLeftButtonDown" Margin="10,2,0,5" />
 
         <TextBlock Grid.Row="0" Text="Log In" FontSize="20"
                    FontFamily="Times New Roman" Foreground="#385638" FontWeight="Bold" Margin="86,0,79,3" />

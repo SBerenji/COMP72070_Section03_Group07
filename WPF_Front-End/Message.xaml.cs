@@ -32,5 +32,10 @@ namespace WPF_Front_End
         {
 
         }
+
+        private void PeopleAndMessage_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

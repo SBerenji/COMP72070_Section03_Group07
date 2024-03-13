@@ -27,8 +27,12 @@
                 <TextBlock FontSize="40" Text="Swapify"
 Foreground="White" FontFamily="Times New Roman" VerticalAlignment="Top" Width="142" Height="58" Margin="30,15,845,5"/>
 
+                <!--<Image Source="/Images/Swapify-Logo-Black.jpg" VerticalAlignment="Top"  Width="142" Height="58" Margin="30,15,845,5"></Image>-->
+
             </Viewbox>
         </Grid>
+        
+        
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -52,7 +56,7 @@ Foreground="White" FontFamily="Times New Roman" VerticalAlignment="Top" Width="1
             </Viewbox>
 
             <Viewbox Grid.Column="1" Stretch="Fill" StretchDirection="Both">
-                <userControl:PeopleAndMessage Grid.Column="1" Margin="-45, 0, 0, 5"/>
+                <userControl:PeopleAndMessage Grid.Column="1" Margin="-45, 0, 0, 5" Loaded="PeopleAndMessage_Loaded"/>
             </Viewbox>
         </Grid>
 

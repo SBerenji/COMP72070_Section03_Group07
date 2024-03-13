@@ -8,6 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows;
 using System.Xaml;
 
@@ -191,6 +192,10 @@ namespace WPF_Front_End
 
         public static string username { get; set; }
 
+        public static ImageSource profileImageDropped { get; set; }
+
+        public static ImageSource profileImageSelected { get; set; }
+
         public static bool initialLogin = true;
         public static string password { get; set; }
     }
@@ -219,4 +224,5 @@ namespace WPF_Front_End
             this.handle = handle;
         }
     }
+
 }
