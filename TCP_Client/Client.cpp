@@ -2,12 +2,12 @@
 #include "Packet.h"
 //#include "PacketWrapper.h"
 
-typedef int SendFunction(SOCKET, const char*, int, int);
 
-extern "C" __declspec(dllexport) int setupConnection();
-extern "C" __declspec(dllexport) SOCKET setupConnection2(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect);
-extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket, char* TxBuffer, int totalSize, SendFunction sendFunc = send);
-extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket);
+//extern "C" __declspec(dllexport) int setupConnection();
+extern "C" __declspec(dllexport) SOCKET setupConnection2(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanup = WSACleanup);
+extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc = send);
+extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket, closesocketFunc closeFunc = closesocket, WSACleanupFunc wsacleanupfunc = WSACleanup);
+
 
 //extern "C" {
 //
@@ -42,10 +42,10 @@ extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket);
 
 
 ///// CHANGED THE CLOSESOCKET FUNCTION FOR TESTING PURPOSES
-int CloseSocket(SOCKET ClientSocket) {
+int CloseSocket(SOCKET ClientSocket, closesocketFunc closeFunc, WSACleanupFunc wsacleanupfunc) {
 
     // Cleaning up the socket
-    if (closesocket(ClientSocket) == SOCKET_ERROR)
+    if (closeFunc(ClientSocket) == SOCKET_ERROR)
     {
         std::cerr << "Error closing the socket" << std::endl;
         return 0;
@@ -55,7 +55,7 @@ int CloseSocket(SOCKET ClientSocket) {
 
 
     // Cleaning up the winsock library
-    if (WSACleanup() == SOCKET_ERROR)
+    if (wsacleanupfunc() == SOCKET_ERROR)
     {
         std::cerr << "Error cleaning WSACleanup" << std::endl;
         return 2;
@@ -127,20 +127,15 @@ int CloseSocket(SOCKET ClientSocket) {
 //}
 
 
-//////// OVERLOADING THE SENDDATA FUNCTION FOR TESTING PURPOSES
-/////// THIS ALLOWS US TO REPLACE THE CALL TO THE ACTUAL SEND FUNCTION WITH A MOCK FUNCTION WHEN TESTING
-
-int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc = send) {
+int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc){
 
     int sendSize = sendFunc(ClientSocket, TxBuffer, totalSize, 0);
 
     if (sendSize < 0) {
         std::cout << "Sending Failed" << std::endl;
 
-        closesocket(ClientSocket);
-
-        WSACleanup();
-
+        CloseSocket(ClientSocket);
+     
         return 0;
     }
     else {
@@ -228,12 +223,12 @@ int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunct
 
 
 
-SOCKET setupConnection2(WSAStartupFunc wsaStartup, socketFunc socketfunc, connectFunc connectfunc) {
+SOCKET setupConnection2(WSAStartupFunc wsaStartup, socketFunc socketfunc, connectFunc connectfunc, WSACleanupFunc wsacleanupfunc) {
     // starting up and configuring the Winsock dynamically linked library
 
     WSADATA wsaData;
 
-    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    if (wsaStartup(MAKEWORD(2, 2), &wsaData) != 0)
         // providing the address of the object (&wsaData) into the library's startup function
     {
         std::cout << "ERROR: Failed to start WSA" << std::endl;
@@ -249,13 +244,13 @@ SOCKET setupConnection2(WSAStartupFunc wsaStartup, socketFunc socketfunc, connec
     // This is to make the call to the server
 
     SOCKET ClientSocket;
-    ClientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    ClientSocket = socketfunc(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     // here we are using TCP protocol
 
     if (ClientSocket == INVALID_SOCKET)
     {
-        WSACleanup();
-
+        wsacleanupfunc();
+       
         std::cout << "ERROR: Failed to create ServerSocket" << std::endl;
 
         return 0;
@@ -281,10 +276,9 @@ SOCKET setupConnection2(WSAStartupFunc wsaStartup, socketFunc socketfunc, connec
     SvrAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     // The IPV4 address the server is located on. Since different network we are gonna send the request to the NAT using localhost.
 
-    if ((connect(ClientSocket, (struct sockaddr*)&SvrAddr, sizeof(SvrAddr))) == SOCKET_ERROR)
+    if ((connectfunc(ClientSocket, (struct sockaddr*)&SvrAddr, sizeof(SvrAddr))) == SOCKET_ERROR)
     {
-        closesocket(ClientSocket);
-        WSACleanup();
+        CloseSocket(ClientSocket);
 
         std::cout << "ERROR: Connection attempted Failed" << std::endl;
 

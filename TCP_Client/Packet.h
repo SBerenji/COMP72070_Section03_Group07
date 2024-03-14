@@ -10,10 +10,18 @@
 #include <fstream>
 #include <string>
 
+/////// THESE P ALLOWS US TO REPLACE THE CALL TO THE ACTUAL SEND FUNCTION WITH A MOCK FUNCTION WHEN TESTING
+/////// These pointers to funcction will allow us to replace the call to the actual functios (like connect, send, etc.) with a mock function when testing
 
 typedef int (*WSAStartupFunc)(WORD, LPWSADATA);
 typedef SOCKET (*socketFunc)(int, int, int);
 typedef int (*connectFunc)(SOCKET, const struct sockaddr*, int);
+typedef int (*closesocketFunc)(SOCKET);
+
+typedef int (*WSACleanupFunc)();
+
+typedef int (*SendFunction)(SOCKET, const char*, int, int);
+
 
 
 class __declspec(dllexport) Packet {
