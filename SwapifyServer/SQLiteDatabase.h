@@ -1,5 +1,5 @@
 #pragma once
-#include "PacketWrapper.h"
+#include "Packet.h"
 #include <iostream>
 //#include <winsqlite/winsqlite3.h>
 #include <winsqlite/winsqlite3.h>
@@ -8,7 +8,7 @@
 class SQLiteDatabase
 {
 private:
-	sqlite3* db;
+    sqlite3* db;
 
 public:
     SQLiteDatabase(const std::string& dbPath);

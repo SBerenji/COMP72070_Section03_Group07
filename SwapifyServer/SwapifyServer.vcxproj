@@ -85,7 +85,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope Current -ExecutionPolicy Unrestricted
+      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 Powershell.exe -file sqlite3_script.ps1</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -105,7 +105,7 @@ Powershell.exe -file sqlite3_script.ps1</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope Current -ExecutionPolicy Unrestricted
+      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 Powershell.exe -file sqlite3_script.ps1</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -121,7 +121,7 @@ Powershell.exe -file sqlite3_script.ps1</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope Current -ExecutionPolicy Unrestricted
+      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 Powershell.exe -file sqlite3_script.ps1</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -141,28 +141,21 @@ Powershell.exe -file sqlite3_script.ps1</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope Current -ExecutionPolicy Unrestricted
+      <Command>Powershell.exe -Command Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 Powershell.exe -file sqlite3_script.ps1</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="file_utils.cpp" />
-    <ClCompile Include="ListingRoutes.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="PacketWrapper.cpp" />
+    <ClCompile Include="Packet.cpp" />
     <ClCompile Include="SQLiteDatabase.cpp" />
-    <ClCompile Include="TCPServer.cpp" />
     <ClCompile Include="UserRoutes.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="file_utils.h" />
-    <ClInclude Include="Listing.h" />
-    <ClInclude Include="ListingRoutes.h" />
     <ClInclude Include="Packet.h" />
-    <ClInclude Include="PacketWrapper.h" />
-    <ClInclude Include="RequestLogger.h" />
     <ClInclude Include="SQLiteDatabase.h" />
-    <ClInclude Include="TCPServer.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="UsersRoute.h" />
   </ItemGroup>

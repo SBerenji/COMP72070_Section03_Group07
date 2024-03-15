@@ -4,7 +4,7 @@
 #include <string>
 
 Packet* UserRoutes::handleUserRequest(Packet& packet, SOCKET clientSocket, std::string action) {
-    
+
 
     std::cout << "UserRoutes::handleUserRequest" << std::endl;
     if (&packet == nullptr) {
@@ -12,31 +12,31 @@ Packet* UserRoutes::handleUserRequest(Packet& packet, SOCKET clientSocket, std::
         return nullptr;
     }
 
-    // Check if User field is not null
-    if (packet.GetBody() == nullptr || packet.GetBody()->User == nullptr) {
-        std::cerr << "User field is null" << std::endl;
-        return nullptr;
-    }
-	//parse string to user object
-	User user;
-	user.parseUser(packet.GetBody()->User);
-	//userString parse into user
+    //// Check if User field is not null
+    //if (packet.GetBody() == nullptr || packet.GetBody()->User == nullptr) {
+    //    std::cerr << "User field is null" << std::endl;
+    //    return nullptr;
+    //}
+    //parse string to user object
+    User user;
+    //user.parseUser(packet.GetBody()->User);
+    //userString parse into user
     Packet* resultPacket = CreatePacket();
-	if(action == "login") {
-		resultPacket = handleLogin(user);
-	}
-	else if(action == "register") {
-	     resultPacket = handleRegister(user);
-	}
-	else if(action == "update") {
-      resultPacket =  handleUpdateUser(user);
-	}
-	else if(action == "delete") {
-       resultPacket = handleDeleteUser(user);
-	}
-	else {
-		std::cout << "Invalid route" << std::endl;
-	}
+    if (action == "login") {
+        resultPacket = handleLogin(user);
+    }
+    else if (action == "register") {
+        resultPacket = handleRegister(user);
+    }
+    else if (action == "update") {
+        resultPacket = handleUpdateUser(user);
+    }
+    else if (action == "delete") {
+        resultPacket = handleDeleteUser(user);
+    }
+    else {
+        std::cout << "Invalid route" << std::endl;
+    }
     return resultPacket;
 }
 
@@ -75,11 +75,11 @@ Packet* UserRoutes::handleLogin(User user) {
             return new Packet;
         }
     }
-    else if (result == SQLITE_DONE) {
-        // User does not exist
-        SetDataUser(ResultPacket, user.serializeUser(user));
-        return ResultPacket;
-    }
+    //else if (result == SQLITE_DONE) {
+    //    // User does not exist
+    //    SetDataUser(ResultPacket, user.serializeUser(user));
+    //    return ResultPacket;
+    //}
     else {
         // Error occurred
         std::cerr << "Error executing SQLite query." << std::endl;
@@ -92,9 +92,9 @@ Packet* UserRoutes::handleLogin(User user) {
 
 Packet* UserRoutes::handleRegister(User user) {
     // Hash the user's password
-	std::string hashedPassword = user.generateHash(user.getPassword());
+    std::string hashedPassword = user.generateHash(user.getPassword());
 
-	// Insert the user into the database
+    // Insert the user into the database
     SQLiteDatabase db("database.db");
     if (!db.isOpen()) {
         std::cerr << "Failed to open database." << std::endl;
@@ -157,20 +157,20 @@ Packet* UserRoutes::handleUpdateUser(User user) {
 
 Packet* UserRoutes::handleDeleteUser(User user) {
     // Delete the user from the database
-	SQLiteDatabase db("database.db");
+    SQLiteDatabase db("database.db");
     if (!db.isOpen()) {
-		std::cerr << "Failed to open database." << std::endl;
-		return new Packet;
-	}
+        std::cerr << "Failed to open database." << std::endl;
+        return new Packet;
+    }
 
-	// Prepare SQL query to delete user
-	std::string query = "DELETE FROM users WHERE id = " + user.getIdAsString();
+    // Prepare SQL query to delete user
+    std::string query = "DELETE FROM users WHERE id = " + user.getIdAsString();
 
-	// Execute query
+    // Execute query
     if (!db.executeQuery(query)) {
-		std::cerr << "Failed to execute query." << std::endl;
-		return new Packet;
-	}
+        std::cerr << "Failed to execute query." << std::endl;
+        return new Packet;
+    }
 
-	return new Packet;
+    return new Packet;
 }

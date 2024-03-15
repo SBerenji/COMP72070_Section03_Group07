@@ -23,29 +23,26 @@ SQLiteDatabase::SQLiteDatabase(const std::string& dbPath) : db(nullptr) {
 }
 
 SQLiteDatabase::~SQLiteDatabase() {
-        if (db) {
-            sqlite3_close(db);
-        }
+    if (db) {
+        sqlite3_close(db);
     }
+}
 
-    bool SQLiteDatabase::executeQuery(const std::string& query) {
-        char* errMsg;
-        int rc = sqlite3_exec(db, query.c_str(), nullptr, nullptr, &errMsg);
-        if (rc != SQLITE_OK) {
-            std::cerr << "Error executing SQLite query: " << errMsg << std::endl;
-            sqlite3_free(errMsg);
-            return false;
-        }
-        return true;
+bool SQLiteDatabase::executeQuery(const std::string& query) {
+    char* errMsg;
+    int rc = sqlite3_exec(db, query.c_str(), nullptr, nullptr, &errMsg);
+    if (rc != SQLITE_OK) {
+        std::cerr << "Error executing SQLite query: " << errMsg << std::endl;
+        sqlite3_free(errMsg);
+        return false;
     }
+    return true;
+}
 
-    sqlite3* SQLiteDatabase::getDB()  {
-        return db;
-    }
+sqlite3* SQLiteDatabase::getDB() {
+    return db;
+}
 
-    bool SQLiteDatabase::isOpen()  {
-        return db != nullptr;
-    }
-
-
-
+bool SQLiteDatabase::isOpen() {
+    return db != nullptr;
+}

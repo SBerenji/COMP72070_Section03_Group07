@@ -1,10 +1,7 @@
 #pragma once
 #include "User.h"
 
-
-
-
-class UserRoutes{
+class UserRoutes {
 public:
     Packet* handleUserRequest(Packet& packet, SOCKET clientSocket, std::string action);
 
