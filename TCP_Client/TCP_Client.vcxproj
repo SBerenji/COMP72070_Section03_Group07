@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Logging.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="PacketWrapper.h" />
   </ItemGroup>
