@@ -158,6 +158,8 @@ namespace WPF_Front_End
 
             signup.Show();
 
+            Closing -= CloseClient.Client_Closing;
+
             parentWindow.Close();
         }
     }

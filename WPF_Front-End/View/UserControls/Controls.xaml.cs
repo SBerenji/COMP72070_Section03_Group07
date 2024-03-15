@@ -46,8 +46,8 @@ namespace WPF_Front_End.View.UserControls
             {
                 LogIn login = new LogIn();
 
-                login.username = new byte[10];
-                login.password = new byte[20];
+                login.username = new byte[ConstantVariables.username_ByteArraySize];
+                login.password = new byte[ConstantVariables.password_ByteArraySize];
 
                 globalVariables.username = username.txtInput.Text;
 

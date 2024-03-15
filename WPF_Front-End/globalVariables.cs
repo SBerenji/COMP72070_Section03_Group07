@@ -11,9 +11,27 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows;
 using System.Xaml;
+using System.Printing.IndexedProperties;
+using System.Windows.Media.Imaging;
 
 namespace WPF_Front_End
 {
+    public class ImageConversion
+    {
+        public static BitmapImage ToImage(byte[] array)
+        {
+            using (var ms = new System.IO.MemoryStream(array))
+            {
+                var image = new BitmapImage();
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad; // here
+                image.StreamSource = ms;
+                image.EndInit();
+                return image;
+            }
+        }
+    }
+
 
     public enum Route {LOGIN, SIGNUP, POST}
 
@@ -48,6 +66,8 @@ namespace WPF_Front_End
         public const uint username_ByteArraySize = 10;
 
         public const uint password_ByteArraySize = 20;
+
+        public const uint email_ByteArraySize = 40;
     }
 
 
@@ -67,6 +87,15 @@ namespace WPF_Front_End
         public byte[] password;
     }
 
+
+    public struct SignUp
+    {
+        public byte[] username;
+        public byte[] password;
+        public byte[] email;
+        public IntPtr ImageStructArray;
+    }
+
     
     public class Packet
     {
@@ -83,6 +112,21 @@ namespace WPF_Front_End
 
             Marshal.Copy(login.password, 0, BodyBuffer + (int)ConstantVariables.username_ByteArraySize * sizeof(byte), login.password.Length);
         }
+
+
+        public static void SerializeSignUpInformation(ref IntPtr BodyBuffer, SignUp signup, int imageSize)
+        {
+            //Packet.SerializeStaticDataToBuffer(BodyBuffer, signup.username, signup.password, signup.email);
+
+            Marshal.Copy(signup.username, 0, BodyBuffer, signup.username.Length);
+
+            Marshal.Copy(signup.password, 0, BodyBuffer + (int)ConstantVariables.username_ByteArraySize * sizeof(byte), signup.password.Length);
+
+            Marshal.Copy(signup.email, 0, BodyBuffer + ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize) * sizeof(byte), signup.email.Length);
+
+            Packet.CopyBufferToHeap(BodyBuffer + ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize + (int)ConstantVariables.email_ByteArraySize) * sizeof(byte), signup.ImageStructArray, imageSize);
+        }
+
 
         public static void SetHeaderInformation(ref IntPtr HeadPtr, String Source, String Destination, Route r, bool Auth) {
             //var VarTypeHead = Marshal.PtrToStructure(HeadPtr, typeof(Header));
@@ -147,11 +191,31 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
+        public static extern IntPtr AllocateHeapMemory(int size);
+
+
+        [DllImport(dllpath)]
         public static extern IntPtr AllocateHeaderPtr();
 
 
         [DllImport(dllpath)]
         public static extern IntPtr AllocateLoginPtr();
+
+
+        [DllImport(dllpath)]
+        public static extern IntPtr AllocateSignupPtr(int imageSize);
+
+
+        [DllImport(dllpath)]
+        public static extern void SerializeStaticDataToBuffer(IntPtr heapBuffer, byte[] username, byte[] password, byte[] email);
+
+
+        [DllImport(dllpath)]
+        public static extern void CopyBufferToHeap(IntPtr heapBuffer, byte[] srcBuffer, int size);
+
+
+        [DllImport(dllpath)]
+        public static extern void CopyBufferToHeap(IntPtr heapBuffer, IntPtr srcBuffer, int size);
 
 
         [DllImport(dllpath)]
@@ -183,6 +247,10 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
+        public static extern int recvData(MySocket ClientSocket, byte[] RxBuffer, int RxBufferSize);
+
+
+        [DllImport(dllpath)]
         public static extern void Deserialization(IntPtr Pkt, byte[] src);
     }
 
@@ -198,6 +266,11 @@ namespace WPF_Front_End
 
         public static bool initialLogin = true;
         public static string password { get; set; }
+
+
+        public static byte[] ImageArray {  get; set; }
+
+        public static string email { get; set; }
     }
 
 

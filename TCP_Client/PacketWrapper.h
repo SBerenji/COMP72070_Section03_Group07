@@ -15,6 +15,8 @@ extern "C" {
 		memcpy(BodyBuffer, &login, sizeof(login));
 	}
 
+	/*__declspec(dllexport) void serializeSignupData(char* BodyBuffer, )*/
+
 	__declspec(dllexport) char* AllocateLoginPtr() {
 		char* BodyBuffer = new char[sizeof(LogIn)];
 
@@ -22,6 +24,36 @@ extern "C" {
 
 		return BodyBuffer;
 	}
+
+
+	__declspec(dllexport) char* AllocateHeapMemory(int size) {
+		char* TxBuffer = new char[size];
+
+		memset(TxBuffer, 0, size);
+
+		return TxBuffer;
+	}
+
+	__declspec(dllexport) void SerializeStaticDataToBuffer(char* heapBuffer, char* username, char* password, char* email) {
+		memcpy(heapBuffer, username, sizeof(signup.username));
+		memcpy(heapBuffer + sizeof(signup.username), password, sizeof(signup.password));
+		memcpy(heapBuffer + sizeof(signup.username) + sizeof(signup.password), email, sizeof(signup.email));
+
+		/*memcpy(heapBuffer, &signup, sizeof(signup) - sizeof(signup.ImageStructArray));*/
+	}
+
+	__declspec(dllexport) void CopyBufferToHeap(char* heapBuffer, char* srcBuffer, int size) {
+		memcpy(heapBuffer, srcBuffer, size);
+	}
+
+	__declspec(dllexport) char* AllocateSignupPtr(int imageSize) {
+		char* BodyBuffer = new char[(sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email)) + imageSize];
+
+		memset(BodyBuffer, 0, (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email)) + imageSize);
+
+		return BodyBuffer;
+	}
+
 
 	__declspec(dllexport) Packet* CreatePacket() {
 		Packet* Pkt = new Packet();

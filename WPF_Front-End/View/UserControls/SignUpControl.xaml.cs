@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -112,7 +113,7 @@ namespace WPF_Front_End.View.UserControls
                 //globalVariables.profileImageDropped = DropAreaImage.Source;
 
                 // converting the image to byte array
-                byte[] byteArray = getJPEGFromImageControl(bitmap);
+                globalVariables.ImageArray = getJPEGFromImageControl(bitmap).ToArray();
 
 
             }
@@ -157,7 +158,9 @@ namespace WPF_Front_End.View.UserControls
                 //globalVariables.profileImageSelected = SelectedImage.Source;
 
                 // converting the image to byte array
-                byte[] byteArray = getJPEGFromImageControl(bitmap);
+                globalVariables.ImageArray = getJPEGFromImageControl(bitmap).ToArray();
+
+
             }
 
 
@@ -184,27 +187,104 @@ namespace WPF_Front_End.View.UserControls
 
         private void SignUp_Click(object sender, RoutedEventArgs e)
         {
-            globalVariables.username = username.txtInput.Text;
+            if (username.txtInput.Text == "" || password.Password == "" || email.txtInput.Text == "")
+            {
+                MessageBox.Show("Please enter Username, Password AND Email Address!!");
+            }
 
-            Window parentWindow = Window.GetWindow(this);
+            else
+            {
+                SignUp signup = new SignUp();
 
-            double windowWidth = parentWindow.ActualWidth;
-            double windowHeight = parentWindow.ActualHeight;
+                globalVariables.username = username.txtInput.Text;
+                globalVariables.password = password.Password;
+                globalVariables.email = email.txtInput.Text;
 
-            NewHomeScreenPostLogin hspl = new NewHomeScreenPostLogin();
+                signup.username = new byte[ConstantVariables.username_ByteArraySize];
+                signup.password = new byte[ConstantVariables.password_ByteArraySize];
+                signup.email = new byte[ConstantVariables.email_ByteArraySize];
 
-            hspl.Width = windowWidth;
-            hspl.Height = windowHeight;
+                int imageSize = globalVariables.ImageArray.Length;
 
-          
-
-            hspl.Show();
-
-           
-
-            parentWindow.Close();
+                signup.username = Encoding.ASCII.GetBytes(globalVariables.username);
+                signup.password = Encoding.ASCII.GetBytes(globalVariables.password);
+                signup.email = Encoding.ASCII.GetBytes(globalVariables.email);
 
 
+                signup.ImageStructArray = Packet.AllocateHeapMemory(imageSize);
+
+                Packet.CopyBufferToHeap(signup.ImageStructArray, globalVariables.ImageArray, imageSize);
+
+
+                IntPtr BodyBuffer = Packet.AllocateSignupPtr(imageSize);
+
+                Packet.SerializeSignUpInformation(ref BodyBuffer, signup, imageSize);
+
+
+                IntPtr PktPtr = Packet.CreatePacket();
+
+                IntPtr Head = Packet.AllocateHeaderPtr();
+
+                //IntPtr Head = Marshal.AllocHGlobal(Marshal.SizeOf<Header>());
+
+                Packet.SetHeaderInformation(ref Head, "127.0.0.1", "127.0.0.1", Route.SIGNUP, true);
+
+                Packet.SetHeader(PktPtr, Head);
+
+
+                int size = (int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize + (int)ConstantVariables.email_ByteArraySize + imageSize;
+
+
+                Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+
+                IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
+
+
+                Packet.TxBuffer = new byte[Packet.totalPktSize];
+
+
+                Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
+
+
+                Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+
+
+                Packet.TxBuffer = null;
+
+                Packet.FreeBuffer(serializedRecv);
+                serializedRecv = IntPtr.Zero;
+
+                Packet.FreeBuffer(Head);
+                Head = IntPtr.Zero;
+
+                Packet.DestroyPacket(PktPtr);
+                PktPtr = IntPtr.Zero;
+
+                Packet.FreeBuffer(BodyBuffer);
+                BodyBuffer = IntPtr.Zero;
+
+                Packet.FreeBuffer(signup.ImageStructArray);
+                signup.ImageStructArray = IntPtr.Zero;
+
+
+                Window parentWindow = Window.GetWindow(this);
+
+                double windowWidth = parentWindow.ActualWidth;
+                double windowHeight = parentWindow.ActualHeight;
+
+                NewHomeScreenPostLogin hspl = new NewHomeScreenPostLogin();
+
+                hspl.Width = windowWidth;
+                hspl.Height = windowHeight;
+
+
+
+                hspl.Show();
+
+
+
+                parentWindow.Close();
+            }
         }
 
         // source code from: Jonathan Escobedo 

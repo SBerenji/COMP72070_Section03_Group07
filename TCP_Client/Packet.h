@@ -9,6 +9,16 @@ struct __declspec(dllexport) LogIn
 	char password[20];
 };
 
+
+struct __declspec(dllexport) SignUp
+{
+	char username[10];
+	char password[20];
+	char email[40];
+	char* ImageStructArray;
+} signup;
+
+
 class __declspec(dllexport) Packet {
 public:
 	struct Header {

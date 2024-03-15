@@ -106,9 +106,9 @@
 
         <userControl:ClearableTextBox x:Name="username" Grid.Row="1" Placeholder="Username" Height="23" Margin="17,1,81,27" Grid.RowSpan="2"/>
 
-        <userControl:ClearableTextBox Grid.Row="2" Placeholder="Email Address" Height="23" Margin="17,27,81,1" />
+        <userControl:ClearableTextBox x:Name="email" Grid.Row="2" Placeholder="Email Address" Height="23" Margin="17,27,81,1" />
 
-        <userControl:PasswordBox Grid.Row="3" Password="{Binding Password}" Placeholder="Password" Height="23" Margin="17,2,120,39" Grid.RowSpan="2" />
+        <userControl:PasswordBox x:Name="password" Grid.Row="3" Password="{Binding Password}" Placeholder="Password" Height="23" Margin="17,2,120,39" Grid.RowSpan="2" />
 
 
         <Button Grid.Row="4" x:Name="SignUpButton" Content="Sign Up" Foreground="White" FontSize="11" Height="20"

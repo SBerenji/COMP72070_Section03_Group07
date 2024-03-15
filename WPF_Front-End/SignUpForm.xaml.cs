@@ -20,14 +20,14 @@ namespace WPF_Front_End
     /// </summary>
     public partial class SignUpForm : Window
     {
-        [DllImport("TCP_Client.dll")]
-        public static extern int sendData(MySocket ClientSocket);
+        //[DllImport("TCP_Client.dll")]
+        //public static extern int sendData(MySocket ClientSocket);
 
         public SignUpForm()
         {
             InitializeComponent();
 
-            sendData(MySocket.ClientSocket);
+            //sendData(MySocket.ClientSocket);
         }
 
         private void SignUpControl_Loaded(object sender, RoutedEventArgs e)

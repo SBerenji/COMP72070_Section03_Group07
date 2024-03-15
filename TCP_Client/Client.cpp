@@ -12,6 +12,7 @@
 extern "C" __declspec(dllexport) int setupConnection();
 extern "C" __declspec(dllexport) SOCKET setupConnection2();
 extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket, char* TxBuffer, int totalSize);
+extern "C" __declspec(dllexport) int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize);
 extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket);
 
 //extern "C" {
@@ -70,6 +71,38 @@ int sendData(SOCKET ClientSocket, char* TxBuffer, int totalSize) {
     {
 
         std::cout << "Message Succesfully sent: " << TxBuffer << std::endl;
+    }
+
+    return 1;
+    // returning 1 upon successful completion.
+}
+
+int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize) {
+    // The order matters, therefore the send is before receive on Client side.
+    // Send
+
+    //char sendBuffer[20] = "Hello World!";
+    // buffer to store address of the string
+
+    int recvSize = recv(ClientSocket, RxBuffer, RxBufferSize, 0);
+    // here we are passing the clientSocket, the address of the string and the size of the string that we want the server to receive
+    // +1 becuase of NULL terminator
+
+    if (recvSize < 0)
+    {
+        std::cout << "Sending Failed" << std::endl;
+
+        closesocket(ClientSocket);
+
+        WSACleanup();
+
+        return 0;
+    }
+
+    else
+    {
+
+        std::cout << "Message Succesfully sent: " << RxBuffer << std::endl;
     }
 
     return 1;
