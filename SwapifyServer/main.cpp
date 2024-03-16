@@ -21,9 +21,7 @@
 
 using namespace std;
 
-int main()
-{
-
+SOCKET setupConnection() {
     WSADATA wsaData;
 
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -69,6 +67,18 @@ int main()
         return -1;
     }
 
+    return ServerSocket;
+}
+
+
+//int sendData(SOCKET ConnectionSocket, char* TxBuffer, int size) {
+//
+//}
+
+int main()
+{
+    SOCKET ServerSocket = setupConnection();
+
     while (1) {
         SOCKET ConnectionSocket;
         if ((ConnectionSocket = accept(ServerSocket, NULL, NULL)) == -1) {
@@ -98,6 +108,7 @@ int main()
             // if the return value of the 'recvfrom' function is -1, close the server socket and end the program execution
             if (receive_result < 0)
             {
+                closesocket(ConnectionSocket);
                 closesocket(ServerSocket);
                 WSACleanup();
                 std::cout << "ERROR: did not receive anything from client" << endl;  // if recvfrom returns -1 it means the process was unsuccessfull
@@ -124,16 +135,16 @@ int main()
                    return 1;
                }*/
                //int id = int(Pkt->GetBody()->User);
-            std::random_device rd;
-            std::mt19937 gen(rd()); // Mersenne Twister engine seeded with rd()
+            //std::random_device rd;
+            //std::mt19937 gen(rd()); // Mersenne Twister engine seeded with rd()
 
-            // Define the range for the random integer
-            int min_value = 1;
-            int max_value = 100;
+            //// Define the range for the random integer
+            //int min_value = 1;
+            //int max_value = 100;
 
-            // Generate a random integer
-            std::uniform_int_distribution<int> distribution(min_value, max_value);
-            int id = distribution(gen);
+            //// Generate a random integer
+            //std::uniform_int_distribution<int> distribution(min_value, max_value);
+            //int id = distribution(gen);
             //std::string profile_picture = signup.ImageStructArray;
 
            /* const char* sql = "DROP TABLE IF EXISTS users;"
@@ -160,35 +171,91 @@ int main()
                     + "'" + signup.email + "', "
                     + "'" + *(signup.ImageStructArray) + "')";*/
             std::string dbPath = "database.db";
-            std::ifstream file(dbPath);
-            bool fileExists = file.good();
-            file.close();
 
-            // If the file does not exist, create it
-            if (!fileExists) {
-                std::ofstream createFile(dbPath);
-                createFile.close();
-            }
+            SQLiteDatabase sqldb(dbPath);
 
-            // Open the database
-            sqlite3* db;
+            //std::ifstream file(dbPath);
+            //bool fileExists = file.good();
+            //file.close();
 
-            int rc = sqlite3_open(dbPath.c_str(), &db);
-            if (rc != SQLITE_OK) {
-                std::cerr << "Error opening SQLite database: " << sqlite3_errmsg(db) << std::endl;
-            }
+            //// If the file does not exist, create it
+            //if (!fileExists) {
+            //    std::ofstream createFile(dbPath);
+            //    createFile.close();
+            //}
+
+            //// Open the database
+            //sqlite3* db;
+
+            //int rc = sqlite3_open(dbPath.c_str(), &db);
+            //if (rc != SQLITE_OK) {
+            //    std::cerr << "Error opening SQLite database: " << sqlite3_errmsg(db) << std::endl;
+            //}
 
 
             char* errMsg = 0;
-            // SQL command to create table
-            const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS users ("
-                "id INTEGER PRIMARY KEY,"
-                "username TEXT NOT NULL,"
-                "password TEXT NOT NULL,"
-                "email TEXT NOT NULL,"
-                "profile_picture BLOB NOT NULL);";
 
-            rc = sqlite3_exec(db, sqlCreateTable, 0, 0, &errMsg);
+            if (strcmp(Pkt->GetHead()->Route, "SIGNUP") == 0) {
+                // SQL command to create table
+                const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS users ("
+                    "id INTEGER PRIMARY KEY,"
+                    "username TEXT NOT NULL,"
+                    "password TEXT NOT NULL,"
+                    "email TEXT NOT NULL,"
+                    "profile_picture BLOB NOT NULL);";
+
+
+                bool query_exe_result = sqldb.executeQuery(sqlCreateTable);
+
+                if (!query_exe_result) {
+                    return -1;
+                }
+
+
+
+                sqlite3_stmt* stmt = nullptr;
+
+                int SignUpdataInsertionReturn = sqldb.SignUpDataInsert(stmt, Pkt, signup);
+
+                if (SignUpdataInsertionReturn == -1) {
+                    return SignUpdataInsertionReturn;
+                }
+
+
+
+                // Retrieve BLOB data
+                char* imageArray = nullptr;
+                int imageSize = 0;
+
+                sqldb.FetchImage(stmt, (int)(Pkt->GetBody()->User), &imageArray, imageSize);
+
+
+
+
+                int sendSize = send(ConnectionSocket, imageArray, imageSize, 0);
+
+                /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
+
+                if (sendSize < 0) {
+                    std::cout << "Sending Image Failed!!" << std::endl;
+
+                    return -1;
+                }
+
+                else {
+                    std::cout << "Image Successfully sent!! Wohoooooo" << std::endl;
+                }
+
+                delete imageArray;
+
+                // Finalize the statement and close the database connection
+                sqldb.closeDatabase(stmt);
+            }
+
+
+            
+
+            /*rc = sqlite3_exec(db, sqlCreateTable, 0, 0, &errMsg);
 
 
             if (rc != SQLITE_OK) {
@@ -200,10 +267,11 @@ int main()
             }
             else {
                 std::cout << "Table created successfully." << std::endl;
-            }
+            }*/
 
+            
 
-            sqlite3_stmt* stmt;
+            /*sqlite3_stmt* stmt;
             const char* sql = "INSERT INTO users (id, username, password, email, profile_picture) VALUES (?, ?, ?, ?, ?)";
             sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
             sqlite3_bind_int(stmt, 1, id);
@@ -220,65 +288,43 @@ int main()
                 return 1;
             }
 
-            std::cout << "Data inserted successfully!" << std::endl;
+            std::cout << "Data inserted successfully!" << std::endl;*/
 
 
 
             // Construct the query as a std::string
-            std::ostringstream oss;
-            oss << "SELECT profile_picture FROM users WHERE id = " << id;
-            std::string query_str = oss.str();
+            //std::ostringstream oss;
+            //oss << "SELECT profile_picture FROM users WHERE id = " << id;
+            //std::string query_str = oss.str();
 
 
 
-            // Convert the std::string query to a const char*
-            const char* query = query_str.c_str();
+            //// Convert the std::string query to a const char*
+            //const char* query = query_str.c_str();
 
-            //memcpy(query, ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).c_str(), ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).length());
-
-
-            // Prepare the SQL statement
-            rc = sqlite3_prepare_v2(db, query, -1, &stmt, nullptr);
-            if (rc != SQLITE_OK) {
-                std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-                sqlite3_close(db);
-                return 1;
-            }
+            ////memcpy(query, ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).c_str(), ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).length());
 
 
-            // Execute the query
-            rc = sqlite3_step(stmt);
-            if (rc != SQLITE_ROW) {
-                std::cerr << "No data found" << std::endl;
-                sqlite3_finalize(stmt);
-                sqlite3_close(db);
-                return 1;
-            }
+            //// Prepare the SQL statement
+            //rc = sqlite3_prepare_v2(db, query, -1, &stmt, nullptr);
+            //if (rc != SQLITE_OK) {
+            //    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+            //    sqlite3_close(db);
+            //    return 1;
+            //}
 
 
-            // Retrieve BLOB data
-            const void* blobData = sqlite3_column_blob(stmt, 0);
-            int blobSize = sqlite3_column_bytes(stmt, 0);
+            //// Execute the query
+            //rc = sqlite3_step(stmt);
+            //if (rc != SQLITE_ROW) {
+            //    std::cerr << "No data found" << std::endl;
+            //    sqlite3_finalize(stmt);
+            //    sqlite3_close(db);
+            //    return 1;
+            //}
 
 
-
-            int sendSize = send(ConnectionSocket, (char*)blobData, blobSize, 0);
-
-            /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
-
-            if (sendSize < 0) {
-                std::cout << "Sending Image Failed!!" << std::endl;
-
-                return -1;
-            }
-
-            else {
-                std::cout << "Image Successfully sent!! Wohoooooo" << std::endl;
-            }
-
-            // Finalize the statement and close the database connection
-            sqlite3_finalize(stmt);
-            sqlite3_close(db);
+            
 
             //if (!db.executeQuery(sql)) {
             //    std::cerr << "Query error: "<< std::endl; // Log the query error

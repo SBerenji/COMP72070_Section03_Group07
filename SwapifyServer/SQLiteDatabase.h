@@ -4,6 +4,7 @@
 //#include <winsqlite/winsqlite3.h>
 #include <winsqlite/winsqlite3.h>
 #include <string>
+#include <sstream>
 
 class SQLiteDatabase
 {
@@ -15,10 +16,16 @@ public:
 
     ~SQLiteDatabase();
 
-    bool executeQuery(const std::string& query);
+    bool executeQuery(const char* sqlQuery);
+
+    int SignUpDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup);
+
+    int FetchImage(sqlite3_stmt* stmt, int Clientid, char** imageArray, int& imageSize);
 
     sqlite3* getDB();
 
     bool isOpen();
+
+    void closeDatabase(sqlite3_stmt* stmt);
 
 };

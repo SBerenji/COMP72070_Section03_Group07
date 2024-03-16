@@ -113,7 +113,7 @@ Packet* UserRoutes::handleRegister(User user) {
         + "'" + user.getAccountStatus() + "')";
 
     // Execute query
-    if (!db.executeQuery(query)) {
+    if (!db.executeQuery(query.c_str())) {
         std::cerr << "Failed to execute query." << std::endl;
         return new Packet;
     }
@@ -146,7 +146,7 @@ Packet* UserRoutes::handleUpdateUser(User user) {
         "WHERE id = " + user.getIdAsString();
 
     // Execute query
-    if (!db.executeQuery(query)) {
+    if (!db.executeQuery(query.c_str())) {
         std::cerr << "Failed to execute query." << std::endl;
         return new Packet;
     }
@@ -167,7 +167,7 @@ Packet* UserRoutes::handleDeleteUser(User user) {
     std::string query = "DELETE FROM users WHERE id = " + user.getIdAsString();
 
     // Execute query
-    if (!db.executeQuery(query)) {
+    if (!db.executeQuery(query.c_str())) {
         std::cerr << "Failed to execute query." << std::endl;
         return new Packet;
     }
