@@ -365,13 +365,15 @@ extern "C" {
         return Pkt;
     }
 
-    __declspec(dllexport) void DestroyPacket(Packet* Pkt) {
+    __declspec(dllexport) void DestroyPacket(Packet*& Pkt) {
         delete Pkt;
+        Pkt = nullptr;   // nullifying the pointer
     }
 
 
-    __declspec(dllexport) void FreeBuffer(char* Buffer) {
+    __declspec(dllexport) void FreeBuffer(char*& Buffer) {
         delete Buffer;
+        Buffer = nullptr;   // nullifying the pointer
     }
 
 

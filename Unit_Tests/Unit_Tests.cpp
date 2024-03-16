@@ -2,15 +2,20 @@
 #include "CppUnitTest.h"
 #include "../TCP_Client/Packet.h"
 #include "../TCP_Client/PacketWrapper.h"
-//extern "C" typedef int SendFunction(SOCKET, const char*, int, int);
-
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 extern "C" int CloseSocket(SOCKET ClientSocket, closesocketFunc closeFunc = closesocket, WSACleanupFunc wsacleanupfunc = WSACleanup);
 extern "C" int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc = send);
 extern "C" SOCKET setupConnection2(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanup = WSACleanup);
-
+extern "C" char* SerializeData(Packet * Pkt, int& TotalSize);
+extern "C" Packet * CreatePacket();
+extern "C" void DestroyPacket(Packet*& Pkt);
+extern "C" void FreeBuffer(char*& Buffer);
+extern "C" char* AllocateHeaderPtr();
+extern "C" void Deserialization(Packet * Pkt, char* src);
+extern "C" void SetHeader(Packet * Pkt, void* Head);
+extern "C" void SetBody(Packet * Pkt, unsigned char User, char* Data, int DataSize);
 
 //  *****  Creating mock functions for the sendData() function   ******
 
@@ -321,7 +326,7 @@ namespace UnitTests
 
 
 		///// <summary>
-		///// This test ensures that the sendData function (here a mock function) will return 0 in case of an unsuccessfull send
+		///// This test ensures that the sendData function will return 0 in case of an unsuccessfull send
 		///// </summary>
 		TEST_METHOD(sendData_InvalidSocket_UnsuccessfulSend)
 		{
@@ -347,6 +352,182 @@ namespace UnitTests
 			// Assert
 			Assert::AreEqual(0, result);
 		}
+
+
+		///// <summary>
+		///// This test ensures that the CreatePacket function successfully instantiates the Packet class 
+		///// </summary>
+
+		TEST_METHOD(CreatePacket_Success)
+		{
+			// Act
+			Packet* packet = CreatePacket();
+
+			// Assert
+			Assert::IsNotNull(packet);
+
+			// Clean up
+			delete packet;
+		}
+		
+		
+
+		///// <summary>
+		///// This test ensures that the DestroyPacket function successfully deletes the packet created from the memory
+		///// </summary>
+
+		TEST_METHOD(DestroyPacket_Success)
+		{
+			// Arrange
+			Packet* Pkt = new Packet();
+
+			Pkt->GetBody()->Data = nullptr;
+
+
+			memset(Pkt->GetHead(), 0, sizeof(*(Pkt->GetHead())));
+			memset(&(Pkt->GetBody()->User), 0, sizeof(Pkt->GetBody()->User));
+			memset(&(Pkt->GetTail()->Checksum), 0, sizeof(Pkt->GetTail()->Checksum));
+
+
+			Assert::IsNotNull(Pkt);
+
+			// Act
+			DestroyPacket(Pkt);
+
+
+			// Assert
+			Assert::IsNull(Pkt);
+		}
+
+
+		///// <summary>
+		///// This test ensures that the FreeBuffer function successfully deletes the buffer pointer created and make sures there is no dangling pointer
+		///// </summary>
+
+		TEST_METHOD(FreeBuffer_Success)
+		{
+			char* TxBuffer = new char[10];
+			std::string test = "Testing";
+
+			memcpy(TxBuffer, test.c_str(), test.length());
+
+			// Clean up
+			FreeBuffer(TxBuffer);
+
+			Assert::IsNull(TxBuffer);
+		}
+		
+		
+		TEST_METHOD(AllocateHeaderPtr_Success)
+		{
+		
+			// Act
+			char* result = AllocateHeaderPtr();
+
+			// Assert
+			Assert::IsNotNull(result);
+		}
+
+
+		///// <summary>
+		///// This test ensures that the Deserialization function successfully deserializes the serialized data passed to it.
+		///// </summary>
+		TEST_METHOD(Deserialization_ValidData)
+		{
+			// Arrange
+			Packet* Pkt = new Packet(); // create a new packet:
+
+
+			Pkt->GetBody()->Data = nullptr;
+
+
+			memset(Pkt->GetHead(), 0, sizeof(*(Pkt->GetHead())));
+			memset(&(Pkt->GetBody()->User), 0, sizeof(Pkt->GetBody()->User));
+			memset(&(Pkt->GetTail()->Checksum), 0, sizeof(Pkt->GetTail()->Checksum));
+
+
+			Pkt->GetBody()->Data = new char[10];
+			Pkt->GetBody()->Data = "Testing";
+			Pkt->GetHead()->Length = 10; // Set the length
+
+			int totalSize = 0;
+
+			Pkt->GetTail()->Checksum = 0xFF00FF00;
+
+			totalSize = sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length + sizeof(*(Pkt->GetTail()));
+
+			Pkt->GetTxBuffer() = new char[totalSize];
+
+
+			memcpy(Pkt->GetTxBuffer(), Pkt->GetHead(), sizeof(*(Pkt->GetHead())));
+
+			memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())), &(Pkt->GetBody()->User), sizeof(Pkt->GetBody()->User));
+			memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User), Pkt->GetBody()->Data, Pkt->GetHead()->Length);
+			memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length, Pkt->GetTail(), sizeof(*(Pkt->GetTail())));
+
+			Packet* packet = new Packet(); // create a new packet:
+
+
+			packet->GetBody()->Data = nullptr;
+
+
+			memset(packet->GetHead(), 0, sizeof(*(packet->GetHead())));
+			memset(&(packet->GetBody()->User), 0, sizeof(packet->GetBody()->User));
+			memset(&(packet->GetTail()->Checksum), 0, sizeof(packet->GetTail()->Checksum));
+
+			// Act
+			Deserialization(packet, Pkt->GetTxBuffer()); // Deserializing the data into the new packet
+
+			// Assert 
+			Assert::AreEqual(10, (int)Pkt->GetHead()->Length);
+			Assert::IsNotNull(Pkt->GetBody()->Data);
+		}
+
+
+
+		///// <summary>
+		///// This test ensures that the SerializeData function successfully deserializes the serialized data passed to it.
+		///// </summary>
+		TEST_METHOD(SerializeData_ValidData)
+		{
+			// Arrange
+			Packet* Pkt = new Packet(); // create a new packet:
+
+
+			Pkt->GetBody()->Data = nullptr;
+
+
+			memset(Pkt->GetHead(), 0, sizeof(*(Pkt->GetHead())));
+			memset(&(Pkt->GetBody()->User), 0, sizeof(Pkt->GetBody()->User));
+			memset(&(Pkt->GetTail()->Checksum), 0, sizeof(Pkt->GetTail()->Checksum));
+
+			// initializing the packet body
+			Pkt->GetBody()->Data = new char[10];
+			Pkt->GetBody()->Data = "Testing";
+			Pkt->GetHead()->Length = 10; // Set the length element of the header
+
+			int totalSize = 0;
+
+			// Act
+			char* TxBuffer = nullptr;
+			TxBuffer = SerializeData(Pkt, totalSize);
+
+			// Assert 
+			Assert::IsNotNull(TxBuffer);
+		}
+
+
+		///// <summary>
+		///// This test ensures that the setHeader function can properly set the header of the packet
+		///// </summary>
+
+
+
+
+		///// <summary>
+		///// This test ensures that the setBody function can properly set the body of the packet
+		///// </summary>
+
 
 	};
 

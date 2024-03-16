@@ -10,7 +10,7 @@
 #include <fstream>
 #include <string>
 
-/////// THESE P ALLOWS US TO REPLACE THE CALL TO THE ACTUAL SEND FUNCTION WITH A MOCK FUNCTION WHEN TESTING
+/////// THESE ALLOW US TO REPLACE THE CALL TO THE ACTUAL SEND FUNCTION WITH A MOCK FUNCTION WHEN TESTING
 /////// These pointers to funcction will allow us to replace the call to the actual functios (like connect, send, etc.) with a mock function when testing
 
 typedef int (*WSAStartupFunc)(WORD, LPWSADATA);
@@ -49,7 +49,7 @@ private:
 
 public:
 	Packet() {
-
+		// Empty constructor body
 	}
 
 	Header* GetHead() {
