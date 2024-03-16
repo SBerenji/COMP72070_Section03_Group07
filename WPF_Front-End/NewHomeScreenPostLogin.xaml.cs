@@ -26,17 +26,21 @@ namespace WPF_Front_End
         {
             InitializeComponent();
 
-            byte[] RxBuffer = new byte[200000];
+            if (globalVariables.imageUploaded)
+            {
+                byte[] RxBuffer = new byte[200000];
 
-            Packet.recvData(MySocket.ClientSocket, RxBuffer, 200000);
+                Packet.recvData(MySocket.ClientSocket, RxBuffer, 200000);
 
-            Hamburger.profile_icon.Visibility = Visibility.Collapsed;
+                Hamburger.profile_icon.Visibility = Visibility.Collapsed;
 
-            Hamburger.ProfileImage.Visibility = Visibility.Visible;
+                Hamburger.ProfileImage.Visibility = Visibility.Visible;
 
-            byte[] imgArr = RxBuffer.ToArray();
+                byte[] imgArr = RxBuffer.ToArray();
 
-            Hamburger.ProfileImage.Source = ImageConversion.ToImage(imgArr);
+                Hamburger.ProfileImage.Source = ImageConversion.ToImage(imgArr);
+            }
+
 
             Closing += CloseClient.Client_Closing;
 

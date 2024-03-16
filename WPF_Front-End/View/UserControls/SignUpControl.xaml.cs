@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,9 @@ namespace WPF_Front_End.View.UserControls
 
             AddUserImage.MouseEnter += AddUserImage_MouseEnter;
             AddUserImage.MouseLeave += AddUserImage_MouseLeave;
+
+
+            globalVariables.imageUploaded = false;
 
         }
 
@@ -115,7 +119,7 @@ namespace WPF_Front_End.View.UserControls
                 // converting the image to byte array
                 globalVariables.ImageArray = getJPEGFromImageControl(bitmap).ToArray();
 
-
+                globalVariables.imageUploaded = true;
             }
         }
 
@@ -129,6 +133,10 @@ namespace WPF_Front_End.View.UserControls
             AddUserImage.Visibility = Visibility.Visible;
             RemoveText1.Visibility = Visibility.Visible;
             RemoveText2.Visibility = Visibility.Visible;
+
+            globalVariables.imageUploaded = false;
+
+            globalVariables.ImageArray = Array.Empty<byte>();
         }
 
 
@@ -160,7 +168,7 @@ namespace WPF_Front_End.View.UserControls
                 // converting the image to byte array
                 globalVariables.ImageArray = getJPEGFromImageControl(bitmap).ToArray();
 
-
+                globalVariables.imageUploaded = true;
             }
 
 
@@ -204,67 +212,134 @@ namespace WPF_Front_End.View.UserControls
                 signup.password = new byte[ConstantVariables.password_ByteArraySize];
                 signup.email = new byte[ConstantVariables.email_ByteArraySize];
 
-                int imageSize = globalVariables.ImageArray.Length;
 
                 signup.username = Encoding.ASCII.GetBytes(globalVariables.username);
                 signup.password = Encoding.ASCII.GetBytes(globalVariables.password);
                 signup.email = Encoding.ASCII.GetBytes(globalVariables.email);
 
 
-                signup.ImageStructArray = Packet.AllocateHeapMemory(imageSize);
+                if (globalVariables.imageUploaded)
+                {
+                    int imageSize = globalVariables.ImageArray.Length;
 
-                Packet.CopyBufferToHeap(signup.ImageStructArray, globalVariables.ImageArray, imageSize);
+                    signup.ImageStructArray = Packet.AllocateHeapMemory(imageSize);
 
-
-                IntPtr BodyBuffer = Packet.AllocateSignupPtr(imageSize);
-
-                Packet.SerializeSignUpInformation(ref BodyBuffer, signup, imageSize);
-
-
-                IntPtr PktPtr = Packet.CreatePacket();
-
-                IntPtr Head = Packet.AllocateHeaderPtr();
-
-                //IntPtr Head = Marshal.AllocHGlobal(Marshal.SizeOf<Header>());
-
-                Packet.SetHeaderInformation(ref Head, "127.0.0.1", "127.0.0.1", Route.SIGNUP, true);
-
-                Packet.SetHeader(PktPtr, Head);
+                    Packet.CopyBufferToHeap(signup.ImageStructArray, globalVariables.ImageArray, imageSize);
 
 
-                int size = (int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize + (int)ConstantVariables.email_ByteArraySize + imageSize;
+                    IntPtr BodyBuffer = Packet.AllocateSignupPtr(imageSize);
+
+                    Packet.SerializeSignUpInformation(ref BodyBuffer, signup, imageSize);
 
 
-                Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+                    IntPtr PktPtr = Packet.CreatePacket();
 
-                IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
+                    IntPtr Head = Packet.AllocateHeaderPtr();
 
+                    //IntPtr Head = Marshal.AllocHGlobal(Marshal.SizeOf<Header>());
 
-                Packet.TxBuffer = new byte[Packet.totalPktSize];
+                    Packet.SetHeaderInformation(ref Head, "127.0.0.1", "127.0.0.1", Route.SIGNUP_IMAGEUPLOADED, true);
 
-
-                Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
-
-
-                Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+                    Packet.SetHeader(PktPtr, Head);
 
 
-                Packet.TxBuffer = null;
+                    int size = (int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize + (int)ConstantVariables.email_ByteArraySize + imageSize;
 
-                Packet.FreeBuffer(serializedRecv);
-                serializedRecv = IntPtr.Zero;
 
-                Packet.FreeBuffer(Head);
-                Head = IntPtr.Zero;
+                    Packet.SetBody(PktPtr, '1', BodyBuffer, size);
 
-                Packet.DestroyPacket(PktPtr);
-                PktPtr = IntPtr.Zero;
+                    IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
 
-                Packet.FreeBuffer(BodyBuffer);
-                BodyBuffer = IntPtr.Zero;
 
-                Packet.FreeBuffer(signup.ImageStructArray);
-                signup.ImageStructArray = IntPtr.Zero;
+                    Packet.TxBuffer = new byte[Packet.totalPktSize];
+
+
+                    Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
+
+
+                    Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+
+
+                    Packet.TxBuffer = null;
+
+                    Packet.FreeBuffer(ref serializedRecv);
+                    serializedRecv = IntPtr.Zero;
+
+                    Packet.FreeBuffer(ref Head);
+                    Head = IntPtr.Zero;
+
+                    Packet.DestroyPacket(ref PktPtr);
+                    PktPtr = IntPtr.Zero;
+
+
+                    Packet.FreeBuffer(ref BodyBuffer);
+                    BodyBuffer = IntPtr.Zero;
+
+                    Packet.FreeBuffer(ref signup.ImageStructArray);
+                    signup.ImageStructArray = IntPtr.Zero;
+                }
+
+                else
+                {
+                    byte[] data = Encoding.ASCII.GetBytes("Image Not Uploaded");
+
+                    int imageSize = data.Length;
+
+                    signup.ImageStructArray = Packet.AllocateHeapMemory(imageSize);
+
+                    Packet.CopyBufferToHeap(signup.ImageStructArray, data, imageSize);
+
+
+                    IntPtr BodyBuffer = Packet.AllocateSignupPtr(imageSize);
+
+                    Packet.SerializeSignUpInformation(ref BodyBuffer, signup, imageSize);
+
+
+                    IntPtr PktPtr = Packet.CreatePacket();
+
+                    IntPtr Head = Packet.AllocateHeaderPtr();
+
+                    //IntPtr Head = Marshal.AllocHGlobal(Marshal.SizeOf<Header>());
+
+                    Packet.SetHeaderInformation(ref Head, "127.0.0.1", "127.0.0.1", Route.SIGNUP_IMAGENOTUPLOADED, true);
+
+                    Packet.SetHeader(PktPtr, Head);
+
+                    int size = (int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize + (int)ConstantVariables.email_ByteArraySize + imageSize;
+
+                    Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+
+                    IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
+
+
+                    Packet.TxBuffer = new byte[Packet.totalPktSize];
+
+
+                    Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
+
+
+                    Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+
+
+                    Packet.TxBuffer = null;
+
+                    Packet.FreeBuffer(ref serializedRecv);
+                    serializedRecv = IntPtr.Zero;
+
+                    Packet.FreeBuffer(ref Head);
+                    Head = IntPtr.Zero;
+
+                    Packet.DestroyPacket(ref PktPtr);
+                    PktPtr = IntPtr.Zero;
+
+
+                    Packet.FreeBuffer(ref BodyBuffer);
+                    BodyBuffer = IntPtr.Zero;
+
+                    Packet.FreeBuffer(ref signup.ImageStructArray);
+                    signup.ImageStructArray = IntPtr.Zero;
+                }
+                
 
 
                 Window parentWindow = Window.GetWindow(this);

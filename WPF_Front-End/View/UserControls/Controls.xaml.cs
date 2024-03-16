@@ -98,20 +98,20 @@ namespace WPF_Front_End.View.UserControls
 
                 Packet.TxBuffer = null;
 
-                Packet.FreeBuffer(Head);
+                Packet.FreeBuffer(ref Head);
                 Head = IntPtr.Zero;
 
-                Packet.FreeBuffer(BodyBuffer);
+                Packet.FreeBuffer(ref BodyBuffer);
                 BodyBuffer = IntPtr.Zero;
 
-                Packet.FreeBuffer(serializedRecv);
+                Packet.FreeBuffer(ref serializedRecv);
                 serializedRecv = IntPtr.Zero;
 
-                Packet.DestroyPacket(PktPtr);
+                Packet.DestroyPacket(ref PktPtr);
                 PktPtr = IntPtr.Zero;
 
-                Marshal.FreeHGlobal(Head);
-                Head = IntPtr.Zero;
+                //Marshal.FreeHGlobal(Head);
+                //Head = IntPtr.Zero;
 
                 //Packet.DeallocateMemoryGivenToIntPtr(Head);
 

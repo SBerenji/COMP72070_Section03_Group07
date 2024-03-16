@@ -24,7 +24,7 @@ public:
 	struct Header {
 		char Source[20];
 		char Destination[20];
-		char Route[10];
+		char Route[40];
 		bool Authorization;
 		unsigned int Length;
 	} Head;

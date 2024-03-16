@@ -33,7 +33,9 @@ namespace WPF_Front_End
     }
 
 
-    public enum Route {LOGIN, SIGNUP, POST}
+    public enum Route {LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED, POST}
+
+
 
     public class CloseClient
     {
@@ -61,7 +63,7 @@ namespace WPF_Front_End
     {
         public const uint Source_Destination_ByteArraySize = 20;
 
-        public const uint Route_ByteArraySize = 10;
+        public const uint Route_ByteArraySize = 40;
 
         public const uint username_ByteArraySize = 10;
 
@@ -96,14 +98,14 @@ namespace WPF_Front_End
         public IntPtr ImageStructArray;
     }
 
-    
+
     public class Packet
     {
         const String dllpath = "TCP_Client.dll";
 
         public static int totalPktSize;
 
-        public static byte[] TxBuffer; 
+        public static byte[] TxBuffer;
 
 
         public static void SetLoginBodyInformation(ref IntPtr BodyBuffer, LogIn login)
@@ -219,11 +221,11 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
-        public static extern void DestroyPacket(IntPtr Pkt);
+        public static extern void DestroyPacket(ref IntPtr Pkt);
 
 
         [DllImport(dllpath)]
-        public static extern void FreeBuffer(IntPtr Buffer);
+        public static extern void FreeBuffer(ref IntPtr Buffer);
 
 
         [DllImport(dllpath)]
@@ -271,6 +273,9 @@ namespace WPF_Front_End
         public static byte[] ImageArray {  get; set; }
 
         public static string email { get; set; }
+
+
+        public static bool imageUploaded { get; set; }
     }
 
 
