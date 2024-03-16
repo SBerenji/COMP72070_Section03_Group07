@@ -43,10 +43,10 @@ bool SQLiteDatabase::executeQuery(const char* sqlQuery) {
     return true;
 }
 
-int SQLiteDatabase::SignUpDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup) {
+int SQLiteDatabase::SignUpWithImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup) {
     
 
-    const char* sql = "INSERT INTO users (id, username, password, email, profile_picture) VALUES (?, ?, ?, ?, ?)";
+    const char* sql = "INSERT INTO UsersWithProfile (id, username, password, email, profile_picture) VALUES (?, ?, ?, ?, ?)";
     
     sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
 
@@ -73,10 +73,41 @@ int SQLiteDatabase::SignUpDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& si
 }
 
 
+
+int SQLiteDatabase::SignUpWithoutImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup) {
+
+
+    const char* sql = "INSERT INTO UsersWithoutProfile (id, username, password, email, profile_picture_SubstituteData) VALUES (?, ?, ?, ?, ?)";
+
+    sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, (int)(Pkt->GetBody()->User));
+    sqlite3_bind_text(stmt, 2, signup.username, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, signup.password, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, signup.email, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 5, signup.ImageStructArray, Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email)), SQLITE_TRANSIENT);
+
+    int rc = sqlite3_step(stmt);
+
+    if (rc != SQLITE_DONE) {
+        std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
+
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+
+        return -1;
+    }
+
+    std::cout << "Data inserted successfully!" << std::endl;
+
+    return 0;
+}
+
+
 int SQLiteDatabase::FetchImage(sqlite3_stmt* stmt, int Clientid, char** imageArray, int& imageSize) {
     // Construct the query as a std::string
     std::ostringstream oss;
-    oss << "SELECT profile_picture FROM users WHERE id = " << Clientid;
+    oss << "SELECT profile_picture FROM UsersWithProfile WHERE id = " << Clientid;
     std::string query_str = oss.str();
 
 

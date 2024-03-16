@@ -82,7 +82,7 @@ void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign) {
 		memcpy(&log, Pkt->GetBody()->Data, sizeof(log));
 	}
 
-	else if (strcmp(Pkt->GetHead()->Route, "SIGNUP") == 0) {
+	else if ((strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGEUPLOADED") == 0) || (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGENOTUPLOADED") == 0)) {
 		char* data = nullptr;
 		data = Pkt->GetBody()->Data;
 

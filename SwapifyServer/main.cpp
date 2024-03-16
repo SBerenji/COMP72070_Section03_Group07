@@ -195,9 +195,9 @@ int main()
 
             char* errMsg = 0;
 
-            if (strcmp(Pkt->GetHead()->Route, "SIGNUP") == 0) {
+            if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGEUPLOADED") == 0) {
                 // SQL command to create table
-                const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS users ("
+                const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
                     "id INTEGER PRIMARY KEY,"
                     "username TEXT NOT NULL,"
                     "password TEXT NOT NULL,"
@@ -215,7 +215,7 @@ int main()
 
                 sqlite3_stmt* stmt = nullptr;
 
-                int SignUpdataInsertionReturn = sqldb.SignUpDataInsert(stmt, Pkt, signup);
+                int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(stmt, Pkt, signup);
 
                 if (SignUpdataInsertionReturn == -1) {
                     return SignUpdataInsertionReturn;
@@ -249,6 +249,36 @@ int main()
                 delete imageArray;
 
                 // Finalize the statement and close the database connection
+                sqldb.closeDatabase(stmt);
+            }
+
+            else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGENOTUPLOADED") == 0) {
+                // SQL command to create table
+                const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithoutProfile ("
+                    "id INTEGER PRIMARY KEY,"
+                    "username TEXT NOT NULL,"
+                    "password TEXT NOT NULL,"
+                    "email TEXT NOT NULL,"
+                    "profile_picture_SubstituteData TEXT NOT NULL);";
+
+
+                bool query_exe_result = sqldb.executeQuery(sqlCreateTable);
+
+                if (!query_exe_result) {
+                    return -1;
+                }
+
+
+
+                sqlite3_stmt* stmt = nullptr;
+
+                int SignUpdataInsertionReturn = sqldb.SignUpWithoutImageDataInsert(stmt, Pkt, signup);
+
+                if (SignUpdataInsertionReturn == -1) {
+                    return SignUpdataInsertionReturn;
+                }
+
+
                 sqldb.closeDatabase(stmt);
             }
 

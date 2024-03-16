@@ -18,7 +18,9 @@ public:
 
     bool executeQuery(const char* sqlQuery);
 
-    int SignUpDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup);
+    int SignUpWithImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup);
+
+    int SignUpWithoutImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup);
 
     int FetchImage(sqlite3_stmt* stmt, int Clientid, char** imageArray, int& imageSize);
 
