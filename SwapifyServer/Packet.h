@@ -18,7 +18,19 @@ struct SignUp
 	char* ImageStructArray;
 };
 
+struct Listing
+{
+	char Image[100];
+	char Title[100];
+	char EstimatedWorth[100];
+	char Location[100];
+	char Condition[100];
+	char Delivery[100];
+	char LookingFor[100];
+	char ListingDate[20];
 
+	char* ImageStructArray;
+};
 
 class Packet {
 	struct Header {
