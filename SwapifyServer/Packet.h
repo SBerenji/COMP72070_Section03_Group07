@@ -19,6 +19,11 @@ struct SignUp
 };
 
 
+struct SignUpCheck {
+	char username[10];
+	char email[40];
+};
+
 
 class Packet {
 	struct Header {
@@ -135,9 +140,9 @@ void DestroyPacket(Packet* Pkt);
 void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup);
 
 
-void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign);
+void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpCheck& check);
 
-
+void SetHeaderInformation(Packet* pkt, char* source, int source_size, char* destination, int destination_size, char* Route, int Route_size, bool Authorization, unsigned int length);
 
 void SetHeader(Packet* Pkt, void* Head);
 
@@ -147,5 +152,6 @@ void SetBody(Packet* Pkt, unsigned char User, char* Data, int DataSize);
 
 unsigned int CalculateChecksum();
 
+char* SerializeUserCheckingData(Packet* Pkt, int& TotalSize);
 
 char* SerializeData(Packet* Pkt, int& TotalSize);

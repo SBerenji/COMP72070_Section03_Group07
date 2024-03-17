@@ -61,7 +61,7 @@ void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup)
 };
 
 
-void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign) {
+void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpCheck& check) {
 	memcpy(Pkt->GetHead(), src, sizeof(*(Pkt->GetHead())));
 
 	Pkt->GetBody()->Data = new char[Pkt->GetHead()->Length];
@@ -109,8 +109,26 @@ void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign) {
 
 		memcpy(sign.ImageStructArray, Pkt->GetBody()->Data + (sizeof(sign.username) + sizeof(sign.password) + sizeof(sign.email)), Pkt->GetHead()->Length - (sizeof(sign.username) + sizeof(sign.password) + sizeof(sign.email)));
 	}
+
+	else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") == 0) {
+		memcpy(&(check.username), Pkt->GetBody()->Data, sizeof(check.username));
+
+		memcpy(&(check.email), Pkt->GetBody()->Data + sizeof(check.username), sizeof(check.email));
+	}
 };
 
+
+void SetHeaderInformation(Packet* pkt, char* source, int source_size, char* destination, int destination_size, char* Route, int Route_size, bool Authorization, unsigned int length) {
+	memcpy(pkt->GetHead()->Source, source, source_size);
+
+	memcpy(pkt->GetHead()->Destination, destination, destination_size);
+
+	memcpy(pkt->GetHead()->Route, Route, Route_size);
+
+	memcpy(&(pkt->GetHead()->Authorization), &Authorization, sizeof(Authorization));
+
+	memcpy(&(pkt->GetHead()->Length), &length, sizeof(length));
+}
 
 
 void SetHeader(Packet* Pkt, void* Head) {
@@ -162,6 +180,22 @@ unsigned int CalculateChecksum() {
 
 	return checksum;
 };
+
+
+char* SerializeUserCheckingData(Packet* Pkt, int& TotalSize) {
+	if (Pkt->GetTxBuffer()) {
+		delete[] Pkt->GetTxBuffer();
+	}
+
+
+	TotalSize = sizeof(*(Pkt->GetHead()));
+
+	Pkt->GetTxBuffer() = new char[TotalSize];
+
+	memcpy(Pkt->GetTxBuffer(), Pkt->GetHead(), TotalSize);
+
+	return Pkt->GetTxBuffer();
+}
 
 
 char* SerializeData(Packet* Pkt, int& TotalSize) {

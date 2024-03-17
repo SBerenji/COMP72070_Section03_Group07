@@ -34,7 +34,6 @@ bool SQLiteDatabase::executeQuery(const char* sqlQuery) {
     if (rc != SQLITE_OK) {
         std::cerr << "Error executing SQLite query: " << errMsg << std::endl;
         sqlite3_free(errMsg);
-        sqlite3_close(db);
         return false;
     }
 
@@ -62,7 +61,6 @@ int SQLiteDatabase::SignUpWithImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, S
         std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
 
         sqlite3_finalize(stmt);
-        sqlite3_close(db);
 
         return -1;
     }
@@ -93,7 +91,6 @@ int SQLiteDatabase::SignUpWithoutImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt
         std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
 
         sqlite3_finalize(stmt);
-        sqlite3_close(db);
 
         return -1;
     }
@@ -122,7 +119,6 @@ int SQLiteDatabase::FetchImage(sqlite3_stmt* stmt, int Clientid, char** imageArr
     int rc = sqlite3_prepare_v2(db, query, -1, &stmt, nullptr);
     if (rc != SQLITE_OK) {
         std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        sqlite3_close(db);
         return -1;
     }
 
@@ -132,7 +128,6 @@ int SQLiteDatabase::FetchImage(sqlite3_stmt* stmt, int Clientid, char** imageArr
     if (rc != SQLITE_ROW) {
         std::cerr << "No data found" << std::endl;
         sqlite3_finalize(stmt);
-        sqlite3_close(db);
         return -1;
     }
 

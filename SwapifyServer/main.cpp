@@ -75,6 +75,16 @@ SOCKET setupConnection() {
 //
 //}
 
+
+bool userFound;
+
+int callback(void* NotUsed, int argc, char** argv, char** azColName) {
+    userFound = true; // Set the flag to true if any rows are returned
+
+    return 0;
+}
+
+
 int main()
 {
     SOCKET ServerSocket = setupConnection();
@@ -123,11 +133,17 @@ int main()
 
             SignUp signup;
 
-            Deserialization(Pkt, RxBuffer, log, signup);
+            SignUpCheck check;
 
-            Display(Pkt, std::cout, log, signup);
+            Deserialization(Pkt, RxBuffer, log, signup, check);
 
-            char* imageBuff = Pkt->GetBody()->Data + (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email));
+            if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") != 0) {
+                Display(Pkt, std::cout, log, signup);
+
+                char* imageBuff = Pkt->GetBody()->Data + (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email));
+            }
+
+            
 
             /*   SQLiteDatabase db("database.db");
                if (!db.isOpen()) {
@@ -280,6 +296,81 @@ int main()
 
 
                 sqldb.closeDatabase(stmt);
+            }
+
+            else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") == 0) {
+                userFound = false;
+
+                std::ostringstream oss;
+                oss << "SELECT username, email FROM UsersWithProfile WHERE username = '" << check.username << "';";
+                std::string withProfile_query_str = oss.str();
+
+                int (*callback_ptr)(void*, int, char**, char**);
+
+                callback_ptr = callback;
+
+                char* errMsg = 0;
+
+
+                int rc = sqlite3_exec(sqldb.getDB(), withProfile_query_str.c_str(), &callback, 0, &errMsg);
+                if (rc != SQLITE_OK) {
+                    std::cerr << "SQL error: " << errMsg << std::endl;
+                    sqlite3_free(errMsg);
+                }
+
+
+                if (!userFound) {
+                    oss.clear();
+
+                    oss << "SELECT username, email FROM UsersWithoutProfile WHERE username = '" << check.username << "';";
+
+                    std::string withoutProfile_query_str = oss.str();
+
+                    rc = sqlite3_exec(sqldb.getDB(), withoutProfile_query_str.c_str(), &callback, 0, &errMsg);
+
+                    if (rc != SQLITE_OK) {
+                        std::cerr << "SQL error: " << errMsg << std::endl;
+                        sqlite3_free(errMsg);
+                    }
+                }
+
+                Packet pkt;
+
+                char source[20] = "127.0.0.1";
+                int source_size = sizeof(source);
+
+                char destination[20] = "127.0.0.1";
+                int destination_size = sizeof(destination);
+
+                char Route[40] = "LOGIN";
+                int Route_size = sizeof(Route);
+
+                bool Authorization = userFound;
+
+                int length = 0;
+
+                SetHeaderInformation(&pkt, source, source_size, destination, destination_size, Route, Route_size, Authorization, length);
+
+                int TotalSize = 0;
+
+                char* TxBuffer = SerializeUserCheckingData(&pkt, TotalSize);
+
+                int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
+
+                /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
+
+                if (sendSize < 0) {
+                    std::cout << "Sending User Check Failed!!" << std::endl;
+
+                    return -1;
+                }
+
+                else {
+                    std::cout << "Response for User Check Successfully sent!! Wohoooooo" << std::endl;
+                }
+
+                delete[] TxBuffer;
+                TxBuffer = nullptr;
             }
 
 
