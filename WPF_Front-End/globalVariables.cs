@@ -13,6 +13,7 @@ using System.Windows;
 using System.Xaml;
 using System.Printing.IndexedProperties;
 using System.Windows.Media.Imaging;
+using System.Reflection.PortableExecutable;
 
 namespace WPF_Front_End
 {
@@ -33,7 +34,7 @@ namespace WPF_Front_End
     }
 
 
-    public enum Route {LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED, POST}
+    public enum Route {LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST}
 
 
 
@@ -113,6 +114,8 @@ public class Packet
 
         public static byte[] TxBuffer;
 
+        public static byte[] RxBuffer;
+
 
         public static void SetLoginBodyInformation(ref IntPtr BodyBuffer, LogIn login)
         {
@@ -121,6 +124,36 @@ public class Packet
             Marshal.Copy(login.password, 0, BodyBuffer + (int)ConstantVariables.username_ByteArraySize * sizeof(byte), login.password.Length);
         }
 
+
+        public static void DeserializeHeader(byte[] RxBuffer, ref Header head)
+        {
+            head.Source = new byte[ConstantVariables.Source_Destination_ByteArraySize];
+
+            Array.Copy(RxBuffer, 0, head.Source, 0, head.Source.Length);
+
+
+            head.Destination = new byte[ConstantVariables.Source_Destination_ByteArraySize];
+
+            Array.Copy(RxBuffer, ConstantVariables.Source_Destination_ByteArraySize, head.Destination, 0, head.Destination.Length);
+
+
+            head.Route = new byte[ConstantVariables.Route_ByteArraySize];
+
+            Array.Copy(RxBuffer, ConstantVariables.Source_Destination_ByteArraySize + ConstantVariables.Source_Destination_ByteArraySize, head.Route, 0, head.Route.Length);
+
+
+            head.Authorization = BitConverter.ToBoolean(RxBuffer, (int)(ConstantVariables.Source_Destination_ByteArraySize + ConstantVariables.Source_Destination_ByteArraySize + ConstantVariables.Route_ByteArraySize));
+
+            unsafe
+            {
+                int size_auth = sizeof(bool);
+
+
+                head.Length = BitConverter.ToUInt32(RxBuffer, (int)(ConstantVariables.Source_Destination_ByteArraySize + ConstantVariables.Source_Destination_ByteArraySize + ConstantVariables.Route_ByteArraySize) + size_auth);
+            }
+
+            
+        }
 
         public static void SerializeSignUpInformation(ref IntPtr BodyBuffer, SignUp signup, int imageSize)
         {
@@ -133,6 +166,14 @@ public class Packet
             Marshal.Copy(signup.email, 0, BodyBuffer + ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize) * sizeof(byte), signup.email.Length);
 
             Packet.CopyBufferToHeap(BodyBuffer + ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize + (int)ConstantVariables.email_ByteArraySize) * sizeof(byte), signup.ImageStructArray, imageSize);
+        }
+
+
+        public static void SerializeSignUpCheckInfo(ref IntPtr BodyBuffer, SignUpCheck check)
+        {
+            Marshal.Copy(check.username, 0, BodyBuffer, check.username.Length);
+
+            Marshal.Copy(check.email, 0, BodyBuffer + (int)ConstantVariables.username_ByteArraySize * sizeof(byte), check.email.Length);
         }
 
 
