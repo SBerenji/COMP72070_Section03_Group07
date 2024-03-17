@@ -1,7 +1,6 @@
 #pragma once
 #include "Packet.h"
 #include <iostream>
-//#include <winsqlite/winsqlite3.h>
 #include <winsqlite/winsqlite3.h>
 #include <string>
 #include <sstream>
@@ -21,6 +20,8 @@ public:
     int SignUpWithImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup);
 
     int SignUpWithoutImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup);
+
+    int ListingPostInsert(sqlite3_stmt* stmt, Packet* Pkt, Listing& Listing);
 
     int FetchImage(sqlite3_stmt* stmt, int Clientid, char** imageArray, int& imageSize);
 

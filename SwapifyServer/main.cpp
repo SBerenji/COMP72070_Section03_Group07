@@ -130,7 +130,7 @@ int main()
             Packet* Pkt = CreatePacket();
 
             LogIn log;
-
+            Listing listing;
             SignUp signup;
 
             SignUpCheck check;
@@ -210,6 +210,58 @@ int main()
 
 
             char* errMsg = 0;
+
+            if (strcmp(Pkt->GetHead()->Route, "POST") == 0) {
+                const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
+                    "id INTEGER PRIMARY KEY,"
+                    "title TEXT NOT NULL,"
+                    "estimated_worth TEXT NOT NULL,"
+                    "location TEXT NOT NULL,"
+                    "condition TEXT NOT NULL,"
+                    "delivery TEXT NOT NULL,"
+                    "looking_for TEXT NOT NULL,"
+                    "listing_picture BLOB NOT NULL,"
+                    "listing_date DATETIME NOT NULL"
+                    ");";
+
+                bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
+
+                if (!query_exe_result) {
+                    return -1;
+                }
+
+                sqlite3_stmt* stmt = nullptr;
+
+                int ListingPostInsertionReturn = sqldb.ListingPostInsert(stmt, Pkt, listing);
+
+                if (ListingPostInsertionReturn == -1) {
+                    return ListingPostInsertionReturn;
+                }
+
+                char* ListingImageArray = nullptr;
+                int listingImageSize = 0;
+
+                sqldb.FetchImage(stmt, (int)(Pkt->GetBody()->User), &ListingImageArray, listingImageSize);
+
+
+                int sendSize = send(ConnectionSocket, ListingImageArray, listingImageSize, 0);
+
+                if (sendSize < 0) {
+                    std::cout << "Sending Image Failed!!" << std::endl;
+
+                    return -1;
+                }
+
+                else {
+                    std::cout << "Image Successfully sent!! Wohoooooo" << std::endl;
+                }
+
+                delete ListingImageArray;
+
+                sqldb.closeDatabase(stmt);
+            }
+
+
 
             if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGEUPLOADED") == 0) {
                 // SQL command to create table
