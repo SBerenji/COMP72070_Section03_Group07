@@ -99,7 +99,13 @@ namespace WPF_Front_End
     }
 
 
-    public class Packet
+    public struct SignUpCheck {
+	    public byte[] username;
+        public byte[] email;
+    }
+
+
+public class Packet
     {
         const String dllpath = "TCP_Client.dll";
 

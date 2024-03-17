@@ -190,7 +190,21 @@ namespace WPF_Front_End.View.UserControls
 
 
 
+        private int userExistsCheck()
+        {
+            SignUpCheck check = new SignUpCheck();
 
+            globalVariables.username = username.txtInput.Text;
+            globalVariables.email = email.txtInput.Text;
+
+            check.username = new byte[ConstantVariables.username_ByteArraySize];
+            check.email = new byte[ConstantVariables.email_ByteArraySize];
+
+            check.username = Encoding.ASCII.GetBytes(globalVariables.username);
+            check.email = Encoding.ASCII.GetBytes(globalVariables.email);
+
+            return 1;
+        }
 
 
         private void SignUp_Click(object sender, RoutedEventArgs e)

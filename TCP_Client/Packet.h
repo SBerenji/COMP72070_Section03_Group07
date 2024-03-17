@@ -16,7 +16,13 @@ struct __declspec(dllexport) SignUp
 	char password[20];
 	char email[40];
 	char* ImageStructArray;
-} signup;
+};
+
+
+struct __declspec(dllexport) SignUpCheck {
+	char username[10];
+	char email[40];
+};
 
 
 class __declspec(dllexport) Packet {
