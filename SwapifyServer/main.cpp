@@ -317,7 +317,7 @@ int main()
                 delete imageArray;
 
                 // Finalize the statement and close the database connection
-                sqldb.closeDatabase(stmt);
+                //sqldb.closeDatabase(stmt);
             }
 
             else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGENOTUPLOADED") == 0) {
@@ -347,7 +347,7 @@ int main()
                 }
 
 
-                sqldb.closeDatabase(stmt);
+                //sqldb.closeDatabase(stmt);
             }
 
             else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") == 0) {

@@ -18,6 +18,11 @@ struct SignUp
 	char* ImageStructArray;
 };
 
+struct SignUpCheck {
+	char username[10];
+	char email[40];
+};
+
 struct Listing
 {
 	char Image[100];
@@ -29,6 +34,8 @@ struct Listing
 	char LookingFor[100];
 	char ListingDate[20];
 
+	char* ImageStructArray;
+};
 
 class Packet {
 	struct Header {
