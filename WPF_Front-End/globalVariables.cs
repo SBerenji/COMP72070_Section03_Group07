@@ -71,6 +71,8 @@ namespace WPF_Front_End
         public const uint password_ByteArraySize = 20;
 
         public const uint email_ByteArraySize = 40;
+
+        public const uint listing_ByteArraySize = 200;
     }
 
 
@@ -105,8 +107,19 @@ namespace WPF_Front_End
         public byte[] email;
     }
 
+    public struct Listing
+    {
+        public byte[] Title;
+        public byte[] Location;
+        public byte[] Condition;
+        public byte[] EstimatedWorth;
+        public byte[] Delivery;
+        public byte[] LookingFor;
 
-public class Packet
+        public IntPtr ImageStructArray;
+    };
+
+    public class Packet
     {
         const String dllpath = "TCP_Client.dll";
 
@@ -166,6 +179,25 @@ public class Packet
             Marshal.Copy(signup.email, 0, BodyBuffer + ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize) * sizeof(byte), signup.email.Length);
 
             Packet.CopyBufferToHeap(BodyBuffer + ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize + (int)ConstantVariables.email_ByteArraySize) * sizeof(byte), signup.ImageStructArray, imageSize);
+        }
+
+
+        public static void SerializeListingInformation(ref IntPtr BodyBuffer, Listing list, int imageSize)
+        {
+            Marshal.Copy(list.Title, 0, BodyBuffer, list.Title.Length);
+
+            Marshal.Copy(list.Location, 0, BodyBuffer + (int)ConstantVariables.listing_ByteArraySize * sizeof(byte), list.Location.Length);
+
+            Marshal.Copy(list.Condition, 0, BodyBuffer + (int)(ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize) * sizeof(byte), list.Condition.Length);
+
+            Marshal.Copy(list.EstimatedWorth, 0, BodyBuffer + (int)(ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize) * sizeof(byte), list.EstimatedWorth.Length);
+
+            Marshal.Copy(list.Delivery, 0, BodyBuffer + (int)(ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize) * sizeof(byte), list.Delivery.Length);
+
+            Marshal.Copy(list.LookingFor, 0, BodyBuffer + (int)(ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize) * sizeof(byte), list.LookingFor.Length);
+
+
+            Packet.CopyBufferToHeap(BodyBuffer + (int)(ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize + ConstantVariables.listing_ByteArraySize) * sizeof(byte), list.ImageStructArray, imageSize);
         }
 
 
@@ -256,6 +288,10 @@ public class Packet
 
 
         [DllImport(dllpath)]
+        public static extern IntPtr AllocateListingPtr(int imageSize);
+
+
+        [DllImport(dllpath)]
         public static extern void SerializeStaticDataToBuffer(IntPtr heapBuffer, byte[] username, byte[] password, byte[] email);
 
 
@@ -329,6 +365,8 @@ public class Packet
 
 
         public static bool FirstPostLogin = true;
+
+        public static byte[] createPostImage { get; set; }
     }
 
 

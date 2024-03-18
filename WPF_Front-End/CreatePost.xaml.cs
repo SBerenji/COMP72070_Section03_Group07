@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -107,8 +108,7 @@ namespace WPF_Front_End
 
 
                 // converting the image to byte array
-                byte[] byteArray = getJPEGFromImageControl(bitmap);
-
+                globalVariables.createPostImage = getJPEGFromImageControl(bitmap).ToArray();
             }
         }
 
@@ -122,6 +122,8 @@ namespace WPF_Front_End
             RemoveButton.Visibility = Visibility.Collapsed;
             RemoveText1.Visibility = Visibility.Visible;
             AddImage.Visibility = Visibility.Visible;
+
+            globalVariables.createPostImage = Array.Empty<byte>();
         }
 
 
@@ -146,7 +148,7 @@ namespace WPF_Front_End
                 AddImage.Visibility = Visibility.Collapsed;
 
                 // converting the image to byte array
-                byte[] byteArray = getJPEGFromImageControl(bitmap);
+                globalVariables.createPostImage = getJPEGFromImageControl(bitmap);
             }
 
         }
@@ -178,6 +180,97 @@ namespace WPF_Front_End
             return memStream.ToArray();
         }
 
+        private void NewPost_Click(object sender, RoutedEventArgs e)
+        {
+            if (title.txtInput.Text == "" || Location.txtInput.Text == "" || condition.txtInput.Text == "" || worth.txtInput.Text == "" || delivery.txtInput.Text == "" || swap_idea.txtInput.Text == "")
+            {
+                MessageBox.Show("Please Fill all the details!!");
+            }
 
+            else
+            {
+                Listing list = new Listing();
+
+                list.Title = new byte[ConstantVariables.listing_ByteArraySize];
+                list.Title = Encoding.ASCII.GetBytes(title.txtInput.Text);
+
+                list.Location = new byte[ConstantVariables.listing_ByteArraySize];
+                list.Location = Encoding.ASCII.GetBytes(Location.txtInput.Text);
+
+                list.Condition = new byte[ConstantVariables.listing_ByteArraySize];
+                list.Condition = Encoding.ASCII.GetBytes(condition.txtInput.Text);
+
+                list.EstimatedWorth = new byte[ConstantVariables.listing_ByteArraySize];
+                list.EstimatedWorth = Encoding.ASCII.GetBytes(worth.txtInput.Text);
+
+                list.Delivery = new byte[ConstantVariables.listing_ByteArraySize];
+                list.Delivery = Encoding.ASCII.GetBytes(delivery.txtInput.Text);
+
+                list.LookingFor = new byte[ConstantVariables.listing_ByteArraySize];
+                list.LookingFor = Encoding.ASCII.GetBytes(swap_idea.txtInput.Text);
+
+
+
+                int imageSize = globalVariables.createPostImage.Length;
+
+                list.ImageStructArray = Packet.AllocateHeapMemory(imageSize);
+
+                Packet.CopyBufferToHeap(list.ImageStructArray, globalVariables.createPostImage, imageSize);
+
+                IntPtr BodyBuffer = Packet.AllocateListingPtr(imageSize);
+
+                Packet.SerializeListingInformation(ref BodyBuffer, list, imageSize);
+
+
+                IntPtr PktPtr = Packet.CreatePacket();
+
+                IntPtr Head = Packet.AllocateHeaderPtr();
+
+
+                Packet.SetHeaderInformation(ref Head, "127.0.0.1", "127.0.0.1", Route.POST, true);
+
+                Packet.SetHeader(PktPtr, Head);
+
+                int size = 6 * (int)((6 * ConstantVariables.listing_ByteArraySize) * sizeof(byte)) + imageSize;
+
+
+                Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+
+
+                IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
+
+
+                Packet.TxBuffer = new byte[Packet.totalPktSize];
+
+
+                Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
+
+
+                Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+
+
+
+                Packet.TxBuffer = null;
+
+                Packet.FreeBuffer(ref serializedRecv);
+                serializedRecv = IntPtr.Zero;
+
+                Packet.FreeBuffer(ref Head);
+                Head = IntPtr.Zero;
+
+                Packet.DestroyPacket(ref PktPtr);
+                PktPtr = IntPtr.Zero;
+
+
+                Packet.FreeBuffer(ref BodyBuffer);
+                BodyBuffer = IntPtr.Zero;
+
+                Packet.FreeBuffer(ref list.ImageStructArray);
+                list.ImageStructArray = IntPtr.Zero;
+
+
+                MessageBox.Show("Item successfully Posted!! You can now view your post from 'My Posts' tab.");
+            }
+        }
     }
 }

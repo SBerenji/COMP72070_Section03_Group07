@@ -22,6 +22,12 @@ namespace WPF_Front_End
     {
         public ObservableCollection<MyPostsItem> Posts { get; set; }
 
+        //private void SendRequestToGetCountOfPosts()
+        //{
+
+        //}
+
+
         public NewMyPostsScreen()
         {
             InitializeComponent();
@@ -34,6 +40,10 @@ namespace WPF_Front_End
 
                 Hamburger.ProfileImage.Source = ImageConversion.ToImage(globalVariables.receivedPostLoginImage);
             }
+
+
+
+
 
             Closing += CloseClient.Client_Closing;
 

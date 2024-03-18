@@ -24,6 +24,18 @@ struct __declspec(dllexport) SignUpCheck {
 	char email[40];
 };
 
+struct __declspec(dllexport) Listing
+{
+	char Title[200];
+	char Location[200];
+	char Condition[200];
+	char EstimatedWorth[200];
+	char Delivery[200];
+	char LookingFor[200];
+
+	char* ImageStructArray;
+};
+
 
 class __declspec(dllexport) Packet {
 public:

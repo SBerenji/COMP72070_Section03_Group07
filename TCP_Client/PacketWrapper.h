@@ -26,6 +26,7 @@ extern "C" {
 
 	__declspec(dllexport) char* AllocateSignupPtr(int imageSize);
 
+	__declspec(dllexport) char* AllocateListingPtr(int imageSize);
 
 	__declspec(dllexport) Packet* CreatePacket();
 

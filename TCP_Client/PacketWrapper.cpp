@@ -49,6 +49,17 @@ char* AllocateSignupPtr(int imageSize) {
 }
 
 
+char* AllocateListingPtr(int imageSize) {
+	Listing list;
+
+	char* BodyBuffer = new char[(sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor)) + imageSize];
+
+	memset(BodyBuffer, 0, (sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor)) + imageSize);
+
+	return BodyBuffer;
+}
+
+
 Packet* CreatePacket() {
 	Packet* Pkt = new Packet();
 

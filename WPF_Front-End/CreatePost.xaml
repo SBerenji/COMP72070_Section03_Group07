@@ -153,7 +153,7 @@ Margin="73,5,391,0" Foreground="Red" />
                         </Viewbox>-->
 
                         <Viewbox Grid.Row="0" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                            <userControls:ClearableTextBox Margin="0,20,0,0" Width="550" Height="20" Placeholder="Mixer" Grid.Row="0"/>
+                            <userControls:ClearableTextBox x:Name="title" Margin="0,20,0,0" Width="550" Height="20" Placeholder="Mixer" Grid.Row="0"/>
                         </Viewbox>
 
 
@@ -172,7 +172,7 @@ Margin="143,2,286,25" Foreground="Red" />
 
 
                         <Viewbox Grid.Row="1" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                            <userControls:ClearableTextBox Grid.Column="1" Width="550" Height="20" Margin="0,15,0,0" Placeholder="Waterloo" Grid.Row="1" />
+                            <userControls:ClearableTextBox x:Name="Location" Grid.Column="1" Width="550" Height="20" Margin="0,15,0,0" Placeholder="Waterloo" Grid.Row="1" />
                         </Viewbox>
                     </Grid>
                 </Grid>
@@ -183,7 +183,7 @@ FontSize="5" FontWeight="Bold"/>
                 </Viewbox>
 
                 <Viewbox Grid.Row="2" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                    <userControls:ClearableTextBox Grid.Row="2" Placeholder="New" Width="800" Height="30" Margin="0, 20, 0, 0" />
+                    <userControls:ClearableTextBox x:Name="condition" Grid.Row="2" Placeholder="New" Width="800" Height="30" Margin="0, 20, 0, 0" />
                 </Viewbox>
 
 
@@ -193,7 +193,7 @@ FontSize="5" FontWeight="Bold"/>
                 </Viewbox>
 
                 <Viewbox Grid.Row="3" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                    <userControls:ClearableTextBox Grid.Row="3" Placeholder="$30" Width="800" Height="30" Margin="0, 20, 0, 0" />
+                    <userControls:ClearableTextBox x:Name="worth" Grid.Row="3" Placeholder="$30" Width="800" Height="30" Margin="0, 20, 0, 0" />
                 </Viewbox>
 
 
@@ -204,7 +204,7 @@ FontSize="5" FontWeight="Bold"/>
                 </Viewbox>
 
                 <Viewbox Grid.Row="4" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                    <userControls:ClearableTextBox Grid.Row="4" Placeholder="Pick-up" Width="800" Height="30" Margin="0, 20, 0, 0" />
+                    <userControls:ClearableTextBox x:Name="delivery" Grid.Row="4" Placeholder="Pick-up" Width="800" Height="30" Margin="0, 20, 0, 0" />
                 </Viewbox>
 
 
@@ -215,13 +215,13 @@ FontSize="5" FontWeight="Bold"/>
                 </Viewbox>
 
                 <Viewbox Grid.Row="5" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                    <userControls:ClearableTextBox Grid.Row="5" Placeholder="Books" Width="800" Height="30" Margin="0, 20, 0, 60" />
+                    <userControls:ClearableTextBox x:Name="swap_idea" Grid.Row="5" Placeholder="Books" Width="800" Height="30" Margin="0, 20, 0, 60" />
                 </Viewbox>
 
                 <Viewbox Grid.Row="6" Stretch="Fill" StretchDirection="Both">
 
                     <Button Grid.Row="6" Content="Post" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" Background="#D36414"
-                Margin="250, 20, 250, 20" Width="300" Height="30" >
+                Margin="250, 20, 250, 20" Width="300" Height="30" Click="NewPost_Click" >
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5" />
