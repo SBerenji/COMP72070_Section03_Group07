@@ -186,9 +186,9 @@ int main()
                     + "'" + signup.password + "', "
                     + "'" + signup.email + "', "
                     + "'" + *(signup.ImageStructArray) + "')";*/
-            std::string dbPath = "database.db";
+            /*std::string dbPath = "database.db";
 
-            SQLiteDatabase sqldb(dbPath);
+            SQLiteDatabase sqldb(dbPath);*/
 
             //std::ifstream file(dbPath);
             //bool fileExists = file.good();
@@ -212,6 +212,10 @@ int main()
             char* errMsg = 0;
 
             if (strcmp(Pkt->GetHead()->Route, "POST") == 0) {
+                std::string dbPath = "database.db";
+
+                SQLiteDatabase sqldb(dbPath);
+
                 const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
                     "id INTEGER PRIMARY KEY,"
                     "title TEXT NOT NULL,"
@@ -241,7 +245,7 @@ int main()
                 char* ListingImageArray = nullptr;
                 int listingImageSize = 0;
 
-                sqldb.FetchImage(stmt, (int)(Pkt->GetBody()->User), &ListingImageArray, listingImageSize);
+                /*sqldb.FetchImage(&stmt, (int)(Pkt->GetBody()->User), &ListingImageArray, listingImageSize);*/
 
 
                 int sendSize = send(ConnectionSocket, ListingImageArray, listingImageSize, 0);
@@ -258,18 +262,22 @@ int main()
 
                 delete ListingImageArray;
 
-                sqldb.closeDatabase(stmt);
+                sqldb.closeDatabase(&stmt);
             }
 
 
 
-            if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGEUPLOADED") == 0) {
+            else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGEUPLOADED") == 0) {
+                std::string dbPath = "database.db";
+
+                SQLiteDatabase sqldb(dbPath);
+
                 // SQL command to create table
                 const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
-                    "id INTEGER PRIMARY KEY,"
+                    "id INTEGER NOT NULL,"
                     "username TEXT NOT NULL,"
                     "password TEXT NOT NULL,"
-                    "email TEXT NOT NULL,"
+                    "email TEXT PRIMARY KEY,"
                     "profile_picture BLOB NOT NULL);";
 
 
@@ -283,7 +291,7 @@ int main()
 
                 sqlite3_stmt* stmt = nullptr;
 
-                int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(stmt, Pkt, signup);
+                int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(&stmt, Pkt, signup);
 
                 if (SignUpdataInsertionReturn == -1) {
                     return SignUpdataInsertionReturn;
@@ -295,7 +303,7 @@ int main()
                 char* imageArray = nullptr;
                 int imageSize = 0;
 
-                sqldb.FetchImage(stmt, (int)(Pkt->GetBody()->User), &imageArray, imageSize);
+                sqldb.FetchImage(&stmt, signup.email, &imageArray, imageSize);
 
 
 
@@ -314,19 +322,25 @@ int main()
                     std::cout << "Image Successfully sent!! Wohoooooo" << std::endl;
                 }
 
-                delete imageArray;
+                delete[] imageArray;
 
-                // Finalize the statement and close the database connection
-                //sqldb.closeDatabase(stmt);
+                /*sqlite3_finalize(stmt);*/
+
+                /*Finalize the statement and close the database connection*/
+                sqldb.closeDatabase(&stmt);
             }
 
             else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGENOTUPLOADED") == 0) {
+                std::string dbPath = "database.db";
+
+                SQLiteDatabase sqldb(dbPath);
+
                 // SQL command to create table
                 const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithoutProfile ("
-                    "id INTEGER PRIMARY KEY,"
+                    "id INTEGER NOT NULL,"
                     "username TEXT NOT NULL,"
                     "password TEXT NOT NULL,"
-                    "email TEXT NOT NULL,"
+                    "email TEXT PRIMARY KEY,"
                     "profile_picture_SubstituteData TEXT NOT NULL);";
 
 
@@ -340,17 +354,21 @@ int main()
 
                 sqlite3_stmt* stmt = nullptr;
 
-                int SignUpdataInsertionReturn = sqldb.SignUpWithoutImageDataInsert(stmt, Pkt, signup);
+                int SignUpdataInsertionReturn = sqldb.SignUpWithoutImageDataInsert(&stmt, Pkt, signup);
 
                 if (SignUpdataInsertionReturn == -1) {
                     return SignUpdataInsertionReturn;
                 }
 
-
-                //sqldb.closeDatabase(stmt);
+                /*sqlite3_finalize(stmt);*/
+                sqldb.closeDatabase(&stmt);
             }
 
             else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") == 0) {
+                std::string dbPath = "database.db";
+
+                SQLiteDatabase sqldb(dbPath);
+
                 userFound = false;
 
                 std::ostringstream oss;
@@ -385,6 +403,9 @@ int main()
                         sqlite3_free(errMsg);
                     }
                 }
+
+                 /*Close the database connection*/
+                sqlite3_close(sqldb.getDB());
 
                 Packet pkt;
 

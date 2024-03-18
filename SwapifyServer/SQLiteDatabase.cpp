@@ -73,25 +73,25 @@ int SQLiteDatabase::ListingPostInsert(sqlite3_stmt* stmt, Packet* Pkt, Listing& 
 }
 
 
-int SQLiteDatabase::SignUpWithImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup) {
+int SQLiteDatabase::SignUpWithImageDataInsert(sqlite3_stmt** stmt, Packet* Pkt, SignUp& signup) {
     
 
     const char* sql = "INSERT INTO UsersWithProfile (id, username, password, email, profile_picture) VALUES (?, ?, ?, ?, ?)";
     
-    sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
+    sqlite3_prepare_v2(db, sql, -1, stmt, nullptr);
 
-    sqlite3_bind_int(stmt, 1, (int)(Pkt->GetBody()->User));
-    sqlite3_bind_text(stmt, 2, signup.username, -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, signup.password, -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 4, signup.email, -1, SQLITE_TRANSIENT);
-    sqlite3_bind_blob(stmt, 5, signup.ImageStructArray, Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email)), SQLITE_STATIC);
+    sqlite3_bind_int(*stmt, 1, (int)(Pkt->GetBody()->User));
+    sqlite3_bind_text(*stmt, 2, signup.username, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(*stmt, 3, signup.password, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(*stmt, 4, signup.email, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_blob(*stmt, 5, signup.ImageStructArray, Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email)), SQLITE_STATIC);
 
-    int rc = sqlite3_step(stmt);
+    int rc = sqlite3_step(*stmt);
 
     if (rc != SQLITE_DONE) {
         std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
 
-        sqlite3_finalize(stmt);
+        sqlite3_finalize(*stmt);
 
         return -1;
     }
@@ -103,25 +103,25 @@ int SQLiteDatabase::SignUpWithImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, S
 
 
 
-int SQLiteDatabase::SignUpWithoutImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt, SignUp& signup) {
+int SQLiteDatabase::SignUpWithoutImageDataInsert(sqlite3_stmt** stmt, Packet* Pkt, SignUp& signup) {
 
 
     const char* sql = "INSERT INTO UsersWithoutProfile (id, username, password, email, profile_picture_SubstituteData) VALUES (?, ?, ?, ?, ?)";
 
-    sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
+    sqlite3_prepare_v2(db, sql, -1, stmt, nullptr);
 
-    sqlite3_bind_int(stmt, 1, (int)(Pkt->GetBody()->User));
-    sqlite3_bind_text(stmt, 2, signup.username, -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 3, signup.password, -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 4, signup.email, -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 5, signup.ImageStructArray, Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email)), SQLITE_TRANSIENT);
+    sqlite3_bind_int(*stmt, 1, (int)(Pkt->GetBody()->User));
+    sqlite3_bind_text(*stmt, 2, signup.username, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(*stmt, 3, signup.password, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(*stmt, 4, signup.email, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(*stmt, 5, signup.ImageStructArray, Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email)), SQLITE_TRANSIENT);
 
-    int rc = sqlite3_step(stmt);
+    int rc = sqlite3_step(*stmt);
 
     if (rc != SQLITE_DONE) {
         std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
 
-        sqlite3_finalize(stmt);
+        sqlite3_finalize(*stmt);
 
         return -1;
     }
@@ -132,10 +132,10 @@ int SQLiteDatabase::SignUpWithoutImageDataInsert(sqlite3_stmt* stmt, Packet* Pkt
 }
 
 
-int SQLiteDatabase::FetchImage(sqlite3_stmt* stmt, int Clientid, char** imageArray, int& imageSize) {
+int SQLiteDatabase::FetchImage(sqlite3_stmt** stmt, std::string email, char** imageArray, int& imageSize) {
     // Construct the query as a std::string
     std::ostringstream oss;
-    oss << "SELECT profile_picture FROM UsersWithProfile WHERE id = " << Clientid;
+    oss << "SELECT profile_picture FROM UsersWithProfile WHERE email = '" << email << "';";
     std::string query_str = oss.str();
 
 
@@ -147,7 +147,7 @@ int SQLiteDatabase::FetchImage(sqlite3_stmt* stmt, int Clientid, char** imageArr
 
 
     // Prepare the SQL statement
-    int rc = sqlite3_prepare_v2(db, query, -1, &stmt, nullptr);
+    int rc = sqlite3_prepare_v2(db, query, -1, stmt, nullptr);
     if (rc != SQLITE_OK) {
         std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
         return -1;
@@ -155,18 +155,18 @@ int SQLiteDatabase::FetchImage(sqlite3_stmt* stmt, int Clientid, char** imageArr
 
 
     // Execute the query
-    rc = sqlite3_step(stmt);
+    rc = sqlite3_step(*stmt);
     if (rc != SQLITE_ROW) {
         std::cerr << "No data found" << std::endl;
-        sqlite3_finalize(stmt);
+        sqlite3_finalize(*stmt);
         return -1;
     }
 
 
     // Retrieve BLOB data
-    const void* blobArray = sqlite3_column_blob(stmt, 0);
+    const void* blobArray = sqlite3_column_blob(*stmt, 0);
 
-    imageSize = sqlite3_column_bytes(stmt, 0);
+    imageSize = sqlite3_column_bytes(*stmt, 0);
 
 
     *imageArray = new char[imageSize];
@@ -184,7 +184,7 @@ bool SQLiteDatabase::isOpen() {
     return db != nullptr;
 }
 
-void SQLiteDatabase::closeDatabase(sqlite3_stmt* stmt) {
-    sqlite3_finalize(stmt);
+void SQLiteDatabase::closeDatabase(sqlite3_stmt** stmt) {
+    sqlite3_finalize(*stmt);
     sqlite3_close(db);
 }
