@@ -25,14 +25,12 @@ struct SignUpCheck {
 
 struct Listing
 {
-	char Image[100];
-	char Title[100];
-	char EstimatedWorth[100];
-	char Location[100];
-	char Condition[100];
-	char Delivery[100];
-	char LookingFor[100];
-	char ListingDate[20];
+	char Title[200];
+	char Location[200];
+	char Condition[200];
+	char EstimatedWorth[200];
+	char Delivery[200];
+	char LookingFor[200];
 
 	char* ImageStructArray;
 };
@@ -149,10 +147,10 @@ Packet* CreatePacket();
 
 void DestroyPacket(Packet* Pkt);
 
-void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup);
+void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup, Listing& list);
 
 
-void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpCheck& check);
+void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpCheck& check, Listing& list);
 
 void SetHeaderInformation(Packet* pkt, char* source, int source_size, char* destination, int destination_size, char* Route, int Route_size, bool Authorization, unsigned int length);
 

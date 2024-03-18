@@ -39,7 +39,7 @@ void DestroyPacket(Packet* Pkt) {
 	delete Pkt;
 };
 
-void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup)
+void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup, Listing& list)
 {
 	os << std::dec;
 	os << "Source:  " << Pkt->GetHead()->Source << std::endl;
@@ -50,10 +50,10 @@ void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup)
 
 	os << "User:  " << Pkt->GetBody()->User << std::endl;
 
-	os << "Username: " << signup.username << std::endl;
+	/*os << "Username: " << signup.username << std::endl;
 	os << "Password: " << signup.password << std::endl;
 	os << "Email: " << signup.email << std::endl;
-	os << "Image Array: " << *(signup.ImageStructArray) << std::endl;
+	os << "Image Array: " << *(signup.ImageStructArray) << std::endl;*/
 
 	os << "Data:  " << Pkt->GetBody()->Data << std::endl;
 
@@ -61,7 +61,7 @@ void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup)
 };
 
 
-void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpCheck& check) {
+void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpCheck& check, Listing& list) {
 	memcpy(Pkt->GetHead(), src, sizeof(*(Pkt->GetHead())));
 
 	Pkt->GetBody()->Data = new char[Pkt->GetHead()->Length];
@@ -114,6 +114,28 @@ void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpChe
 		memcpy(&(check.username), Pkt->GetBody()->Data, sizeof(check.username));
 
 		memcpy(&(check.email), Pkt->GetBody()->Data + sizeof(check.username), sizeof(check.email));
+	}
+
+	else if (strcmp(Pkt->GetHead()->Route, "POST") == 0) {
+		memcpy(&(list.Title), Pkt->GetBody()->Data, sizeof(list.Title));
+
+		memcpy(&(list.Location), Pkt->GetBody()->Data + sizeof(list.Title), sizeof(list.Location));
+
+		memcpy(&(list.Condition), Pkt->GetBody()->Data + sizeof(list.Title) + sizeof(list.Location), sizeof(list.Condition));
+
+		memcpy(&(list.EstimatedWorth), Pkt->GetBody()->Data + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition), sizeof(list.EstimatedWorth));
+
+		memcpy(&(list.Delivery), Pkt->GetBody()->Data + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth), sizeof(list.Delivery));
+
+		memcpy(&(list.LookingFor), Pkt->GetBody()->Data + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery), sizeof(list.LookingFor));
+
+		
+		
+		list.ImageStructArray = new char[Pkt->GetHead()->Length - (sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor))];
+
+		memset(list.ImageStructArray, 0, Pkt->GetHead()->Length - (sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor)));
+
+		memcpy(list.ImageStructArray, Pkt->GetBody()->Data + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor), Pkt->GetHead()->Length - (sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor)));
 	}
 };
 

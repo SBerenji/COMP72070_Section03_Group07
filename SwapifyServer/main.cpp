@@ -130,17 +130,19 @@ int main()
             Packet* Pkt = CreatePacket();
 
             LogIn log;
-            Listing listing;
+
             SignUp signup;
 
             SignUpCheck check;
 
-            Deserialization(Pkt, RxBuffer, log, signup, check);
+            Listing list;
+
+            Deserialization(Pkt, RxBuffer, log, signup, check, list);
 
             if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") != 0) {
-                Display(Pkt, std::cout, log, signup);
+                Display(Pkt, std::cout, log, signup, list);
 
-                char* imageBuff = Pkt->GetBody()->Data + (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email));
+                /*char* imageBuff = Pkt->GetBody()->Data + (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email));*/
             }
 
             
@@ -217,16 +219,14 @@ int main()
                 SQLiteDatabase sqldb(dbPath);
 
                 const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
-                    "id INTEGER PRIMARY KEY,"
-                    "title TEXT NOT NULL,"
-                    "estimated_worth TEXT NOT NULL,"
+                    "id INTEGER NOT NULL,"
+                    "title TEXT PRIMARY KEY,"
                     "location TEXT NOT NULL,"
                     "condition TEXT NOT NULL,"
+                    "estimated_worth TEXT NOT NULL,"
                     "delivery TEXT NOT NULL,"
                     "looking_for TEXT NOT NULL,"
-                    "listing_picture BLOB NOT NULL,"
-                    "listing_date DATETIME NOT NULL"
-                    ");";
+                    "listing_picture BLOB NOT NULL);";
 
                 bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
 
@@ -236,16 +236,16 @@ int main()
 
                 sqlite3_stmt* stmt = nullptr;
 
-                int ListingPostInsertionReturn = sqldb.ListingPostInsert(stmt, Pkt, listing);
+                int ListingPostInsertionReturn = sqldb.ListingPostInsert(&stmt, Pkt, list);
 
                 if (ListingPostInsertionReturn == -1) {
                     return ListingPostInsertionReturn;
                 }
 
-                char* ListingImageArray = nullptr;
+                /*char* ListingImageArray = nullptr;
                 int listingImageSize = 0;
 
-                /*sqldb.FetchImage(&stmt, (int)(Pkt->GetBody()->User), &ListingImageArray, listingImageSize);*/
+                sqldb.FetchImage(&stmt, list.Title, &ListingImageArray, listingImageSize);
 
 
                 int sendSize = send(ConnectionSocket, ListingImageArray, listingImageSize, 0);
@@ -260,7 +260,7 @@ int main()
                     std::cout << "Image Successfully sent!! Wohoooooo" << std::endl;
                 }
 
-                delete ListingImageArray;
+                delete ListingImageArray;*/
 
                 sqldb.closeDatabase(&stmt);
             }
