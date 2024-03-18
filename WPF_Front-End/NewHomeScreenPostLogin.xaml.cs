@@ -26,7 +26,7 @@ namespace WPF_Front_End
         {
             InitializeComponent();
 
-            if (globalVariables.imageUploaded)
+            if (globalVariables.imageUploaded && globalVariables.FirstPostLogin)
             {
                 byte[] RxBuffer = new byte[200000];
 
@@ -36,9 +36,11 @@ namespace WPF_Front_End
 
                 Hamburger.ProfileImage.Visibility = Visibility.Visible;
 
-                byte[] imgArr = RxBuffer.ToArray();
+                globalVariables.receivedPostLoginImage = RxBuffer.ToArray();
 
-                Hamburger.ProfileImage.Source = ImageConversion.ToImage(imgArr);
+                Hamburger.ProfileImage.Source = ImageConversion.ToImage(globalVariables.receivedPostLoginImage);
+
+                globalVariables.FirstPostLogin = false;
             }
 
 

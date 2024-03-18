@@ -323,6 +323,12 @@ public class Packet
 
 
         public static bool imageUploaded { get; set; }
+
+
+        public static byte[] receivedPostLoginImage { get; set; }
+
+
+        public static bool FirstPostLogin = true;
     }
 
 

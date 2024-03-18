@@ -25,6 +25,15 @@ namespace WPF_Front_End
         {
             InitializeComponent();
 
+            if (globalVariables.imageUploaded)
+            {
+                Hamburger.profile_icon.Visibility = Visibility.Collapsed;
+
+                Hamburger.ProfileImage.Visibility = Visibility.Visible;
+
+                Hamburger.ProfileImage.Source = ImageConversion.ToImage(globalVariables.receivedPostLoginImage);
+            }
+
             Closing += CloseClient.Client_Closing;
 
             //Hamburger.Profile.Text = globalVariables.username;

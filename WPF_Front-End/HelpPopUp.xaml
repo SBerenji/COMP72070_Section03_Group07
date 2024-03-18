@@ -14,7 +14,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Image Source="Swapify-Logo.png" Width="3000" Height="80" VerticalAlignment="Top"/>
+            <Image Source="/Images/Swapify-Logo.png" Width="3000" Height="80" VerticalAlignment="Top"/>
 
 
 
