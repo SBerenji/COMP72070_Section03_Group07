@@ -105,6 +105,37 @@ public:
 	MockClientSocket() {}
 };
 
+std::vector<char*> readFromFile(const std::string& filename) {
+	std::vector<char*> result; // Store the converted values
+	std::string inputStr = "";
+
+	std::ifstream file(filename);
+	if (file.is_open()) {
+		while (std::getline(file, inputStr)) {
+			std::istringstream issLine(inputStr);
+			std::string title;
+			std::getline(issLine, title, ':');
+
+			std::string value;
+			std::getline(issLine, value);
+
+			// Allocate memory for the C-style string
+			char* newValue = new char[value.size() + 1];
+			strncpy(newValue, value.c_str(), value.size() + 1);
+
+			// Store the result
+			result.push_back(newValue);
+		}
+		file.close();
+	}
+	else {
+		std::cerr << "Error opening file: " << filename << std::endl;
+	}
+
+	return result;
+}
+
+
 
 namespace SwapifyServerTests
 {
@@ -112,54 +143,52 @@ namespace SwapifyServerTests
 	{
 	public:
 
-		//TEST_METHOD(TestMethod1_TESTSVR08_logPacketLine_Same)
+
+		////Sets up a test file to be tested with a itemType, linedetails and TEXT_FILE
+		//void fileSetup(const string TEXT_FILE) {
+		//	std::ofstream ofs(TEXT_FILE);
+		//	ofs << "Source:source" << std::endl;
+		//	ofs << "Destination:destination" << std::endl;
+		//	ofs << "Route:route" << std::endl;
+		//	ofs << "Authorization:1" << std::endl;
+		//	ofs << "Length:12" << std::endl;
+		//	ofs << "User:user" << std::endl;
+		//	ofs << "Listing:u" << std::endl;
+		//	ofs << "Message:u" << std::endl;
+		//	ofs << "Checksum:7b" << std::endl;
+		//	ofs.close();
+		//}
+
+
+
+		//TEST_METHOD(TestMethod3_logPacketLine_Same)
 		//{
+		//	string TEXT_FILE = "TempFil.txt";
+		//	fileSetup(TEXT_FILE);  //create file with expected data
+		//	vector<char*> expectedDatafromFile = readFromFile("TempFil.txt"); //read data to vector
 
-		//	Packet* p = CreatePacket();
+		//	char user[] = "user";
 
-		//	p->accessHeader().Length = 10;
-		//	p->accessBody().User = 5;
-		//	p->accessBody().Data = new char[p->accessHeader().Length];
-		//	strcpy_s(p->accessBody().Data, p->accessHeader().Length + 1, "TestData");
-		//	p->accessTail().Checksum = 123;
+		//	Packet p; //fill the packet with expected information
 
-		//	RequestLogger log("testLogFile.txt");
-		//	log.logPacket(*p);
-		//	vector<char*> actualdatafromFile = readFromFile("testFile.txt");
+		//	p.setSource("source");
+		//	p.setDestination("destination");
+		//	p.setRoute("route");
+		//	p.setAuthorization(true);
+		//	p.setLength(12);
+		//	p.setUser(user);
+		//	p.setListing(user);
+		//	p.setMessage(user);
+		//	p.setTail(123);
 
-		//	std::ifstream inFile("testLogFile.txt");
-		//	std::string line;
+		//	RequestLogger log("testFil.txt");
+		//	log.logPacket(p); //write to log file
+		//	vector<char*> actualdatafromFile = readFromFile("testFil.txt"); //read from log file into actual results vector
 
-		//	// Read the logged data from the file
-		//	std::getline(inFile, line); // Source
-		//	Assert::AreEqual(std::string("Source:  "), line.substr(0, 9));
+		//	for (size_t i = 0; i < expectedDatafromFile.size(); ++i) {
+		//		Assert::AreEqual(0, strcmp(expectedDatafromFile[i], actualdatafromFile[i])); //assert to check that each char is identical
+		//	}
 
-		//	std::getline(inFile, line); // Destination
-		//	Assert::AreEqual(std::string("Destination: "), line.substr(0, 13));
-
-		//	std::getline(inFile, line); // Route
-		//	Assert::AreEqual(std::string("Route:  "), line.substr(0, 8));
-
-		//	std::getline(inFile, line); // Authorization
-		//	Assert::AreEqual(std::string("Authorization: "), line.substr(0, 15));
-
-		//	std::getline(inFile, line); // Length
-		//	Assert::AreEqual(std::string("Length:  10"), line.substr(0, 11));
-
-		//	std::getline(inFile, line); // User
-		//	Assert::AreEqual(std::string("User:  "), line.substr(0, 7));
-
-		//	std::getline(inFile, line); // Data
-		//	Assert::AreEqual(std::string("Data:  T"), line.substr(0, 14));
-
-		//	std::getline(inFile, line); // Checksum
-		//	Assert::AreEqual(std::string("Checksum:  7b"), line.substr(0, 13));
-
-		//	// Close the file
-		//	inFile.close();
-
-		//	// Clean up
-		//	DestroyPacket(p);
 		//}
 
 		TEST_METHOD(TestMethod2_TESTSVR015_Server_Packet_GetHead) //tests the GetHead() in the Packet.h
