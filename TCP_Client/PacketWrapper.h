@@ -41,6 +41,8 @@ extern "C" {
 
 	__declspec(dllexport) void Display(Packet* Pkt, std::ostream& os);
 
+	__declspec(dllexport) void DeserializePostCountBuffer(Packet* pkt, char* src, int& numberOfPosts);
+
 	__declspec(dllexport) void Deserialization(Packet* Pkt, char* src);
 
 
@@ -52,6 +54,7 @@ extern "C" {
 
 	__declspec(dllexport) unsigned int CalculateChecksum();
 
+	__declspec(dllexport) char* SerializeMyPostCountData(Packet* Pkt, int& totalSize);
 
 	__declspec(dllexport) char* SerializeData(Packet* Pkt, int& TotalSize);
 

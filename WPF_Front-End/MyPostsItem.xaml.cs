@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +19,35 @@ namespace WPF_Front_End
     /// <summary>
     /// Interaction logic for MyPostsItem.xaml
     /// </summary>
+    /// 
+
+    //public partial class MyPostsItem : INotifyPropertyChanged
+    //{
+    //    public event PropertyChangedEventHandler PropertyChanged;
+
+    //    private byte[] imageData;
+    //    public byte[] ImageData
+    //    {
+    //        get { return imageData; }
+    //        set
+    //        {
+    //            imageData = value;
+    //            OnPropertyChanged(nameof(ImageData));
+    //        }
+    //    }
+
+    //    // Other properties
+    //    // ...
+
+    //    protected virtual void OnPropertyChanged(string propertyName)
+    //    {
+    //        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    //    }
+    //}
     public partial class MyPostsItem : UserControl
     {
 
-        public string Image { get; set; }
+        public BitmapImage Image { get; set; }
         public string Title { get; set; }
         public string EstimatedWorth { get; set; }
         public string Location { get; set; }
@@ -34,7 +60,7 @@ namespace WPF_Front_End
         {
             InitializeComponent();
 
-            Image = string.Empty;
+            //Image = string.Empty;
             Title = string.Empty;
             EstimatedWorth = string.Empty;
             Location = string.Empty;

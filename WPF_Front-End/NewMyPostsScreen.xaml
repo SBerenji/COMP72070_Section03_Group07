@@ -53,8 +53,8 @@
 
                 <ListBox Name="listBox" Grid.Column="1" Margin="0,0,10,0" ItemsSource="{Binding}">
                     <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <local:MyPostsItem DataContext="{Binding}" />
+                        <DataTemplate x:Name="data">
+                            <local:MyPostsItem x:Name="itemTemp" DataContext="{Binding}" />
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

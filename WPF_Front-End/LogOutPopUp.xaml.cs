@@ -90,6 +90,8 @@ namespace WPF_Front_End
 
         private void YesButton_Click(object sender, RoutedEventArgs e)
         {
+            globalVariables.ClearDynamicArrays();
+
             var newForm = new NewHomeScreenPreLogin(); //create your new form.
 
             newForm.Width = this.windowWidth;

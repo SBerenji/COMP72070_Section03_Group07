@@ -180,6 +180,7 @@ namespace WPF_Front_End
             return memStream.ToArray();
         }
 
+
         private void NewPost_Click(object sender, RoutedEventArgs e)
         {
             if (title.txtInput.Text == "" || Location.txtInput.Text == "" || condition.txtInput.Text == "" || worth.txtInput.Text == "" || delivery.txtInput.Text == "" || swap_idea.txtInput.Text == "")
@@ -231,7 +232,7 @@ namespace WPF_Front_End
 
                 Packet.SetHeader(PktPtr, Head);
 
-                int size = 6 * (int)((6 * ConstantVariables.listing_ByteArraySize) * sizeof(byte)) + imageSize;
+                int size = (int)((6 * ConstantVariables.listing_ByteArraySize) * sizeof(byte)) + imageSize;
 
 
                 Packet.SetBody(PktPtr, '1', BodyBuffer, size);

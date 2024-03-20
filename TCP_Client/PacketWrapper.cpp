@@ -114,6 +114,14 @@ void Display(Packet* Pkt, std::ostream& os)
 	os << "Checksum  " << std::hex << Pkt->GetTail()->Checksum << std::endl;
 }
 
+
+void DeserializePostCountBuffer(Packet* pkt, char* src, int& numberOfPosts) {
+	memcpy(pkt->GetHead(), src, sizeof(*(pkt->GetHead())));
+
+	numberOfPosts = pkt->GetHead()->Length;
+}
+
+
 void Deserialization(Packet* Pkt, char* src) {
 	memcpy(Pkt->GetHead(), src, sizeof(*(Pkt->GetHead())));
 
@@ -155,6 +163,22 @@ unsigned int CalculateChecksum() {
 	checksum = 0xFF00FF00;
 
 	return checksum;
+}
+
+
+char* SerializeMyPostCountData(Packet* Pkt, int& totalSize) {
+	if (Pkt->GetTxBuffer()) {
+		delete[] Pkt->GetTxBuffer();
+	}
+	
+	totalSize = sizeof(*(Pkt->GetHead()));
+
+	Pkt->GetTxBuffer() = new char[totalSize];
+
+	memcpy(Pkt->GetTxBuffer(), Pkt->GetHead(), sizeof(*(Pkt->GetHead())));
+
+
+	return Pkt->GetTxBuffer();
 }
 
 

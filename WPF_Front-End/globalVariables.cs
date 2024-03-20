@@ -14,6 +14,7 @@ using System.Xaml;
 using System.Printing.IndexedProperties;
 using System.Windows.Media.Imaging;
 using System.Reflection.PortableExecutable;
+using System.Collections.ObjectModel;
 
 namespace WPF_Front_End
 {
@@ -34,7 +35,7 @@ namespace WPF_Front_End
     }
 
 
-    public enum Route {LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST}
+    public enum Route {LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT}
 
 
 
@@ -324,6 +325,10 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
+        public static extern IntPtr SerializeMyPostCountData(IntPtr Pkt, out int totalSize);
+
+
+        [DllImport(dllpath)]
         public static extern IntPtr SerializeData(IntPtr Pkt, out int TotalSize);
 
 
@@ -336,11 +341,23 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
+        public static extern void DeserializePostCountBuffer(IntPtr pkt, byte[] src, out int numberOfPosts);
+
+
+        [DllImport(dllpath)]
         public static extern void Deserialization(IntPtr Pkt, byte[] src);
     }
 
     public static class globalVariables
     {
+        public static int PostsSend = 0;
+
+        public static List<Listing> listings = new List<Listing>();
+
+        public static List<uint> MyPostImageSize = new List<uint>();
+
+        public static ObservableCollection<MyPostsItem> Posts = new ObservableCollection<MyPostsItem>();
+        public static byte[] MyPostImage1 {  get; set; }
         public static string bodyBuffer {  get; set; }
 
         public static string username { get; set; }
@@ -367,6 +384,27 @@ namespace WPF_Front_End
         public static bool FirstPostLogin = true;
 
         public static byte[] createPostImage { get; set; }
+
+
+        public static void ClearDynamicArrays()
+        {
+            for(int i = 0; i < listings.Count(); i++)
+            {
+                IntPtr imageArray;
+
+                imageArray = listings[i].ImageStructArray;
+
+                Packet.FreeBuffer(ref imageArray);
+                imageArray = IntPtr.Zero;
+            }
+
+            if (listings.Count() != 0)
+            {
+                listings.Clear();
+                MyPostImageSize.Clear();
+                Posts.Clear();
+            }
+        } 
     }
 
 
