@@ -143,7 +143,7 @@ public:
 
 Packet* CreatePacket();
 
-
+void Deserialization(Packet* Pkt, char* src);
 
 void DestroyPacket(Packet* Pkt);
 

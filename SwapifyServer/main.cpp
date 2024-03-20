@@ -104,7 +104,7 @@ int main()
 
 
         while (1) {
-            char RxBuffer[190000];   //declaring a receive buffer with size 128
+            char RxBuffer[400000];   //declaring a receive buffer with size 128
 
 
             // receive the client message by passing the ServerSocket, address and size of the receive buffer, the 0 flag, client address structure, and the size of the client address structure
@@ -139,11 +139,11 @@ int main()
 
             Deserialization(Pkt, RxBuffer, log, signup, check, list);
 
-            if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") != 0) {
-                Display(Pkt, std::cout, log, signup, list);
+            //if ((strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") != 0) || (strcmp(Pkt->GetHead()->Route, "MYPOSTS_COUNT") != 0)) {
+            //    Display(Pkt, std::cout, log, signup, list);
 
-                /*char* imageBuff = Pkt->GetBody()->Data + (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email));*/
-            }
+            //    /*char* imageBuff = Pkt->GetBody()->Data + (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email));*/
+            //}
 
             
 
@@ -265,7 +265,168 @@ int main()
                 sqldb.closeDatabase(&stmt);
             }
 
+            else if (strcmp(Pkt->GetHead()->Route, "MYPOSTS_COUNT") == 0) {
+                std::string dbPath = "database.db";
 
+                SQLiteDatabase sqldb(dbPath);
+
+                sqlite3_stmt* stmt;
+
+                int numOfRows;
+
+                const char* sqlCountListingRows = "SELECT COUNT(*) FROM listings;";
+
+
+
+                // Prepare the SQL statement
+                int rc = sqlite3_prepare_v2(sqldb.getDB(), sqlCountListingRows, -1, &stmt, NULL);
+                if (rc != SQLITE_OK) {
+                    std::cerr << "SQL error: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
+                }
+
+
+
+                // Execute the SQL statement
+                rc = sqlite3_step(stmt);
+                if (rc == SQLITE_ROW) {
+                    numOfRows = sqlite3_column_int(stmt, 0);
+                    std::cout << "Number of rows in the table: " << numOfRows << std::endl;
+                }
+
+                sqldb.closeDatabase(&stmt);
+                stmt = nullptr;
+
+
+
+                std::string source = "127.0.0.1";
+                std::string destination = "127.0.0.1";
+                std::string route = "MYPOSTS_COUNT";
+                bool auth = true;
+                unsigned int length = numOfRows;
+
+
+                Packet* pkt = CreatePacket();
+
+                memcpy(pkt->GetHead()->Source, source.c_str(), source.length());
+                memcpy(pkt->GetHead()->Destination, destination.c_str(), destination.length());
+                memcpy(pkt->GetHead()->Route, route.c_str(), route.length());
+
+                pkt->GetHead()->Authorization = auth;
+                pkt->GetHead()->Length = length;
+
+                char* TxBuffer = new char[sizeof(*(pkt->GetHead()))];
+
+                memset(TxBuffer, 0, sizeof(*(pkt->GetHead())));
+
+
+                memcpy(TxBuffer, pkt->GetHead(), sizeof(*(pkt->GetHead())));
+
+
+                send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())), 0);
+
+
+
+
+
+                const char* sqlSelectRows = "SELECT * FROM listings;";
+
+                SQLiteDatabase sqldb2(dbPath);
+
+                rc = sqlite3_prepare_v2(sqldb2.getDB(), sqlSelectRows, -1, &stmt, NULL);
+                if (rc != SQLITE_OK) {
+                    std::cerr << "SQL error: " << sqlite3_errmsg(sqldb2.getDB()) << std::endl;
+                }
+
+
+
+
+                // Step through each row
+                while (sqlite3_step(stmt) == SQLITE_ROW) {
+                    Listing list;
+
+                    memset(list.Title, 0, sizeof(list.Title));
+                    memset(list.Location, 0, sizeof(list.Location));
+                    memset(list.Condition, 0, sizeof(list.Condition));
+                    memset(list.EstimatedWorth, 0, sizeof(list.EstimatedWorth));
+                    memset(list.Delivery, 0, sizeof(list.Delivery));
+                    memset(list.LookingFor, 0, sizeof(list.LookingFor));
+
+                    // Retrieve data from the current row
+                    int id = sqlite3_column_int(stmt, 0);
+                    int idSize = sqlite3_column_bytes(stmt, 0);
+
+                    const unsigned char* title = sqlite3_column_text(stmt, 1);
+                    int titleSize = sqlite3_column_bytes(stmt, 1);
+
+                    const unsigned char* location = sqlite3_column_text(stmt, 2);
+                    int locationSize = sqlite3_column_bytes(stmt, 2);
+
+                    const unsigned char* condition = sqlite3_column_text(stmt, 3);
+                    int conditionSize = sqlite3_column_bytes(stmt, 3);
+
+                    const unsigned char* estimated_worth = sqlite3_column_text(stmt, 4);
+                    int worthSize = sqlite3_column_bytes(stmt, 4);
+
+                    const unsigned char* delivery = sqlite3_column_text(stmt, 5);
+                    int deliverySize = sqlite3_column_bytes(stmt, 5);
+
+                    const unsigned char* looking_for = sqlite3_column_text(stmt, 6);
+                    int looking_for_size = sqlite3_column_bytes(stmt, 6);
+
+                    // Retrieve BLOB data
+                    const void* blobArray = sqlite3_column_blob(stmt, 7);
+
+                    unsigned int postImageSize = sqlite3_column_bytes(stmt, 7);
+
+
+                    memcpy(&(list.Title), title, titleSize);
+                    memcpy(&(list.Location), location, locationSize);
+                    memcpy(&(list.Condition), condition, conditionSize);
+                    memcpy(&(list.EstimatedWorth), estimated_worth, worthSize);
+                    memcpy(&(list.Delivery), delivery, deliverySize);
+                    memcpy(&(list.LookingFor), looking_for, looking_for_size);
+
+                    list.ImageStructArray = new char[postImageSize];
+
+                    memset(list.ImageStructArray, 0, postImageSize);
+
+                    memcpy(list.ImageStructArray, (char*)blobArray, postImageSize);
+
+
+
+
+                    int TotalSize = (6 * sizeof(list.Title)) + postImageSize + sizeof(unsigned int);
+
+                    char* TxBuffer = new char[TotalSize];
+
+                    memset(TxBuffer, 0, TotalSize);
+
+                    unsigned int sizeOfImage = postImageSize;
+
+                    
+                    memcpy(TxBuffer, &(list.Title), sizeof(list.Title));
+
+                    memcpy(TxBuffer + sizeof(list.Title), &(list.Location), sizeof(list.Location));
+
+                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location), &(list.Condition), sizeof(list.Condition));
+
+                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition), &(list.EstimatedWorth), sizeof(list.EstimatedWorth));
+
+                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth), &(list.Delivery), sizeof(list.Delivery));
+
+                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery), &(list.LookingFor), sizeof(list.LookingFor));
+
+                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor), &sizeOfImage, sizeof(sizeOfImage));
+
+                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor) + sizeof(sizeOfImage), list.ImageStructArray, sizeOfImage);
+
+
+                    int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
+
+                    delete[] TxBuffer;
+                    TxBuffer = nullptr;
+                }
+            }
 
             else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGEUPLOADED") == 0) {
                 std::string dbPath = "database.db";
@@ -446,6 +607,8 @@ int main()
                 TxBuffer = nullptr;
             }
 
+            DestroyPacket(Pkt);
+
 
             
 
@@ -548,6 +711,7 @@ int main()
             //// Display or further process the decoded image
             //cv::imshow("Decoded Image", decodedImage);
             //cv::waitKey(0);
+
         }
 
         return 0;
