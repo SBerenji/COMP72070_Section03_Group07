@@ -13,6 +13,7 @@
 #include "SQLiteDatabase.h"
 #include "file_utils.h"
 #include <random>
+#include <thread>
 //#include <opencv2.4/opencv2/opencv.hpp>
 //#include <vector>
 #pragma comment(lib, "ws2_32.lib") // Link to the Winsock library
@@ -21,7 +22,7 @@
 
 using namespace std;
 
-SOCKET setupConnection() {
+SOCKET setupConnection(int (*funcptr)(SOCKET), std::thread*** threadObjArray) {
     WSADATA wsaData;
 
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -67,6 +68,58 @@ SOCKET setupConnection() {
         return -1;
     }
 
+    *threadObjArray = new std::thread*[20];
+
+    memset(*threadObjArray, 0, 20);
+
+    int offset = 0;
+
+    std::thread** temp = *threadObjArray;
+
+    while (1) {
+        SOCKET* ConnectionSocket = new SOCKET();
+        if ((*ConnectionSocket = accept(ServerSocket, NULL, NULL)) == -1) {
+            /*continue;*/
+
+            closesocket(ServerSocket);
+
+            WSACleanup();
+
+            return -1;
+        }
+
+
+        // printing out a message if the process is succesful
+        std::cout << "Server Socket Successfully Binded" << endl;
+
+
+        // Lambda function to capture the parameters and call the desired function
+        //auto threadFuncWithParams = [&](std::thread& threadObj) {
+        //    threadedFunc(ConnectionSocket); // Pass the parameters to the function
+        //    };
+
+         // Create a copy of ConnectionSocket to pass to the thread
+        /*SOCKET* connectionCopy = new SOCKET(ConnectionSocket);*/
+
+        std::thread* thread1 = new std::thread(funcptr, *ConnectionSocket);
+
+        *temp = thread1;
+
+        //memcpy(**threadObjArray + offset, thread1, sizeof(thread1));
+
+        /*(*thread1).join();*/
+
+        /*(*threadObjArray + offset) = new std::thread(threadFuncWithParams, std::ref(*threadObjArray[count]));*/
+
+        offset++;
+
+        temp = temp + offset;
+
+
+        delete ConnectionSocket;
+        ConnectionSocket = nullptr;
+    }
+
     return ServerSocket;
 }
 
@@ -85,11 +138,8 @@ int callback(void* NotUsed, int argc, char** argv, char** azColName) {
 }
 
 
-int main()
-{
-    SOCKET ServerSocket = setupConnection();
-
-    while (1) {
+int threadedFunc(SOCKET ConnectionSocket) {
+    /*while (1) {
         SOCKET ConnectionSocket;
         if ((ConnectionSocket = accept(ServerSocket, NULL, NULL)) == -1) {
             closesocket(ServerSocket);
@@ -97,645 +147,475 @@ int main()
             WSACleanup();
 
             return -1;
+        }*/
+
+    // printing out a message if the process is succesful
+    /*std::cout << "Server Socket Successfully Binded" << endl;*/
+
+
+    while (1) {
+        char RxBuffer[400000];   //declaring a receive buffer with size 128
+
+        memset(RxBuffer, 0, 400000);
+
+
+        // receive the client message by passing the ServerSocket, address and size of the receive buffer, the 0 flag, client address structure, and the size of the client address structure
+        //Note: buffer is a pointer to the data (it is an array which means it acts as a pointer to the first element of the array)
+
+        /* recv(ServerSocket, RxBuffer, sizeof(RxBuffer), 0);*/
+
+        int receive_result = recv(ConnectionSocket, RxBuffer, sizeof(RxBuffer), 0);
+
+
+        // if the return value of the 'recvfrom' function is -1, close the server socket and end the program execution
+        if (receive_result <= 0)
+        {
+            closesocket(ConnectionSocket);
+            WSACleanup();
+            std::cout << "ERROR: did not receive anything from client" << endl;  // if recvfrom returns -1 it means the process was unsuccessfull
+            return 0;
         }
 
-        // printing out a message if the process is succesful
-        std::cout << "Server Socket Successfully Binded" << endl;
+        std::cout << "Message Received from Client: " << RxBuffer << endl;
+
+        Packet* Pkt = CreatePacket();
+
+        LogIn log;
+
+        SignUp signup;
+
+        SignUpCheck check;
+
+        Listing list;
+
+        Deserialization(Pkt, RxBuffer, log, signup, check, list);
 
 
-        while (1) {
-            char RxBuffer[400000];   //declaring a receive buffer with size 128
 
+        char* errMsg = 0;
 
-            // receive the client message by passing the ServerSocket, address and size of the receive buffer, the 0 flag, client address structure, and the size of the client address structure
-            //Note: buffer is a pointer to the data (it is an array which means it acts as a pointer to the first element of the array)
+        if (strcmp(Pkt->GetHead()->Route, "POST") == 0) {
+            std::string dbPath = "database.db";
 
-           /* recv(ServerSocket, RxBuffer, sizeof(RxBuffer), 0);*/
+            SQLiteDatabase sqldb(dbPath);
 
-            int receive_result = recv(ConnectionSocket, RxBuffer, sizeof(RxBuffer), 0);
+            const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
+                "id INTEGER NOT NULL,"
+                "title TEXT PRIMARY KEY,"
+                "location TEXT NOT NULL,"
+                "condition TEXT NOT NULL,"
+                "estimated_worth TEXT NOT NULL,"
+                "delivery TEXT NOT NULL,"
+                "looking_for TEXT NOT NULL,"
+                "listing_picture BLOB NOT NULL);";
 
+            bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
 
-            // if the return value of the 'recvfrom' function is -1, close the server socket and end the program execution
-            if (receive_result < 0)
-            {
-                closesocket(ConnectionSocket);
-                closesocket(ServerSocket);
-                WSACleanup();
-                std::cout << "ERROR: did not receive anything from client" << endl;  // if recvfrom returns -1 it means the process was unsuccessfull
-                return 0;
+            if (!query_exe_result) {
+                return -1;
             }
 
-            std::cout << "Message Received from Client: " << RxBuffer << endl;
+            sqlite3_stmt* stmt = nullptr;
 
-            Packet* Pkt = CreatePacket();
+            int ListingPostInsertionReturn = sqldb.ListingPostInsert(&stmt, Pkt, list);
 
-            LogIn log;
-
-            SignUp signup;
-
-            SignUpCheck check;
-
-            Listing list;
-
-            Deserialization(Pkt, RxBuffer, log, signup, check, list);
-
-            //if ((strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") != 0) || (strcmp(Pkt->GetHead()->Route, "MYPOSTS_COUNT") != 0)) {
-            //    Display(Pkt, std::cout, log, signup, list);
-
-            //    /*char* imageBuff = Pkt->GetBody()->Data + (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email));*/
-            //}
-
-            
-
-            /*   SQLiteDatabase db("database.db");
-               if (!db.isOpen()) {
-                   std:cerr << "Failed to open db" << std::endl;
-                   return 1;
-               }*/
-               //int id = int(Pkt->GetBody()->User);
-            //std::random_device rd;
-            //std::mt19937 gen(rd()); // Mersenne Twister engine seeded with rd()
-
-            //// Define the range for the random integer
-            //int min_value = 1;
-            //int max_value = 100;
-
-            //// Generate a random integer
-            //std::uniform_int_distribution<int> distribution(min_value, max_value);
-            //int id = distribution(gen);
-            //std::string profile_picture = signup.ImageStructArray;
-
-           /* const char* sql = "DROP TABLE IF EXISTS users;"
-                "CREATE TABLE users ("
-                "id INTEGER PRIMARY KEY,"
-                "username TEXT NOT NULL,"
-                "password TEXT NOT NULL,"
-                "email TEXT NOT NULL,"
-                "profile_picture BLOB"
-                ");";*/
-
-                //if (!db.executeQuery(sql)) {
-                //    std::cerr << "Query error: " << std::endl; // Log the query error
-                //}
-                //else {
-                //    std::cout << "table created" << std::endl;
-                //}
-
-
-                /*std::string query = "INSERT INTO users (id, username, password, email, profile_picture) VALUES ("
-                    + std::to_string(id) + ", "
-                    + "'" + signup.username + "', "
-                    + "'" + signup.password + "', "
-                    + "'" + signup.email + "', "
-                    + "'" + *(signup.ImageStructArray) + "')";*/
-            /*std::string dbPath = "database.db";
-
-            SQLiteDatabase sqldb(dbPath);*/
-
-            //std::ifstream file(dbPath);
-            //bool fileExists = file.good();
-            //file.close();
-
-            //// If the file does not exist, create it
-            //if (!fileExists) {
-            //    std::ofstream createFile(dbPath);
-            //    createFile.close();
-            //}
-
-            //// Open the database
-            //sqlite3* db;
-
-            //int rc = sqlite3_open(dbPath.c_str(), &db);
-            //if (rc != SQLITE_OK) {
-            //    std::cerr << "Error opening SQLite database: " << sqlite3_errmsg(db) << std::endl;
-            //}
-
-
-            char* errMsg = 0;
-
-            if (strcmp(Pkt->GetHead()->Route, "POST") == 0) {
-                std::string dbPath = "database.db";
-
-                SQLiteDatabase sqldb(dbPath);
-
-                const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
-                    "id INTEGER NOT NULL,"
-                    "title TEXT PRIMARY KEY,"
-                    "location TEXT NOT NULL,"
-                    "condition TEXT NOT NULL,"
-                    "estimated_worth TEXT NOT NULL,"
-                    "delivery TEXT NOT NULL,"
-                    "looking_for TEXT NOT NULL,"
-                    "listing_picture BLOB NOT NULL);";
-
-                bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
-
-                if (!query_exe_result) {
-                    return -1;
-                }
-
-                sqlite3_stmt* stmt = nullptr;
-
-                int ListingPostInsertionReturn = sqldb.ListingPostInsert(&stmt, Pkt, list);
-
-                if (ListingPostInsertionReturn == -1) {
-                    return ListingPostInsertionReturn;
-                }
-
-                /*char* ListingImageArray = nullptr;
-                int listingImageSize = 0;
-
-                sqldb.FetchImage(&stmt, list.Title, &ListingImageArray, listingImageSize);
-
-
-                int sendSize = send(ConnectionSocket, ListingImageArray, listingImageSize, 0);
-
-                if (sendSize < 0) {
-                    std::cout << "Sending Image Failed!!" << std::endl;
-
-                    return -1;
-                }
-
-                else {
-                    std::cout << "Image Successfully sent!! Wohoooooo" << std::endl;
-                }
-
-                delete ListingImageArray;*/
-
-                sqldb.closeDatabase(&stmt);
+            if (ListingPostInsertionReturn == -1) {
+                return ListingPostInsertionReturn;
             }
 
-            else if (strcmp(Pkt->GetHead()->Route, "MYPOSTS_COUNT") == 0) {
-                std::string dbPath = "database.db";
+            sqldb.closeDatabase(&stmt);
+        }
 
-                SQLiteDatabase sqldb(dbPath);
+        else if (strcmp(Pkt->GetHead()->Route, "MYPOSTS_COUNT") == 0) {
+            std::string dbPath = "database.db";
 
-                sqlite3_stmt* stmt;
+            SQLiteDatabase sqldb(dbPath);
 
-                int numOfRows;
+            sqlite3_stmt* stmt;
 
-                const char* sqlCountListingRows = "SELECT COUNT(*) FROM listings;";
+            int numOfRows;
 
+            const char* sqlCountListingRows = "SELECT COUNT(*) FROM listings;";
 
 
-                // Prepare the SQL statement
-                int rc = sqlite3_prepare_v2(sqldb.getDB(), sqlCountListingRows, -1, &stmt, NULL);
-                if (rc != SQLITE_OK) {
-                    std::cerr << "SQL error: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
-                }
 
-
-
-                // Execute the SQL statement
-                rc = sqlite3_step(stmt);
-                if (rc == SQLITE_ROW) {
-                    numOfRows = sqlite3_column_int(stmt, 0);
-                    std::cout << "Number of rows in the table: " << numOfRows << std::endl;
-                }
-
-                sqldb.closeDatabase(&stmt);
-                stmt = nullptr;
-
-
-
-                std::string source = "127.0.0.1";
-                std::string destination = "127.0.0.1";
-                std::string route = "MYPOSTS_COUNT";
-                bool auth = true;
-                unsigned int length = numOfRows;
-
-
-                Packet* pkt = CreatePacket();
-
-                memcpy(pkt->GetHead()->Source, source.c_str(), source.length());
-                memcpy(pkt->GetHead()->Destination, destination.c_str(), destination.length());
-                memcpy(pkt->GetHead()->Route, route.c_str(), route.length());
-
-                pkt->GetHead()->Authorization = auth;
-                pkt->GetHead()->Length = length;
-
-                char* TxBuffer = new char[sizeof(*(pkt->GetHead()))];
-
-                memset(TxBuffer, 0, sizeof(*(pkt->GetHead())));
-
-
-                memcpy(TxBuffer, pkt->GetHead(), sizeof(*(pkt->GetHead())));
-
-
-                send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())), 0);
-
-
-
-
-
-                const char* sqlSelectRows = "SELECT * FROM listings;";
-
-                SQLiteDatabase sqldb2(dbPath);
-
-                rc = sqlite3_prepare_v2(sqldb2.getDB(), sqlSelectRows, -1, &stmt, NULL);
-                if (rc != SQLITE_OK) {
-                    std::cerr << "SQL error: " << sqlite3_errmsg(sqldb2.getDB()) << std::endl;
-                }
-
-
-
-
-                // Step through each row
-                while (sqlite3_step(stmt) == SQLITE_ROW) {
-                    Listing list;
-
-                    memset(list.Title, 0, sizeof(list.Title));
-                    memset(list.Location, 0, sizeof(list.Location));
-                    memset(list.Condition, 0, sizeof(list.Condition));
-                    memset(list.EstimatedWorth, 0, sizeof(list.EstimatedWorth));
-                    memset(list.Delivery, 0, sizeof(list.Delivery));
-                    memset(list.LookingFor, 0, sizeof(list.LookingFor));
-
-                    // Retrieve data from the current row
-                    int id = sqlite3_column_int(stmt, 0);
-                    int idSize = sqlite3_column_bytes(stmt, 0);
-
-                    const unsigned char* title = sqlite3_column_text(stmt, 1);
-                    int titleSize = sqlite3_column_bytes(stmt, 1);
-
-                    const unsigned char* location = sqlite3_column_text(stmt, 2);
-                    int locationSize = sqlite3_column_bytes(stmt, 2);
-
-                    const unsigned char* condition = sqlite3_column_text(stmt, 3);
-                    int conditionSize = sqlite3_column_bytes(stmt, 3);
-
-                    const unsigned char* estimated_worth = sqlite3_column_text(stmt, 4);
-                    int worthSize = sqlite3_column_bytes(stmt, 4);
-
-                    const unsigned char* delivery = sqlite3_column_text(stmt, 5);
-                    int deliverySize = sqlite3_column_bytes(stmt, 5);
-
-                    const unsigned char* looking_for = sqlite3_column_text(stmt, 6);
-                    int looking_for_size = sqlite3_column_bytes(stmt, 6);
-
-                    // Retrieve BLOB data
-                    const void* blobArray = sqlite3_column_blob(stmt, 7);
-
-                    unsigned int postImageSize = sqlite3_column_bytes(stmt, 7);
-
-
-                    memcpy(&(list.Title), title, titleSize);
-                    memcpy(&(list.Location), location, locationSize);
-                    memcpy(&(list.Condition), condition, conditionSize);
-                    memcpy(&(list.EstimatedWorth), estimated_worth, worthSize);
-                    memcpy(&(list.Delivery), delivery, deliverySize);
-                    memcpy(&(list.LookingFor), looking_for, looking_for_size);
-
-                    list.ImageStructArray = new char[postImageSize];
-
-                    memset(list.ImageStructArray, 0, postImageSize);
-
-                    memcpy(list.ImageStructArray, (char*)blobArray, postImageSize);
-
-
-
-
-                    int TotalSize = (6 * sizeof(list.Title)) + postImageSize + sizeof(unsigned int);
-
-                    char* TxBuffer = new char[TotalSize];
-
-                    memset(TxBuffer, 0, TotalSize);
-
-                    unsigned int sizeOfImage = postImageSize;
-
-                    
-                    memcpy(TxBuffer, &(list.Title), sizeof(list.Title));
-
-                    memcpy(TxBuffer + sizeof(list.Title), &(list.Location), sizeof(list.Location));
-
-                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location), &(list.Condition), sizeof(list.Condition));
-
-                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition), &(list.EstimatedWorth), sizeof(list.EstimatedWorth));
-
-                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth), &(list.Delivery), sizeof(list.Delivery));
-
-                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery), &(list.LookingFor), sizeof(list.LookingFor));
-
-                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor), &sizeOfImage, sizeof(sizeOfImage));
-
-                    memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor) + sizeof(sizeOfImage), list.ImageStructArray, sizeOfImage);
-
-
-                    int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
-
-                    delete[] TxBuffer;
-                    TxBuffer = nullptr;
-                }
+            // Prepare the SQL statement
+            int rc = sqlite3_prepare_v2(sqldb.getDB(), sqlCountListingRows, -1, &stmt, NULL);
+            if (rc != SQLITE_OK) {
+                std::cerr << "SQL error: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
             }
 
-            else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGEUPLOADED") == 0) {
-                std::string dbPath = "database.db";
-
-                SQLiteDatabase sqldb(dbPath);
-
-                // SQL command to create table
-                const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
-                    "id INTEGER NOT NULL,"
-                    "username TEXT NOT NULL,"
-                    "password TEXT NOT NULL,"
-                    "email TEXT PRIMARY KEY,"
-                    "profile_picture BLOB NOT NULL);";
 
 
-                bool query_exe_result = sqldb.executeQuery(sqlCreateTable);
+            // Execute the SQL statement
+            rc = sqlite3_step(stmt);
+            if (rc == SQLITE_ROW) {
+                numOfRows = sqlite3_column_int(stmt, 0);
+                std::cout << "Number of rows in the table: " << numOfRows << std::endl;
+            }
 
-                if (!query_exe_result) {
-                    return -1;
-                }
+            sqldb.closeDatabase(&stmt);
+            stmt = nullptr;
 
 
 
-                sqlite3_stmt* stmt = nullptr;
-
-                int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(&stmt, Pkt, signup);
-
-                if (SignUpdataInsertionReturn == -1) {
-                    return SignUpdataInsertionReturn;
-                }
+            std::string source = "127.0.0.1";
+            std::string destination = "127.0.0.1";
+            std::string route = "MYPOSTS_COUNT";
+            bool auth = true;
+            unsigned int length = numOfRows;
 
 
+            Packet* pkt = CreatePacket();
+
+            memcpy(pkt->GetHead()->Source, source.c_str(), source.length());
+            memcpy(pkt->GetHead()->Destination, destination.c_str(), destination.length());
+            memcpy(pkt->GetHead()->Route, route.c_str(), route.length());
+
+            pkt->GetHead()->Authorization = auth;
+            pkt->GetHead()->Length = length;
+
+            char* TxBuffer = new char[sizeof(*(pkt->GetHead()))];
+
+            memset(TxBuffer, 0, sizeof(*(pkt->GetHead())));
+
+
+            memcpy(TxBuffer, pkt->GetHead(), sizeof(*(pkt->GetHead())));
+
+
+            send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())), 0);
+
+
+
+
+
+            const char* sqlSelectRows = "SELECT * FROM listings;";
+
+            SQLiteDatabase sqldb2(dbPath);
+
+            rc = sqlite3_prepare_v2(sqldb2.getDB(), sqlSelectRows, -1, &stmt, NULL);
+            if (rc != SQLITE_OK) {
+                std::cerr << "SQL error: " << sqlite3_errmsg(sqldb2.getDB()) << std::endl;
+            }
+
+
+
+
+            // Step through each row
+            while (sqlite3_step(stmt) == SQLITE_ROW) {
+                Listing list;
+
+                memset(list.Title, 0, sizeof(list.Title));
+                memset(list.Location, 0, sizeof(list.Location));
+                memset(list.Condition, 0, sizeof(list.Condition));
+                memset(list.EstimatedWorth, 0, sizeof(list.EstimatedWorth));
+                memset(list.Delivery, 0, sizeof(list.Delivery));
+                memset(list.LookingFor, 0, sizeof(list.LookingFor));
+
+                // Retrieve data from the current row
+                int id = sqlite3_column_int(stmt, 0);
+                int idSize = sqlite3_column_bytes(stmt, 0);
+
+                const unsigned char* title = sqlite3_column_text(stmt, 1);
+                int titleSize = sqlite3_column_bytes(stmt, 1);
+
+                const unsigned char* location = sqlite3_column_text(stmt, 2);
+                int locationSize = sqlite3_column_bytes(stmt, 2);
+
+                const unsigned char* condition = sqlite3_column_text(stmt, 3);
+                int conditionSize = sqlite3_column_bytes(stmt, 3);
+
+                const unsigned char* estimated_worth = sqlite3_column_text(stmt, 4);
+                int worthSize = sqlite3_column_bytes(stmt, 4);
+
+                const unsigned char* delivery = sqlite3_column_text(stmt, 5);
+                int deliverySize = sqlite3_column_bytes(stmt, 5);
+
+                const unsigned char* looking_for = sqlite3_column_text(stmt, 6);
+                int looking_for_size = sqlite3_column_bytes(stmt, 6);
 
                 // Retrieve BLOB data
-                char* imageArray = nullptr;
-                int imageSize = 0;
+                const void* blobArray = sqlite3_column_blob(stmt, 7);
 
-                sqldb.FetchImage(&stmt, signup.email, &imageArray, imageSize);
-
+                unsigned int postImageSize = sqlite3_column_bytes(stmt, 7);
 
 
+                memcpy(&(list.Title), title, titleSize);
+                memcpy(&(list.Location), location, locationSize);
+                memcpy(&(list.Condition), condition, conditionSize);
+                memcpy(&(list.EstimatedWorth), estimated_worth, worthSize);
+                memcpy(&(list.Delivery), delivery, deliverySize);
+                memcpy(&(list.LookingFor), looking_for, looking_for_size);
 
-                int sendSize = send(ConnectionSocket, imageArray, imageSize, 0);
+                list.ImageStructArray = new char[postImageSize];
 
-                /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
+                memset(list.ImageStructArray, 0, postImageSize);
 
-                if (sendSize < 0) {
-                    std::cout << "Sending Image Failed!!" << std::endl;
-
-                    return -1;
-                }
-
-                else {
-                    std::cout << "Image Successfully sent!! Wohoooooo" << std::endl;
-                }
-
-                delete[] imageArray;
-
-                /*sqlite3_finalize(stmt);*/
-
-                /*Finalize the statement and close the database connection*/
-                sqldb.closeDatabase(&stmt);
-            }
-
-            else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGENOTUPLOADED") == 0) {
-                std::string dbPath = "database.db";
-
-                SQLiteDatabase sqldb(dbPath);
-
-                // SQL command to create table
-                const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithoutProfile ("
-                    "id INTEGER NOT NULL,"
-                    "username TEXT NOT NULL,"
-                    "password TEXT NOT NULL,"
-                    "email TEXT PRIMARY KEY,"
-                    "profile_picture_SubstituteData TEXT NOT NULL);";
-
-
-                bool query_exe_result = sqldb.executeQuery(sqlCreateTable);
-
-                if (!query_exe_result) {
-                    return -1;
-                }
+                memcpy(list.ImageStructArray, (char*)blobArray, postImageSize);
 
 
 
-                sqlite3_stmt* stmt = nullptr;
 
-                int SignUpdataInsertionReturn = sqldb.SignUpWithoutImageDataInsert(&stmt, Pkt, signup);
+                int TotalSize = (6 * sizeof(list.Title)) + postImageSize + sizeof(unsigned int);
 
-                if (SignUpdataInsertionReturn == -1) {
-                    return SignUpdataInsertionReturn;
-                }
+                char* TxBuffer = new char[TotalSize];
 
-                /*sqlite3_finalize(stmt);*/
-                sqldb.closeDatabase(&stmt);
-            }
+                memset(TxBuffer, 0, TotalSize);
 
-            else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") == 0) {
-                std::string dbPath = "database.db";
-
-                SQLiteDatabase sqldb(dbPath);
-
-                userFound = false;
-
-                std::ostringstream oss;
-                oss << "SELECT username, email FROM UsersWithProfile WHERE username = '" << check.username << "';";
-                std::string withProfile_query_str = oss.str();
-
-                int (*callback_ptr)(void*, int, char**, char**);
-
-                callback_ptr = callback;
-
-                char* errMsg = 0;
+                unsigned int sizeOfImage = postImageSize;
 
 
-                int rc = sqlite3_exec(sqldb.getDB(), withProfile_query_str.c_str(), &callback, 0, &errMsg);
-                if (rc != SQLITE_OK) {
-                    std::cerr << "SQL error: " << errMsg << std::endl;
-                    sqlite3_free(errMsg);
-                }
+                memcpy(TxBuffer, &(list.Title), sizeof(list.Title));
 
+                memcpy(TxBuffer + sizeof(list.Title), &(list.Location), sizeof(list.Location));
 
-                if (!userFound) {
-                    oss.clear();
+                memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location), &(list.Condition), sizeof(list.Condition));
 
-                    oss << "SELECT username, email FROM UsersWithoutProfile WHERE username = '" << check.username << "';";
+                memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition), &(list.EstimatedWorth), sizeof(list.EstimatedWorth));
 
-                    std::string withoutProfile_query_str = oss.str();
+                memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth), &(list.Delivery), sizeof(list.Delivery));
 
-                    rc = sqlite3_exec(sqldb.getDB(), withoutProfile_query_str.c_str(), &callback, 0, &errMsg);
+                memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery), &(list.LookingFor), sizeof(list.LookingFor));
 
-                    if (rc != SQLITE_OK) {
-                        std::cerr << "SQL error: " << errMsg << std::endl;
-                        sqlite3_free(errMsg);
-                    }
-                }
+                memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor), &sizeOfImage, sizeof(sizeOfImage));
 
-                 /*Close the database connection*/
-                sqlite3_close(sqldb.getDB());
+                memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor) + sizeof(sizeOfImage), list.ImageStructArray, sizeOfImage);
 
-                Packet pkt;
-
-                char source[20] = "127.0.0.1";
-                int source_size = sizeof(source);
-
-                char destination[20] = "127.0.0.1";
-                int destination_size = sizeof(destination);
-
-                char Route[40] = "LOGIN";
-                int Route_size = sizeof(Route);
-
-                bool Authorization = userFound;
-
-                int length = 0;
-
-                SetHeaderInformation(&pkt, source, source_size, destination, destination_size, Route, Route_size, Authorization, length);
-
-                int TotalSize = 0;
-
-                char* TxBuffer = SerializeUserCheckingData(&pkt, TotalSize);
 
                 int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
-
-                /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
-
-                if (sendSize < 0) {
-                    std::cout << "Sending User Check Failed!!" << std::endl;
-
-                    return -1;
-                }
-
-                else {
-                    std::cout << "Response for User Check Successfully sent!! Wohoooooo" << std::endl;
-                }
 
                 delete[] TxBuffer;
                 TxBuffer = nullptr;
             }
+        }
 
-            DestroyPacket(Pkt);
+        else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGEUPLOADED") == 0) {
+            std::string dbPath = "database.db";
+
+            SQLiteDatabase sqldb(dbPath);
+
+            // SQL command to create table
+            const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
+                "id INTEGER NOT NULL,"
+                "username TEXT NOT NULL,"
+                "password TEXT NOT NULL,"
+                "email TEXT PRIMARY KEY,"
+                "profile_picture BLOB NOT NULL);";
 
 
-            
+            bool query_exe_result = sqldb.executeQuery(sqlCreateTable);
 
-            /*rc = sqlite3_exec(db, sqlCreateTable, 0, 0, &errMsg);
+            if (!query_exe_result) {
+                return -1;
+            }
 
 
-            if (rc != SQLITE_OK) {
-                std::cerr << "SQL error: " << errMsg << std::endl;
-                sqlite3_free(errMsg);
-                sqlite3_close(db);
+
+            sqlite3_stmt* stmt = nullptr;
+
+            int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(&stmt, Pkt, signup);
+
+            if (SignUpdataInsertionReturn == -1) {
+                return SignUpdataInsertionReturn;
+            }
+
+
+
+            // Retrieve BLOB data
+            char* imageArray = nullptr;
+            int imageSize = 0;
+
+            sqldb.FetchImage(&stmt, signup.email, &imageArray, imageSize);
+
+
+
+
+            int sendSize = send(ConnectionSocket, imageArray, imageSize, 0);
+
+            /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
+
+            if (sendSize < 0) {
+                std::cout << "Sending Image Failed!!" << std::endl;
 
                 return -1;
             }
+
             else {
-                std::cout << "Table created successfully." << std::endl;
-            }*/
-
-            
-
-            /*sqlite3_stmt* stmt;
-            const char* sql = "INSERT INTO users (id, username, password, email, profile_picture) VALUES (?, ?, ?, ?, ?)";
-            sqlite3_prepare_v2(db, sql, -1, &stmt, nullptr);
-            sqlite3_bind_int(stmt, 1, id);
-            sqlite3_bind_text(stmt, 2, signup.username, -1, SQLITE_TRANSIENT);
-            sqlite3_bind_text(stmt, 3, signup.password, -1, SQLITE_TRANSIENT);
-            sqlite3_bind_text(stmt, 4, signup.email, -1, SQLITE_TRANSIENT);
-            sqlite3_bind_blob(stmt, 5, signup.ImageStructArray, Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email)), SQLITE_STATIC);
-
-            rc = sqlite3_step(stmt);
-            if (rc != SQLITE_DONE) {
-                std::cerr << "Failed to execute statement: " << sqlite3_errmsg(db) << std::endl;
-                sqlite3_finalize(stmt);
-                sqlite3_close(db);
-                return 1;
+                std::cout << "Image Successfully sent!! Wohoooooo" << std::endl;
             }
 
-            std::cout << "Data inserted successfully!" << std::endl;*/
+            delete[] imageArray;
 
+            /*sqlite3_finalize(stmt);*/
 
-
-            // Construct the query as a std::string
-            //std::ostringstream oss;
-            //oss << "SELECT profile_picture FROM users WHERE id = " << id;
-            //std::string query_str = oss.str();
-
-
-
-            //// Convert the std::string query to a const char*
-            //const char* query = query_str.c_str();
-
-            ////memcpy(query, ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).c_str(), ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).length());
-
-
-            //// Prepare the SQL statement
-            //rc = sqlite3_prepare_v2(db, query, -1, &stmt, nullptr);
-            //if (rc != SQLITE_OK) {
-            //    std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-            //    sqlite3_close(db);
-            //    return 1;
-            //}
-
-
-            //// Execute the query
-            //rc = sqlite3_step(stmt);
-            //if (rc != SQLITE_ROW) {
-            //    std::cerr << "No data found" << std::endl;
-            //    sqlite3_finalize(stmt);
-            //    sqlite3_close(db);
-            //    return 1;
-            //}
-
-
-            
-
-            //if (!db.executeQuery(sql)) {
-            //    std::cerr << "Query error: "<< std::endl; // Log the query error
-            //}
-            //else {
-            //    std::cout << "Saved to db" << std::endl;
-            //}
-
-            /*char retrieveUser[200000];
-
-            int size = Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email));
-
-            memcpy(retrieveUser, (char*)("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).c_str(), size);*/
-
-
-
-
-
-            /*BufferToImage::GetImageFromByteArray(imageBuff);*/
-
-            //// Assuming 'receivedData' is the byte array received from the client
-            //std::vector<unsigned char> receivedData; // Assuming receivedData contains the byte array
-
-            //// Convert byte array to OpenCV Mat object
-            //cv::Mat decodedImage = byteArrayToMat(receivedData);
-
-            //// Display or further process the decoded image
-            //cv::imshow("Decoded Image", decodedImage);
-            //cv::waitKey(0);
-
+            /*Finalize the statement and close the database connection*/
+            sqldb.closeDatabase(&stmt);
         }
 
-        return 0;
+        else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGENOTUPLOADED") == 0) {
+            std::string dbPath = "database.db";
+
+            SQLiteDatabase sqldb(dbPath);
+
+            // SQL command to create table
+            const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithoutProfile ("
+                "id INTEGER NOT NULL,"
+                "username TEXT NOT NULL,"
+                "password TEXT NOT NULL,"
+                "email TEXT PRIMARY KEY,"
+                "profile_picture_SubstituteData TEXT NOT NULL);";
+
+
+            bool query_exe_result = sqldb.executeQuery(sqlCreateTable);
+
+            if (!query_exe_result) {
+                return -1;
+            }
+
+
+
+            sqlite3_stmt* stmt = nullptr;
+
+            int SignUpdataInsertionReturn = sqldb.SignUpWithoutImageDataInsert(&stmt, Pkt, signup);
+
+            if (SignUpdataInsertionReturn == -1) {
+                return SignUpdataInsertionReturn;
+            }
+
+            /*sqlite3_finalize(stmt);*/
+            sqldb.closeDatabase(&stmt);
+        }
+
+        else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") == 0) {
+            std::string dbPath = "database.db";
+
+            SQLiteDatabase sqldb(dbPath);
+
+            userFound = false;
+
+            std::ostringstream oss;
+            oss << "SELECT username, email FROM UsersWithProfile WHERE username = '" << check.username << "';";
+            std::string withProfile_query_str = oss.str();
+
+            int (*callback_ptr)(void*, int, char**, char**);
+
+            callback_ptr = callback;
+
+            char* errMsg = 0;
+
+
+            int rc = sqlite3_exec(sqldb.getDB(), withProfile_query_str.c_str(), &callback, 0, &errMsg);
+            if (rc != SQLITE_OK) {
+                std::cerr << "SQL error: " << errMsg << std::endl;
+                sqlite3_free(errMsg);
+            }
+
+
+            if (!userFound) {
+                oss.clear();
+
+                oss << "SELECT username, email FROM UsersWithoutProfile WHERE username = '" << check.username << "';";
+
+                std::string withoutProfile_query_str = oss.str();
+
+                rc = sqlite3_exec(sqldb.getDB(), withoutProfile_query_str.c_str(), &callback, 0, &errMsg);
+
+                if (rc != SQLITE_OK) {
+                    std::cerr << "SQL error: " << errMsg << std::endl;
+                    sqlite3_free(errMsg);
+                }
+            }
+
+            /*Close the database connection*/
+            sqlite3_close(sqldb.getDB());
+
+            Packet pkt;
+
+            char source[20] = "127.0.0.1";
+            int source_size = sizeof(source);
+
+            char destination[20] = "127.0.0.1";
+            int destination_size = sizeof(destination);
+
+            char Route[40] = "LOGIN";
+            int Route_size = sizeof(Route);
+
+            bool Authorization = userFound;
+
+            int length = 0;
+
+            SetHeaderInformation(&pkt, source, source_size, destination, destination_size, Route, Route_size, Authorization, length);
+
+            int TotalSize = 0;
+
+            char* TxBuffer = SerializeUserCheckingData(&pkt, TotalSize);
+
+            int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
+
+            /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
+
+            if (sendSize < 0) {
+                std::cout << "Sending User Check Failed!!" << std::endl;
+
+                return -1;
+            }
+
+            else {
+                std::cout << "Response for User Check Successfully sent!! Wohoooooo" << std::endl;
+            }
+
+            delete[] TxBuffer;
+            TxBuffer = nullptr;
+        }
+
+        DestroyPacket(Pkt);
+
     }
 
+    return 0;
+}
 
-    //char TxBuffer[] = "Hello Client";
-    //// sending the success message to the client address saved from recvfrom()
-    //// by passng the ServerSocket, address and size of the transmit buffer, flag 0, client address structure and the size of the structure
-    //int send_result = sendto(ServerSocket, TxBuffer, sizeof(TxBuffer), 0, (struct sockaddr*)&CltAddr, sizeof(CltAddr));
 
-    //// if the return value of the 'sendto' function is -1, close the server socket and end the program
-    //if (send_result == -1)
-    //{
-    //    closesocket(ServerSocket);
-    //    WSACleanup();
-    //    // display an error message
-    //    cout << "Sending to client failed" << endl;
 
-    //    return 0;
-    //}
+int main()
+{
+    std::thread** threadObjArray = nullptr;
 
-    //// printing out a message if the process is succesful
-    //cout << "Sending Back to the Client: " << TxBuffer << endl;
+    SOCKET ServerSocket = setupConnection(threadedFunc, &threadObjArray);
+
+
+    for (int offset = 0; offset < 20; offset++) {
+        if (!(threadObjArray)[offset]) {
+            break;
+        }
+
+        else if (std::thread::id() != (*(threadObjArray[offset])).get_id()) {
+            (*(threadObjArray[offset])).join();
+        }
+
+    }
+
+    for (int i = 0; i < 20; i++) {
+        if (!threadObjArray[i]) {
+            break;
+        }
+
+        else {
+            delete threadObjArray[i];
+        }
+    }
+
+    delete[] threadObjArray;
+
+    /*int (*funcptr)(SOCKET&) = threadedFunc;
+
+    std::thread thread1(funcptr, std::ref(ServerSocket));
+
+    std::thread thread2(funcptr, std::ref(ServerSocket));
+
+
+    thread1.join();
+    thread2.join();*/
 
 
     // Cleaning up the ClientSocket and Winsock library
