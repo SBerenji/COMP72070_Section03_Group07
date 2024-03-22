@@ -14,6 +14,10 @@
 #include "file_utils.h"
 #include <random>
 #include <thread>
+#include <vector>
+#include <atomic>
+#include <mutex>
+#include <condition_variable>
 //#include <opencv2.4/opencv2/opencv.hpp>
 //#include <vector>
 #pragma comment(lib, "ws2_32.lib") // Link to the Winsock library
@@ -22,7 +26,14 @@
 
 using namespace std;
 
-SOCKET setupConnection(int (*funcptr)(SOCKET), std::thread*** threadObjArray) {
+
+std::vector<std::thread> threadPool;
+std::vector<std::atomic<bool>> cleanupFlags(20);
+std::mutex threadMutex;
+std::condition_variable cv;
+
+
+SOCKET setupConnection(int (*funcptr)(SOCKET)) {
     WSADATA wsaData;
 
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -68,24 +79,26 @@ SOCKET setupConnection(int (*funcptr)(SOCKET), std::thread*** threadObjArray) {
         return -1;
     }
 
-    *threadObjArray = new std::thread*[20];
+    /**threadObjArray = new std::thread*[20];
 
     memset(*threadObjArray, 0, 20);
 
     int offset = 0;
 
-    std::thread** temp = *threadObjArray;
+    std::thread** temp = *threadObjArray;*/
+
+    int i = 0;
 
     while (1) {
         SOCKET* ConnectionSocket = new SOCKET();
         if ((*ConnectionSocket = accept(ServerSocket, NULL, NULL)) == -1) {
-            /*continue;*/
+            continue;
 
-            closesocket(ServerSocket);
+            /*closesocket(ServerSocket);
 
             WSACleanup();
 
-            return -1;
+            return -1;*/
         }
 
 
@@ -101,9 +114,9 @@ SOCKET setupConnection(int (*funcptr)(SOCKET), std::thread*** threadObjArray) {
          // Create a copy of ConnectionSocket to pass to the thread
         /*SOCKET* connectionCopy = new SOCKET(ConnectionSocket);*/
 
-        std::thread* thread1 = new std::thread(funcptr, *ConnectionSocket);
+        ///*std::thread* thread1 = new std::thread(funcptr, *ConnectionSocket);
 
-        *temp = thread1;
+        //*temp = thread1;*/
 
         //memcpy(**threadObjArray + offset, thread1, sizeof(thread1));
 
@@ -111,9 +124,24 @@ SOCKET setupConnection(int (*funcptr)(SOCKET), std::thread*** threadObjArray) {
 
         /*(*threadObjArray + offset) = new std::thread(threadFuncWithParams, std::ref(*threadObjArray[count]));*/
 
-        offset++;
+        ///*offset++;
 
-        temp = temp + offset;
+        //temp = temp + offset;*/
+
+        std::thread clientThread(funcptr, *ConnectionSocket);
+
+        {
+            std::lock_guard<std::mutex> lock(threadMutex);
+            threadPool.push_back(std::move(clientThread));
+
+            //while (i <= cleanupFlags.size()) {
+            //    cleanupFlags.push_back(std::atomic<bool>(false)); // Add new elements with initial value false // Add new elements with initial value false
+            //}
+
+            cleanupFlags[i].store(false);
+
+            i++;
+        }
 
 
         delete ConnectionSocket;
@@ -121,6 +149,56 @@ SOCKET setupConnection(int (*funcptr)(SOCKET), std::thread*** threadObjArray) {
     }
 
     return ServerSocket;
+}
+
+
+void cleanupThreads() {
+    while (1) {
+        std::unique_lock<std::mutex> lock(threadMutex);
+
+        cv.wait(lock, [&] {
+            for (const auto& flag : cleanupFlags) {
+                if (flag.load()) return true; // Check if flag is set
+            }
+
+            return false;
+        });
+
+
+        //// Find and mark threads for cleanup
+        //std::vector<size_t> threadsToRemove;
+        //for (size_t i = 0; i < cleanupFlags.size(); ++i) {
+        //    if (cleanupFlags[i]) {
+        //        threadsToRemove.push_back(i);
+        //    }
+        //}
+
+
+        //// Find and Join threads marked for cleanup
+        //for (auto it = threadsToRemove.rbegin(); it != threadsToRemove.rend(); ++it) {
+        //    if (threadPool[*it].joinable()) {
+        //        threadPool[*it].join();
+        //    }
+
+        //    cleanupFlags.erase(cleanupFlags.begin() + *it);
+
+        //    threadPool.erase(threadPool.begin() + *it);
+
+        //    //break;
+        //}
+
+        // Find and mark threads for cleanup
+        for (size_t i = 0; i < cleanupFlags.size(); ++i) {
+            if (cleanupFlags[i].load()) {
+                if (threadPool[i].joinable()) {
+                    threadPool[i].join();
+                }
+
+                // Reset the flag
+                cleanupFlags[i].store(false);
+            }
+        }
+    }
 }
 
 
@@ -170,8 +248,30 @@ int threadedFunc(SOCKET ConnectionSocket) {
         // if the return value of the 'recvfrom' function is -1, close the server socket and end the program execution
         if (receive_result <= 0)
         {
+            // Simulate client disconnection
+            // Wait for 5 seconds
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+
             closesocket(ConnectionSocket);
-            WSACleanup();
+            /*WSACleanup();*/
+
+
+            {
+                std::lock_guard<std::mutex> lock(threadMutex);
+
+                for (size_t i = 0; i < threadPool.size(); ++i) {
+                    if (threadPool[i].get_id() == std::this_thread::get_id()) {
+                        cleanupFlags[i] = true;
+
+                        break;
+                    }
+                }
+            }
+
+
+            cv.notify_one();
+
+
             std::cout << "ERROR: did not receive anything from client" << endl;  // if recvfrom returns -1 it means the process was unsuccessfull
             return 0;
         }
@@ -579,12 +679,27 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
 int main()
 {
-    std::thread** threadObjArray = nullptr;
+    //std::thread** threadObjArray = nullptr;
 
-    SOCKET ServerSocket = setupConnection(threadedFunc, &threadObjArray);
+    //SOCKET ServerSocket = setupConnection(threadedFunc);
 
 
-    for (int offset = 0; offset < 20; offset++) {
+    // Start the server in a separate thread
+    std::thread serverThread(setupConnection, threadedFunc);
+
+
+    // Start the Cleanup thread
+    std::thread cleanupThread(cleanupThreads);
+
+     
+    // Wait for the server thread to finish (never returns)
+    serverThread.join();
+
+    // Wait for the cleanup thread to finish (never returns)
+    cleanupThread.join();
+    
+
+    /*for (int offset = 0; offset < 20; offset++) {
         if (!(threadObjArray)[offset]) {
             break;
         }
@@ -605,7 +720,7 @@ int main()
         }
     }
 
-    delete[] threadObjArray;
+    delete[] threadObjArray;*/
 
     /*int (*funcptr)(SOCKET&) = threadedFunc;
 
@@ -619,8 +734,8 @@ int main()
 
 
     // Cleaning up the ClientSocket and Winsock library
-    closesocket(ServerSocket);
-    std::cout << "Server socket closed" << endl;
+    /*closesocket(ServerSocket);
+    std::cout << "Server socket closed" << endl;*/
 
     WSACleanup();
     std::cout << "Winsock library resources cleaned up and released" << endl;
