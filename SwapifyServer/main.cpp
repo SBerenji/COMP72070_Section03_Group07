@@ -12,6 +12,7 @@
 #include <sstream>
 #include "SQLiteDatabase.h"
 #include "file_utils.h"
+#include "RequestLogger.h"
 #include <random>
 //#include <opencv2.4/opencv2/opencv.hpp>
 //#include <vector>
@@ -138,6 +139,10 @@ int main()
             Listing list;
 
             Deserialization(Pkt, RxBuffer, log, signup, check, list);
+
+            RequestLogger logger("Log_File_Server.txt");
+            logger.logPacket(*Pkt);
+
 
             //if ((strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") != 0) || (strcmp(Pkt->GetHead()->Route, "MYPOSTS_COUNT") != 0)) {
             //    Display(Pkt, std::cout, log, signup, list);
@@ -324,6 +329,7 @@ int main()
 
                 send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())), 0);
 
+                logger.logPacket(*pkt);
 
 
 
