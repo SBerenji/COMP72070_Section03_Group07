@@ -18,13 +18,28 @@ struct SignUp
 	char* ImageStructArray;
 };
 
+struct SignUpCheck {
+	char username[10];
+	char email[40];
+};
 
+struct Listing
+{
+	char Title[200];
+	char Location[200];
+	char Condition[200];
+	char EstimatedWorth[200];
+	char Delivery[200];
+	char LookingFor[200];
+
+	char* ImageStructArray;
+};
 
 class Packet {
 	struct Header {
 		char Source[20];
 		char Destination[20];
-		char Route[10];
+		char Route[40];
 		bool Authorization;
 		unsigned int Length;
 	} Head;
@@ -128,16 +143,16 @@ public:
 
 Packet* CreatePacket();
 
-
+void Deserialization(Packet* Pkt, char* src);
 
 void DestroyPacket(Packet* Pkt);
 
-void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup);
+void Display(Packet* Pkt, std::ostream& os, LogIn& log, SignUp& signup, Listing& list);
 
 
-void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign);
+void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpCheck& check, Listing& list);
 
-
+void SetHeaderInformation(Packet* pkt, char* source, int source_size, char* destination, int destination_size, char* Route, int Route_size, bool Authorization, unsigned int length);
 
 void SetHeader(Packet* Pkt, void* Head);
 
@@ -147,5 +162,6 @@ void SetBody(Packet* Pkt, unsigned char User, char* Data, int DataSize);
 
 unsigned int CalculateChecksum();
 
+char* SerializeUserCheckingData(Packet* Pkt, int& TotalSize);
 
 char* SerializeData(Packet* Pkt, int& TotalSize);
