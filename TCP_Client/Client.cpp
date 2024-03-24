@@ -18,6 +18,8 @@ extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket, const char* T
 extern "C" __declspec(dllexport) int sendDataFunc(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc = send);
 
 extern "C" __declspec(dllexport) int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize);
+
+
 extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket);
 extern "C" __declspec(dllexport) int CloseSocketFunc(SOCKET ClientSocket, closesocketFunc closeFunc = closesocket, WSACleanupFunc wsacleanupfunc = WSACleanup);
 
