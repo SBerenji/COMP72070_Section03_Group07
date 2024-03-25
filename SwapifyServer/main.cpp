@@ -106,7 +106,7 @@ int main()
 
         while (1) {
             char RxBuffer[400000];   //declaring a receive buffer with size 128
-
+            RequestLogger logger("Log_File_Server.txt");
 
             // receive the client message by passing the ServerSocket, address and size of the receive buffer, the 0 flag, client address structure, and the size of the client address structure
             //Note: buffer is a pointer to the data (it is an array which means it acts as a pointer to the first element of the array)
@@ -140,7 +140,7 @@ int main()
 
             Deserialization(Pkt, RxBuffer, log, signup, check, list);
 
-            RequestLogger logger("Log_File_Server.txt");
+
             logger.logPacket(*Pkt);
 
 
@@ -428,6 +428,9 @@ int main()
 
 
                     int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
+                    logger.logListingSend();
+
+
 
                     delete[] TxBuffer;
                     TxBuffer = nullptr;
@@ -476,6 +479,8 @@ int main()
 
 
                 int sendSize = send(ConnectionSocket, imageArray, imageSize, 0);
+                logger.logImageSend();
+
 
                 /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
 
@@ -596,6 +601,8 @@ int main()
                 char* TxBuffer = SerializeUserCheckingData(&pkt, TotalSize);
 
                 int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
+                logger.logPacket(pkt);
+
 
                 /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
 
