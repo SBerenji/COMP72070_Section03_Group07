@@ -23,6 +23,7 @@ extern "C" {
 
 
 	__declspec(dllexport) unsigned int CalculateChecksum();
+	__declspec(dllexport) void SetDataUser(Packet* Pkt, char* UserData);
 
 
 	__declspec(dllexport) char* SerializeData(Packet* Pkt, int& TotalSize);

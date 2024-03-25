@@ -6,6 +6,7 @@
 #include <vector>
 #include <ctime>
 #include <sstream>
+#include "file_utils.h"
 
 class Listing {
 public:
@@ -13,17 +14,17 @@ public:
     Listing(int id, const std::string& title, const std::string& description,
         const std::string& category, double price, const std::string& condition,
         const std::string& location, const std::string& seller, const std::string& status,
-        const std::vector<std::string>& images);
+        const std::vector<unsigned char> image);
 
     Listing(int id, const std::string& title, const std::string& description,
         const std::string& category, double price, const std::string& condition,
         const std::string& location, const std::string& seller,
-        const std::string& status, const std::vector<std::string>& images,
+        const std::string& status, const std::vector<unsigned char>& image,
         const std::string& listingDate)
         : _id(id), _title(title), _description(description),
         _category(category), _price(price), _condition(condition),
         _location(location), _seller(seller), _status(status),
-        _images(images), _listingDate(listingDate) {}
+        _image(image), _listingDate(listingDate) {}
 
     // Getters
     int getId() const { return _id; }
@@ -35,15 +36,7 @@ public:
     std::string getLocation() const { return _location; }
     std::string getSeller() const { return _seller; }
     std::string getStatus() const { return _status; }
-    std::vector<std::string> getImages() const { return _images; }
-    std::string getImage() const {
-        if (!_images.empty()) {
-            return _images[0]; // Return the first image if vector is not empty
-        }
-        else {
-            return ""; // Return an empty string if vector is empty
-        }
-    }
+    const std::vector<unsigned char> getImage() const { return _image; }
     std::string getListingDate() const { return _listingDate; }
 
     Listing parseListing(const std::string& listingString) {
@@ -54,29 +47,27 @@ public:
         int id;
         std::string title, description, category, condition, location, seller, status, listingDate;
         double price;
-        std::vector<std::string> images;
+        std::vector<unsigned char> images;
 
-        getline(iss, token, ','); // id
+        std::getline(iss, token, ','); // id
         id = std::stoi(token);
-        getline(iss, title, ',');
-        getline(iss, description, ',');
-        getline(iss, category, ',');
-        getline(iss, token, ','); // price
+        std::getline(iss, title, ',');
+        std::getline(iss, description, ',');
+        std::getline(iss, category, ',');
+        std::getline(iss, token, ','); // price
         price = std::stod(token);
-        getline(iss, condition, ',');
-        getline(iss, location, ',');
-        getline(iss, seller, ',');
-        getline(iss, status, ',');
-        getline(iss, token, ','); // images (comma-separated)
-        std::istringstream imgStream(token);
-        while (getline(imgStream, token, ';')) {
-            images.push_back(token);
-        }
-        getline(iss, listingDate, ',');
+        std::getline(iss, condition, ',');
+        std::getline(iss, location, ',');
+        std::getline(iss, seller, ',');
+        std::getline(iss, status, ',');
+        std::getline(iss, token, ','); // images (comma-separated)
+        images = base64Decode(token);
+        std::getline(iss, listingDate, ',');
 
         // Create and return a Listing object
         return Listing(id, title, description, category, price, condition, location, seller, status, images, listingDate);
     }
+
 
 private:
     int _id;
@@ -88,7 +79,7 @@ private:
     std::string _location;
     std::string _seller;
     std::string _status;
-    std::vector<std::string> _images;
+    std::vector<unsigned char> _image;
     std::string _listingDate;
    
 

@@ -4,6 +4,19 @@
 #include <string>
 
 Packet* UserRoutes::handleUserRequest(Packet& packet, SOCKET clientSocket, std::string action) {
+    
+
+    std::cout << "UserRoutes::handleUserRequest" << std::endl;
+    if (&packet == nullptr) {
+        std::cerr << "Packet is null" << std::endl;
+        return nullptr;
+    }
+
+    // Check if User field is not null
+    if (packet.GetBody() == nullptr || packet.GetBody()->User == nullptr) {
+        std::cerr << "User field is null" << std::endl;
+        return nullptr;
+    }
 	//parse string to user object
 	User user;
 	user.parseUser(packet.GetBody()->User);
@@ -28,6 +41,8 @@ Packet* UserRoutes::handleUserRequest(Packet& packet, SOCKET clientSocket, std::
 }
 
 Packet* UserRoutes::handleLogin(User user) {
+    std::cout << "UserRoutes::handleLogin" << std::endl;
+    Packet* ResultPacket = CreatePacket();
     // Check if user exists
     SQLiteDatabase db("database.db");
     if (!db.isOpen()) {
@@ -62,7 +77,8 @@ Packet* UserRoutes::handleLogin(User user) {
     }
     else if (result == SQLITE_DONE) {
         // User does not exist
-        return new Packet;// return user does not exist
+        SetDataUser(ResultPacket, user.serializeUser(user));
+        return ResultPacket;
     }
     else {
         // Error occurred
