@@ -368,6 +368,42 @@ int threadedFunc(SOCKET ConnectionSocket) {
             int sendSize = send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())) + sizeof(pkt->GetBody()->User), 0);
         }
 
+        else if (strcmp(Pkt->GetHead()->Route, "DELETE_POST") == 0) {
+            std::string dbPath = "database.db";
+
+            SQLiteDatabase sqldb(dbPath);
+
+            sqlite3_stmt* stmt;
+
+            std::ostringstream oss;
+
+            oss << "DELETE FROM listings WHERE title = '" << list.Title << "';";
+
+            std::string query_str = oss.str();
+
+            const char* sqldeletepost = query_str.c_str();
+
+
+
+            // Prepare the SQL statement
+            int rc = sqlite3_prepare_v2(sqldb.getDB(), sqldeletepost, -1, &stmt, NULL);
+            if (rc != SQLITE_OK) {
+                std::cerr << "SQL error: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
+            }
+
+
+            // Execute the SQL statement
+            rc = sqlite3_step(stmt);
+            if (rc == SQLITE_DONE) {
+                std::cout << "Post Successfully Deleted" << std::endl;
+            }
+
+            sqldb.closeDatabase(&stmt);
+            stmt = nullptr;
+        }
+
+
+
         else if (strcmp(Pkt->GetHead()->Route, "MYPOSTS_COUNT") == 0) {
             std::string dbPath = "database.db";
 

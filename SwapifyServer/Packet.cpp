@@ -119,7 +119,7 @@ void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpChe
 			memcpy(&(check.email), Pkt->GetBody()->Data + sizeof(check.username), sizeof(check.email));
 		}
 
-		else if (strcmp(Pkt->GetHead()->Route, "POST") == 0) {
+		else if ((strcmp(Pkt->GetHead()->Route, "POST") == 0) || (strcmp(Pkt->GetHead()->Route, "DELETE_POST") == 0)) {
 			memcpy(&(list.Title), Pkt->GetBody()->Data, sizeof(list.Title));
 
 			memcpy(&(list.Location), Pkt->GetBody()->Data + sizeof(list.Title), sizeof(list.Location));
