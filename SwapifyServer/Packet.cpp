@@ -68,11 +68,12 @@ void Deserialization(Packet* Pkt, char* src) {
 
 void Deserialization(Packet* Pkt, char* src, LogIn& log, SignUp& sign, SignUpCheck& check, Listing& list) {
 	memcpy(Pkt->GetHead(), src, sizeof(*(Pkt->GetHead())));
+	memcpy(&(Pkt->GetBody()->User), src + sizeof(*(Pkt->GetHead())), sizeof(Pkt->GetBody()->User));
 
 	if (Pkt->GetHead()->Length != 0) {
 		Pkt->GetBody()->Data = new char[Pkt->GetHead()->Length];
 
-		memcpy(&(Pkt->GetBody()->User), src + sizeof(*(Pkt->GetHead())), sizeof(Pkt->GetBody()->User));
+		//memcpy(&(Pkt->GetBody()->User), src + sizeof(*(Pkt->GetHead())), sizeof(Pkt->GetBody()->User));
 
 		memcpy(Pkt->GetBody()->Data, src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User), Pkt->GetHead()->Length);
 
@@ -163,7 +164,7 @@ void SetHeader(Packet* Pkt, void* Head) {
 };
 
 
-void SetBody(Packet* Pkt, unsigned char User, char* Data, int DataSize) {
+void SetBody(Packet* Pkt, unsigned int User, char* Data, int DataSize) {
 	Pkt->GetBody()->User = User;
 
 

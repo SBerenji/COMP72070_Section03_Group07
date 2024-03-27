@@ -18,8 +18,8 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
-//#include <opencv2.4/opencv2/opencv.hpp>
-//#include <vector>
+#include <unordered_map>
+
 #pragma comment(lib, "ws2_32.lib") // Link to the Winsock library
 
 #include "Packet.h"
@@ -31,6 +31,11 @@ std::vector<std::thread> threadPool;
 std::vector<std::atomic<bool>> cleanupFlags(20);
 std::mutex threadMutex;
 std::condition_variable cv;
+
+
+// ******** for unique id ********
+std::atomic<unsigned int> nextClientID{ 0 };
+std::unordered_map<int, SOCKET> clientIDToConnections;
 
 
 SOCKET setupConnection(int (*funcptr)(SOCKET)) {
@@ -230,6 +235,8 @@ int threadedFunc(SOCKET ConnectionSocket) {
     // printing out a message if the process is succesful
     /*std::cout << "Server Socket Successfully Binded" << endl;*/
 
+    unsigned int clientID = ++nextClientID;
+    clientIDToConnections[clientID] = ConnectionSocket;
 
     while (1) {
         char RxBuffer[400000];   //declaring a receive buffer with size 128
@@ -326,6 +333,41 @@ int threadedFunc(SOCKET ConnectionSocket) {
             sqldb.closeDatabase(&stmt);
         }
 
+        else if (strcmp(Pkt->GetHead()->Route, "STARTUP_GETID") == 0) {
+            std::string source = "127.0.0.1";
+            std::string destination = "127.0.0.1";
+            std::string route = "STARTUP_GETID";
+            bool auth = false;
+            unsigned int DataLength = 0;
+
+            Packet* pkt = CreatePacket();
+
+            memcpy(pkt->GetHead()->Source, source.c_str(), source.length());
+            memcpy(pkt->GetHead()->Destination, destination.c_str(), destination.length());
+            memcpy(pkt->GetHead()->Route, route.c_str(), route.length());
+
+            pkt->GetHead()->Authorization = auth;
+            pkt->GetHead()->Length = DataLength;
+
+
+            pkt->GetBody()->User = clientID;
+
+            int size = sizeof(pkt->GetBody()->User);
+
+
+            char* TxBuffer = new char[sizeof(*(pkt->GetHead())) + sizeof(pkt->GetBody()->User)];
+
+            memset(TxBuffer, 0, sizeof(*(pkt->GetHead())) + sizeof(pkt->GetBody()->User));
+
+
+            memcpy(TxBuffer, pkt->GetHead(), sizeof(*(pkt->GetHead())));
+            
+            memcpy(TxBuffer + sizeof(*(pkt->GetHead())), &clientID, sizeof(clientID));
+
+
+            int sendSize = send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())) + sizeof(pkt->GetBody()->User), 0);
+        }
+
         else if (strcmp(Pkt->GetHead()->Route, "MYPOSTS_COUNT") == 0) {
             std::string dbPath = "database.db";
 
@@ -335,7 +377,11 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             int numOfRows;
 
-            const char* sqlCountListingRows = "SELECT COUNT(*) FROM listings;";
+            std::ostringstream oss;
+            oss << "SELECT COUNT(*) FROM listings WHERE id = '" << Pkt->GetBody()->User << "';";
+            std::string query_str = oss.str();
+
+            const char* sqlCountListingRows = query_str.c_str();
 
 
 
@@ -389,7 +435,15 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
 
 
-            const char* sqlSelectRows = "SELECT * FROM listings;";
+            oss.clear();
+            oss.str("");
+
+            oss << "SELECT * FROM listings WHERE id = '" << Pkt->GetBody()->User << "';";
+            query_str.clear();
+
+            query_str = oss.str();
+
+            const char* sqlSelectRows = query_str.c_str();
 
             SQLiteDatabase sqldb2(dbPath);
 

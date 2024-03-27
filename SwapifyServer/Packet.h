@@ -45,7 +45,7 @@ class Packet {
 	} Head;
 
 	struct Body {
-		unsigned char User;
+		unsigned int User;
 		char* Data;
 	} BodyContents;
 
@@ -157,7 +157,7 @@ void SetHeaderInformation(Packet* pkt, char* source, int source_size, char* dest
 void SetHeader(Packet* Pkt, void* Head);
 
 
-void SetBody(Packet* Pkt, unsigned char User, char* Data, int DataSize);
+void SetBody(Packet* Pkt, unsigned int User, char* Data, int DataSize);
 
 
 unsigned int CalculateChecksum();
