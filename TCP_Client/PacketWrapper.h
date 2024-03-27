@@ -45,11 +45,13 @@ extern "C" {
 
 	__declspec(dllexport) void Deserialization(Packet* Pkt, char* src);
 
+	__declspec(dllexport) unsigned int DeserializeClientID(char* src);
+
 
 	__declspec(dllexport) void SetHeader(Packet* Pkt, void* Head);
 
 
-	__declspec(dllexport) void SetBody(Packet* Pkt, unsigned char User, char* Data, int DataSize);
+	__declspec(dllexport) void SetBody(Packet* Pkt, unsigned int User, char* Data, int DataSize);
 
 
 	__declspec(dllexport) unsigned int CalculateChecksum();
@@ -57,6 +59,8 @@ extern "C" {
 	__declspec(dllexport) char* SerializeMyPostCountData(Packet* Pkt, int& totalSize);
 
 	__declspec(dllexport) char* SerializeData(Packet* Pkt, int& TotalSize);
+
+	__declspec(dllexport) char* SerializeHeaderOnlyPkt(Packet* Pkt, int& TotalSize);
 
 
 	

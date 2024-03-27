@@ -49,7 +49,7 @@ public:
 
 private:
 	struct Body {
-		unsigned char User;
+		unsigned int User;
 		char* Data;
 	} BodyContents;
 

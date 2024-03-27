@@ -134,24 +134,36 @@ void Deserialization(Packet* Pkt, char* src) {
 }
 
 
+unsigned int DeserializeClientID(char* src) {
+	unsigned int ClientID;
+
+	Packet p;
+
+	memcpy(&ClientID, src + sizeof(*(p.GetHead())), sizeof(ClientID));
+
+	return ClientID;
+}
+
+
 void SetHeader(Packet* Pkt, void* Head) {
 	memcpy(Pkt->GetHead(), Head, sizeof(*(Pkt->GetHead())));
 }
 
 
-void SetBody(Packet* Pkt, unsigned char User, char* Data, int DataSize) {
+void SetBody(Packet* Pkt, unsigned int User, char* Data, int DataSize) {
 	Pkt->GetBody()->User = User;
 
+	if (DataSize > 0) {
+		DataSize++;
 
-	DataSize++;
-
-	Pkt->GetBody()->Data = new char[DataSize];
-	Pkt->GetBody()->Data[DataSize - 1] = '\0';
+		Pkt->GetBody()->Data = new char[DataSize];
+		Pkt->GetBody()->Data[DataSize - 1] = '\0';
 
 
-	memcpy(Pkt->GetBody()->Data, Data, DataSize);
+		memcpy(Pkt->GetBody()->Data, Data, DataSize);
 
-	Pkt->GetHead()->Length = DataSize;
+		Pkt->GetHead()->Length = DataSize;
+	}
 }
 
 
@@ -171,11 +183,13 @@ char* SerializeMyPostCountData(Packet* Pkt, int& totalSize) {
 		delete[] Pkt->GetTxBuffer();
 	}
 	
-	totalSize = sizeof(*(Pkt->GetHead()));
+	totalSize = (sizeof(*(Pkt->GetHead())) + (sizeof(Pkt->GetBody()->User)));
 
 	Pkt->GetTxBuffer() = new char[totalSize];
 
 	memcpy(Pkt->GetTxBuffer(), Pkt->GetHead(), sizeof(*(Pkt->GetHead())));
+
+	memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())), &(Pkt->GetBody()->User), sizeof(Pkt->GetBody()->User));
 
 
 	return Pkt->GetTxBuffer();
@@ -202,6 +216,25 @@ char* SerializeData(Packet* Pkt, int& TotalSize) {
 
 	memcpy(Pkt->GetTxBuffer() + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length, Pkt->GetTail(), sizeof(*(Pkt->GetTail())));
 
+
+	return Pkt->GetTxBuffer();
+}
+
+
+
+char* SerializeHeaderOnlyPkt(Packet* Pkt, int& TotalSize) {
+	if (Pkt->GetTxBuffer()) {
+		delete[] Pkt->GetTxBuffer();
+	}
+
+	TotalSize = sizeof(*(Pkt->GetHead()));
+
+	Pkt->GetTxBuffer() = new char[TotalSize];
+
+	memset(Pkt->GetTxBuffer(), 0, TotalSize);
+
+
+	memcpy(Pkt->GetTxBuffer(), Pkt->GetHead(), TotalSize);
 
 	return Pkt->GetTxBuffer();
 }

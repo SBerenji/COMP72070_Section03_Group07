@@ -32,17 +32,20 @@ namespace WPF_Front_End
 
                 Packet.recvData(MySocket.ClientSocket, RxBuffer, 200000);
 
-                Hamburger.profile_icon.Visibility = Visibility.Collapsed;
-
-                Hamburger.ProfileImage.Visibility = Visibility.Visible;
-
                 globalVariables.receivedPostLoginImage = RxBuffer.ToArray();
-
-                Hamburger.ProfileImage.Source = ImageConversion.ToImage(globalVariables.receivedPostLoginImage);
 
                 globalVariables.FirstPostLogin = false;
             }
 
+            if (globalVariables.imageUploaded)
+            {
+                Hamburger.profile_icon.Visibility = Visibility.Collapsed;
+
+                Hamburger.ProfileImage.Visibility = Visibility.Visible;
+
+                Hamburger.ProfileImage.Source = ImageConversion.ToImage(globalVariables.receivedPostLoginImage);
+            }
+       
 
             Closing += CloseClient.Client_Closing;
 

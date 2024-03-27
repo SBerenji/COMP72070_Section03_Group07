@@ -24,7 +24,6 @@ namespace WPF_Front_End.View.UserControls
     /// </summary>
     public partial class Controls : UserControl
     {
-
         string userinputUsernameText;
 
         public Controls()
@@ -79,7 +78,7 @@ namespace WPF_Front_End.View.UserControls
                 int size = ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize) * sizeof(byte);
 
 
-                Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+                Packet.SetBody(PktPtr, globalVariables.ClientID, BodyBuffer, size);
 
 
                 IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);

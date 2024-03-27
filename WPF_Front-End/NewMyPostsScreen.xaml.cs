@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -204,6 +205,12 @@ namespace WPF_Front_End
 
 
             Packet.SetHeader(PktPtr, Head);
+
+            IntPtr BodyBuffer = IntPtr.Zero;
+            int bodyBufferSize = 0;
+
+
+            Packet.SetBody(PktPtr, globalVariables.ClientID, BodyBuffer, bodyBufferSize);
 
             IntPtr serializedData = Packet.SerializeMyPostCountData(PktPtr, out Packet.totalPktSize);
 

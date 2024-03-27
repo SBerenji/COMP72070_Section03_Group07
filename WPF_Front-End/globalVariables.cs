@@ -35,7 +35,7 @@ namespace WPF_Front_End
     }
 
 
-    public enum Route {LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT}
+    public enum Route {STARTUP_GETID, LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT}
 
 
 
@@ -321,7 +321,7 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
-        public static extern void SetBody(IntPtr Pkt, char User, IntPtr Data, int DataSize);
+        public static extern void SetBody(IntPtr Pkt, uint User, IntPtr Data, int DataSize);
 
 
         [DllImport(dllpath)]
@@ -330,6 +330,10 @@ namespace WPF_Front_End
 
         [DllImport(dllpath)]
         public static extern IntPtr SerializeData(IntPtr Pkt, out int TotalSize);
+
+
+        [DllImport(dllpath)]
+        public static extern IntPtr SerializeHeaderOnlyPkt(IntPtr Pkt, out int TotalSize);
 
 
         [DllImport(dllpath)]
@@ -346,10 +350,16 @@ namespace WPF_Front_End
 
         [DllImport(dllpath)]
         public static extern void Deserialization(IntPtr Pkt, byte[] src);
+
+
+        [DllImport(dllpath)]
+        public static extern uint DeserializeClientID(byte[] src);
     }
 
     public static class globalVariables
     {
+        public static uint ClientID = 0;
+
         public static int PostsSend = 0;
 
         public static List<Listing> listings = new List<Listing>();

@@ -58,6 +58,63 @@ namespace WPF_Front_End
 
                 //setupConnection();
 
+                IntPtr PktPtr = Packet.CreatePacket();
+
+                IntPtr Head = Packet.AllocateHeaderPtr();
+
+                Packet.SetHeaderInformation(ref Head, "127.0.0.1", "127.0.0.1", Route.STARTUP_GETID, false);
+
+                uint bodyLength = 0;
+
+                Marshal.StructureToPtr(bodyLength, Head + ((int)ConstantVariables.Source_Destination_ByteArraySize + (int)ConstantVariables.Source_Destination_ByteArraySize + (int)ConstantVariables.Route_ByteArraySize + sizeof(bool)) * sizeof(byte), false);
+
+                Packet.SetHeader(PktPtr, Head);
+
+
+                IntPtr serializedRecv = Packet.SerializeHeaderOnlyPkt(PktPtr, out Packet.totalPktSize);
+
+
+                Packet.TxBuffer = new byte[Packet.totalPktSize];
+
+
+                Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
+
+
+                Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
+
+
+                Packet.TxBuffer = null;
+
+                Packet.FreeBuffer(ref serializedRecv);
+                serializedRecv = IntPtr.Zero;
+
+                Packet.FreeBuffer(ref Head);
+                Head = IntPtr.Zero;
+
+                Packet.DestroyPacket(ref PktPtr);
+                PktPtr = IntPtr.Zero;
+
+
+
+                Packet.RxBuffer = new byte[500];
+
+                int recvSize = Packet.recvData(MySocket.ClientSocket, Packet.RxBuffer, 500);
+
+
+                Header head = new Header();
+
+                head.Source = new byte[ConstantVariables.Source_Destination_ByteArraySize];
+                head.Destination = new byte[ConstantVariables.Source_Destination_ByteArraySize];
+                head.Route = new byte[ConstantVariables.Route_ByteArraySize];
+
+                Packet.DeserializeHeader(Packet.RxBuffer, ref head);
+
+
+                globalVariables.ClientID = Packet.DeserializeClientID(Packet.RxBuffer);
+
+
+                //MessageBox.Show(globalVariables.ClientID.ToString());
+
                 globalVariables.initialLogin = false;
             }
         }

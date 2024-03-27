@@ -235,7 +235,7 @@ namespace WPF_Front_End
                 int size = (int)((6 * ConstantVariables.listing_ByteArraySize) * sizeof(byte)) + imageSize;
 
 
-                Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+                Packet.SetBody(PktPtr, globalVariables.ClientID, BodyBuffer, size);
 
 
                 IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
