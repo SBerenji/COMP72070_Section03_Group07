@@ -15,6 +15,7 @@ using System.Printing.IndexedProperties;
 using System.Windows.Media.Imaging;
 using System.Reflection.PortableExecutable;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace WPF_Front_End
 {
@@ -32,10 +33,21 @@ namespace WPF_Front_End
                 return image;
             }
         }
+
+
+
+        public static byte[] ToArrayFromImage(BitmapImage imageC)
+        {
+            MemoryStream memStream = new MemoryStream();
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(imageC));
+            encoder.Save(memStream);
+            return memStream.ToArray();
+        }
     }
 
 
-    public enum Route {STARTUP_GETID, LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT}
+    public enum Route {STARTUP_GETID, LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT, DELETE_POST}
 
 
 
