@@ -1180,6 +1180,111 @@ namespace SwapifyServerTests
 
 		//}
 
+		TEST_METHOD(TestMethod30_SQLiteDatabase_ExecuteQuery)
+		{
+			//Arrange
+			//std::string dbPath = "executeQuereDB.db";
+			SQLiteDatabase sqldb(":memory:");
+			const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
+				"id INTEGER NOT NULL,"
+				"title TEXT PRIMARY KEY,"
+				"location TEXT NOT NULL,"
+				"condition TEXT NOT NULL,"
+				"estimated_worth TEXT NOT NULL,"
+				"delivery TEXT NOT NULL,"
+				"looking_for TEXT NOT NULL,"
+				"listing_picture BLOB NOT NULL);";
+
+			//Act
+			bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
+
+
+			//Assert
+			Assert::IsTrue(query_exe_result);
+		}
+
+		//TEST_METHOD(TestMethod31_SQLiteDatabase_PostInsert)
+		//{
+		//	//Arrange
+		//	//std::string dbPath = "executeQuereDB.db";
+		//	SQLiteDatabase sqldb(":memory:");
+		//	Packet* packet = dummyPacket();
+		//	Listing listing = dummyListing();
+		//	int expected = 0;
+		//	const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
+		//		"id INTEGER NOT NULL,"
+		//		"title TEXT PRIMARY KEY,"
+		//		"location TEXT NOT NULL,"
+		//		"condition TEXT NOT NULL,"
+		//		"estimated_worth TEXT NOT NULL,"
+		//		"delivery TEXT NOT NULL,"
+		//		"looking_for TEXT NOT NULL,"
+		//		"listing_picture BLOB NOT NULL);";
+		//	bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
+
+		//	//Act
+		//	sqlite3_stmt* stmt = nullptr;
+		//	int ListingPostInsertionReturn = sqldb.ListingPostInsert(&stmt, packet, listing);
+
+
+		//	//Assert
+		//	Assert::AreEqual(expected, ListingPostInsertionReturn);
+		//	sqlite3_finalize(stmt);
+		//}
+
+		//TEST_METHOD(TestMethod32_SQLiteDatabase_GetDB)
+		//{
+		//	//Arrange
+		//	//std::string dbPath = "executeQuereDB.db";
+		//	SQLiteDatabase sqldb(":memory:");
+		//	sqlite3* expected = 0;
+		//	Packet* packet = dummyPacket();
+		//	Listing listing = dummyListing();
+		//	const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
+		//		"id INTEGER NOT NULL,"
+		//		"title TEXT PRIMARY KEY,"
+		//		"location TEXT NOT NULL,"
+		//		"condition TEXT NOT NULL,"
+		//		"estimated_worth TEXT NOT NULL,"
+		//		"delivery TEXT NOT NULL,"
+		//		"looking_for TEXT NOT NULL,"
+		//		"listing_picture BLOB NOT NULL);";
+		//	bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
+		//	sqlite3_stmt* stmt = nullptr;
+		//	int ListingPostInsertionReturn = sqldb.ListingPostInsert(&stmt, packet, listing);
+
+		//	//Act
+		//	sqlite3* actual = sqldb.getDB();
+		//	
+
+		//	//Assert
+		//	Assert::AreEqual(expected, actual);
+		//}
+
+		TEST_METHOD(TestMethod33_SQLiteDatabase_isOpen)
+		{
+			//Arrange
+			//std::string dbPath = "executeQuereDB.db";
+			SQLiteDatabase sqldb(":memory:");
+			const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
+				"id INTEGER NOT NULL,"
+				"title TEXT PRIMARY KEY,"
+				"location TEXT NOT NULL,"
+				"condition TEXT NOT NULL,"
+				"estimated_worth TEXT NOT NULL,"
+				"delivery TEXT NOT NULL,"
+				"looking_for TEXT NOT NULL,"
+				"listing_picture BLOB NOT NULL);";
+			bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
+
+			//Act
+			bool actual = sqldb.isOpen();
+
+
+			//Assert
+			Assert::IsTrue(actual);
+		}
+
 
 
 
@@ -1210,6 +1315,80 @@ namespace SwapifyServerTests
 			Assert::AreEqual(pkt.GetHead()->Length, lengthCheck);
 
 		}
+
+		TEST_METHOD(TestMethod35_SQLiteDatabase_SignUpWithImageDataInsert)
+		{
+			//Arrange 
+			Packet* packet = dummyPacket();
+			SignUp signup = dummySignin();
+			//std::string dbPath = "isOpenDB.db";
+			SQLiteDatabase sqldb(":memory:");
+			const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
+				"id INTEGER NOT NULL,"
+				"title TEXT PRIMARY KEY,"
+				"location TEXT NOT NULL,"
+				"condition TEXT NOT NULL,"
+				"estimated_worth TEXT NOT NULL,"
+				"delivery TEXT NOT NULL,"
+				"looking_for TEXT NOT NULL,"
+				"listing_picture BLOB NOT NULL);";
+			bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
+			sqlite3_stmt* stmt = nullptr;
+
+			//Act
+			int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(&stmt, packet, signup);
+
+			//Assert
+			Assert::AreEqual(0, SignUpdataInsertionReturn);
+		}
+
+		TEST_METHOD(TestMethod36_SQLiteDatabase_SignUpWithoutImageDataInsert)
+		{
+			//Arrange 
+			Packet* packet = dummyPacket();
+			SignUp signup = dummySignin();
+			//std::string dbPath = "isOpenDB.db";
+			SQLiteDatabase sqldb(":memory:");
+			const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
+				"id INTEGER NOT NULL,"
+				"title TEXT PRIMARY KEY,"
+				"location TEXT NOT NULL,"
+				"condition TEXT NOT NULL,"
+				"estimated_worth TEXT NOT NULL,"
+				"delivery TEXT NOT NULL,"
+				"looking_for TEXT NOT NULL,"
+				"listing_picture BLOB NOT NULL);";
+			bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
+			sqlite3_stmt* stmt = nullptr;
+
+			//Act
+			int SignUpdataInsertionReturn = sqldb.SignUpWithoutImageDataInsert(&stmt, packet, signup);
+
+			//Assert
+			Assert::AreEqual(0, SignUpdataInsertionReturn);
+		}
+
+		TEST_METHOD(TestMethod37_SQLiteDatabase_SignUpWithoutImageDataInsert)
+		{
+			//Arrange 
+			Packet* packet = dummyPacket();
+			SignUp signup = dummySignin();
+			//std::string dbPath = "isOpenDB.db";
+			SQLiteDatabase sqldb(":memory:");
+			sqlite3_stmt* stmt = nullptr;
+			int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(&stmt, packet, signup);
+			char* imageArray = nullptr;
+			int imageSize = 0;
+
+
+			//Act
+			int actual = sqldb.FetchImage(&stmt, signup.email, &imageArray, imageSize);
+
+
+			//Assert
+			Assert::AreEqual(0, actual);
+		}
+
 
 
 		
@@ -1362,6 +1541,7 @@ namespace SwapifyServerTests
 			//Assert
 			Assert::IsFalse(actual);
 		}
+
 
 
 		//The following test were written by Saba Berenji
