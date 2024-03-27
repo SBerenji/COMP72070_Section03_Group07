@@ -209,7 +209,6 @@ SOCKET setupConnection2(WSAStartupFunc wsaStartup, socketFunc socketfunc, connec
 int main()
 {
 
-
 //    SOCKET ServerSocket = setupConnection();
 //
 //    while (1) {
