@@ -426,6 +426,7 @@ namespace WPF_Front_End.View.UserControls
                         signup.ImageStructArray = IntPtr.Zero;
                     }
 
+                    globalVariables.OneClientFirstSignUp = true;
 
 
                     Window parentWindow = Window.GetWindow(this);

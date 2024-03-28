@@ -45,7 +45,13 @@ extern "C" {
 
 	__declspec(dllexport) void Deserialization(Packet* Pkt, char* src);
 
+	__declspec(dllexport) void DeserializationWithoutTail(Packet* Pkt, char* src);
+
 	__declspec(dllexport) unsigned int DeserializeClientID(char* src);
+
+	__declspec(dllexport) unsigned int DeserializeHeaderLengthMember(char* RxBuffer);
+
+	__declspec(dllexport) void CopyImageFromRawBufferToByteArray(char* RxBuffer, char* imageArray, int imageSize);
 
 
 	__declspec(dllexport) void SetHeader(Packet* Pkt, void* Head);

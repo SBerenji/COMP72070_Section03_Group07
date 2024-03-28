@@ -47,8 +47,7 @@ namespace WPF_Front_End
     }
 
 
-    public enum Route {STARTUP_GETID, LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT, DELETE_POST}
-
+    public enum Route {STARTUP_GETID, LOGIN, LOGIN_USERFOUNDWITHIMAGE, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT, DELETE_POST}
 
 
     public class CloseClient
@@ -131,6 +130,16 @@ namespace WPF_Front_End
 
         public IntPtr ImageStructArray;
     };
+
+
+    public struct UserCredentials
+    {
+        public byte[] username;
+        public byte[] password;
+        public byte[] email;
+
+        public IntPtr imageStructArray;
+    }
 
     public class Packet
     {
@@ -365,7 +374,19 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
+        public static extern void DeserializationWithoutTail(IntPtr Pkt, byte[] src);
+
+
+        [DllImport(dllpath)]
         public static extern uint DeserializeClientID(byte[] src);
+
+
+        [DllImport(dllpath)]
+        public static extern uint DeserializeHeaderLengthMember(byte[] RxBuffer);
+
+
+        [DllImport(dllpath)]
+        public static extern void CopyImageFromRawBufferToByteArray(byte[] RxBuffer, byte[] imageArray, int imageSize);
     }
 
     public static class globalVariables
@@ -403,7 +424,7 @@ namespace WPF_Front_End
         public static byte[] receivedPostLoginImage { get; set; }
 
 
-        public static bool FirstPostLogin = true;
+        public static bool OneClientFirstSignUp = false;
 
         public static byte[] createPostImage { get; set; }
 

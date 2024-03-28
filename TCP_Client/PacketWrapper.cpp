@@ -134,6 +134,16 @@ void Deserialization(Packet* Pkt, char* src) {
 }
 
 
+void DeserializationWithoutTail(Packet* Pkt, char* src) {
+	memcpy(Pkt->GetHead(), src, sizeof(*(Pkt->GetHead())));
+
+	Pkt->GetBody()->Data = new char[Pkt->GetHead()->Length];
+
+	memcpy(&(Pkt->GetBody()->User), src + sizeof(*(Pkt->GetHead())), sizeof(Pkt->GetBody()->User));
+	memcpy(Pkt->GetBody()->Data, src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User), Pkt->GetHead()->Length);
+}
+
+
 unsigned int DeserializeClientID(char* src) {
 	unsigned int ClientID;
 
@@ -142,6 +152,40 @@ unsigned int DeserializeClientID(char* src) {
 	memcpy(&ClientID, src + sizeof(*(p.GetHead())), sizeof(ClientID));
 
 	return ClientID;
+}
+
+
+unsigned int DeserializeHeaderLengthMember(char* RxBuffer) {
+	/*unsigned int headerLength = 0;*/
+
+	Packet* p = CreatePacket();
+
+	memcpy(p->GetHead(), RxBuffer, sizeof(*(p->GetHead())));
+
+	/*int source_size = sizeof(p->GetHead()->Source);
+
+	int dest_size = sizeof(p->GetHead()->Destination);
+
+	int route_size = sizeof(p->GetHead()->Route);
+
+	int auth_size = sizeof(p->GetHead()->Authorization);
+
+	int size = sizeof(headerLength);
+
+	memcpy(&headerLength, RxBuffer + sizeof(p->GetHead()->Source) + sizeof(p->GetHead()->Destination) + sizeof(p->GetHead()->Route) + sizeof(p->GetHead()->Authorization), sizeof(headerLength));*/
+
+	return p->GetHead()->Length;
+}
+
+
+void CopyImageFromRawBufferToByteArray(char* RxBuffer, char* imageArray, int imageSize) {
+	Packet* p = CreatePacket();
+
+	UserCredentials cred;
+
+	memcpy(imageArray, RxBuffer + sizeof(*(p->GetHead())) + sizeof(p->GetBody()->User) + sizeof(cred.username) + sizeof(cred.password) + sizeof(cred.email), imageSize);
+
+	delete[] p;
 }
 
 

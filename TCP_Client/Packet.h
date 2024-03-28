@@ -3,6 +3,15 @@
 #include <iostream>
 #include <fstream>
 
+
+struct __declspec(dllexport) UserCredentials {
+	char username[10];
+	char password[20];
+	char email[20];
+
+	char* imageStructArray;
+};
+
 struct __declspec(dllexport) LogIn
 {
 	char username[10];

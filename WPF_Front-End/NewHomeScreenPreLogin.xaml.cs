@@ -125,8 +125,6 @@ namespace WPF_Front_End
         {
             InitializeComponent();
 
-            globalVariables.FirstPostLogin = true;
-
             ClientConnection();
 
             Closing += CloseClient.Client_Closing;
