@@ -21,7 +21,7 @@ public:
 
     int SignUpWithoutImageDataInsert(sqlite3_stmt** stmt, Packet* Pkt, SignUp& signup);
 
-    int ListingPostInsert(sqlite3_stmt** stmt, Packet* Pkt, Listing& Listing);
+    int ListingPostInsert(sqlite3_stmt** stmt, Packet* Pkt, Listing& Listing, int post_id);
 
     int FetchListingImage(sqlite3_stmt** stmt, std::string title, char** imageArray, int& imageSize);
 

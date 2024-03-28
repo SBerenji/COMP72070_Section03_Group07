@@ -4,6 +4,14 @@
 #include <iostream>
 #include <fstream>
 
+struct UserCredentials {
+	char username[10];
+	char password[20];
+	char email[20];
+
+	char* imageStructArray;
+};
+
 struct LogIn
 {
 	char username[10];

@@ -37,6 +37,8 @@ std::condition_variable cv;
 std::atomic<unsigned int> nextClientID{ 0 };
 std::unordered_map<int, SOCKET> clientIDToConnections;
 
+std::atomic<int> post_id = { 0 };
+
 
 SOCKET setupConnection(int (*funcptr)(SOCKET)) {
     WSADATA wsaData;
@@ -308,13 +310,14 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
                 "id INTEGER NOT NULL,"
-                "title TEXT PRIMARY KEY,"
+                "title TEXT NOT NULL,"
                 "location TEXT NOT NULL,"
                 "condition TEXT NOT NULL,"
                 "estimated_worth TEXT NOT NULL,"
                 "delivery TEXT NOT NULL,"
                 "looking_for TEXT NOT NULL,"
-                "listing_picture BLOB NOT NULL);";
+                "listing_picture BLOB NOT NULL,"
+                "postID INTEGER PRIMARY KEY);";
 
             bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
 
@@ -324,13 +327,16 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             sqlite3_stmt* stmt = nullptr;
 
-            int ListingPostInsertionReturn = sqldb.ListingPostInsert(&stmt, Pkt, list);
+            post_id++;
+
+            int ListingPostInsertionReturn = sqldb.ListingPostInsert(&stmt, Pkt, list, post_id);
 
             if (ListingPostInsertionReturn == -1) {
                 return ListingPostInsertionReturn;
             }
 
             sqldb.closeDatabase(&stmt);
+            stmt = nullptr;
         }
 
         else if (strcmp(Pkt->GetHead()->Route, "STARTUP_GETID") == 0) {
@@ -483,7 +489,9 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             SQLiteDatabase sqldb2(dbPath);
 
-            rc = sqlite3_prepare_v2(sqldb2.getDB(), sqlSelectRows, -1, &stmt, NULL);
+            sqlite3_stmt* stmt2;
+
+            rc = sqlite3_prepare_v2(sqldb2.getDB(), sqlSelectRows, -1, &stmt2, NULL);
             if (rc != SQLITE_OK) {
                 std::cerr << "SQL error: " << sqlite3_errmsg(sqldb2.getDB()) << std::endl;
             }
@@ -492,7 +500,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
 
             // Step through each row
-            while (sqlite3_step(stmt) == SQLITE_ROW) {
+            while (sqlite3_step(stmt2) == SQLITE_ROW) {
                 Listing list;
 
                 memset(list.Title, 0, sizeof(list.Title));
@@ -503,31 +511,31 @@ int threadedFunc(SOCKET ConnectionSocket) {
                 memset(list.LookingFor, 0, sizeof(list.LookingFor));
 
                 // Retrieve data from the current row
-                int id = sqlite3_column_int(stmt, 0);
-                int idSize = sqlite3_column_bytes(stmt, 0);
+                int id = sqlite3_column_int(stmt2, 0);
+                int idSize = sqlite3_column_bytes(stmt2, 0);
 
-                const unsigned char* title = sqlite3_column_text(stmt, 1);
-                int titleSize = sqlite3_column_bytes(stmt, 1);
+                const unsigned char* title = sqlite3_column_text(stmt2, 1);
+                int titleSize = sqlite3_column_bytes(stmt2, 1);
 
-                const unsigned char* location = sqlite3_column_text(stmt, 2);
-                int locationSize = sqlite3_column_bytes(stmt, 2);
+                const unsigned char* location = sqlite3_column_text(stmt2, 2);
+                int locationSize = sqlite3_column_bytes(stmt2, 2);
 
-                const unsigned char* condition = sqlite3_column_text(stmt, 3);
-                int conditionSize = sqlite3_column_bytes(stmt, 3);
+                const unsigned char* condition = sqlite3_column_text(stmt2, 3);
+                int conditionSize = sqlite3_column_bytes(stmt2, 3);
 
-                const unsigned char* estimated_worth = sqlite3_column_text(stmt, 4);
-                int worthSize = sqlite3_column_bytes(stmt, 4);
+                const unsigned char* estimated_worth = sqlite3_column_text(stmt2, 4);
+                int worthSize = sqlite3_column_bytes(stmt2, 4);
 
-                const unsigned char* delivery = sqlite3_column_text(stmt, 5);
-                int deliverySize = sqlite3_column_bytes(stmt, 5);
+                const unsigned char* delivery = sqlite3_column_text(stmt2, 5);
+                int deliverySize = sqlite3_column_bytes(stmt2, 5);
 
-                const unsigned char* looking_for = sqlite3_column_text(stmt, 6);
-                int looking_for_size = sqlite3_column_bytes(stmt, 6);
+                const unsigned char* looking_for = sqlite3_column_text(stmt2, 6);
+                int looking_for_size = sqlite3_column_bytes(stmt2, 6);
 
                 // Retrieve BLOB data
-                const void* blobArray = sqlite3_column_blob(stmt, 7);
+                const void* blobArray = sqlite3_column_blob(stmt2, 7);
 
-                unsigned int postImageSize = sqlite3_column_bytes(stmt, 7);
+                unsigned int postImageSize = sqlite3_column_bytes(stmt2, 7);
 
 
                 memcpy(&(list.Title), title, titleSize);
@@ -577,6 +585,9 @@ int threadedFunc(SOCKET ConnectionSocket) {
                 delete[] TxBuffer;
                 TxBuffer = nullptr;
             }
+
+            sqldb2.closeDatabase(&stmt2);
+            stmt2 = nullptr;
         }
 
         else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGEUPLOADED") == 0) {
@@ -640,6 +651,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             /*Finalize the statement and close the database connection*/
             sqldb.closeDatabase(&stmt);
+            stmt = nullptr;
         }
 
         else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_IMAGENOTUPLOADED") == 0) {
@@ -674,6 +686,190 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             /*sqlite3_finalize(stmt);*/
             sqldb.closeDatabase(&stmt);
+            stmt = nullptr;
+        }
+
+        else if (strcmp(Pkt->GetHead()->Route, "LOGIN") == 0) {
+            std::string dbPath = "database.db";
+
+            SQLiteDatabase sqldb(dbPath);
+
+
+            sqlite3_stmt* stmt;
+
+            std::ostringstream oss;
+            oss << "SELECT 'UsersWithProfile' "
+                    "FROM UsersWithProfile "
+                    "WHERE username = '" << log.username << "' "
+                    "UNION ALL "
+                    "SELECT 'UsersWithoutProfile' "
+                    "FROM UsersWithoutProfile "
+                    "WHERE username = '" << log.username << "';";
+
+            std::string query_str = oss.str();
+
+            const char* sqlTableWhereUserFound = query_str.c_str();
+
+
+
+            // Prepare the SQL statement
+            int rc = sqlite3_prepare_v2(sqldb.getDB(), sqlTableWhereUserFound, -1, &stmt, NULL);
+            if (rc != SQLITE_OK) {
+                std::cerr << "SQL error: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
+            }
+
+
+
+            // Execute the SQL statement
+            rc = sqlite3_step(stmt);
+            if (rc == SQLITE_DONE) {
+                std::cerr << "Error executing SQL statement: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
+            }
+
+            const char* tableName = (char*)sqlite3_column_text(stmt, 0);
+
+
+            UserCredentials cred;
+
+            if (strcmp(tableName, "UsersWithProfile") == 0) {
+                oss.str("");
+                oss.clear();
+
+                query_str.clear();
+
+                oss << "SELECT * FROM " << tableName << " WHERE username = '" << log.username << "';";
+
+                query_str = oss.str();
+
+                const char* sqlgetUserCredentials = query_str.c_str();
+
+                sqlite3_finalize(stmt);
+
+                // Prepare the SQL statement
+                int rc = sqlite3_prepare_v2(sqldb.getDB(), sqlgetUserCredentials, -1, &stmt, NULL);
+                if (rc != SQLITE_OK) {
+                    std::cerr << "SQL error: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
+                }
+
+                Packet* pkt_login = CreatePacket();
+
+                int imageSize = 0;
+
+                // Execute the SQL statement
+                rc = sqlite3_step(stmt);
+                if (rc == SQLITE_ROW) {
+                    //// Open the BLOB handle
+                    //sqlite3_blob* blobHandle; 
+
+                    pkt_login->GetBody()->User = sqlite3_column_int(stmt, 0);
+
+                    memset(cred.username, 0, sizeof(cred.username));
+                    memcpy(cred.username, sqlite3_column_text(stmt, 1), sqlite3_column_bytes(stmt, 1));
+
+                    memset(cred.password, 0, sizeof(cred.password));
+                    memcpy(cred.password, sqlite3_column_text(stmt, 2), sqlite3_column_bytes(stmt, 2));
+
+                    memset(cred.email, 0, sizeof(cred.email));
+                    memcpy(cred.email, sqlite3_column_text(stmt, 3), sqlite3_column_bytes(stmt, 3));
+
+                    /*int blob_return = sqlite3_blob_open(sqldb.getDB(), "main", "UsersWithProfile", "profile_picture", sqlite3_column_int(stmt, 4), 0, &blobHandle);*/
+
+                     /*Retrieve BLOB data*/
+                    const void* blobArray = sqlite3_column_blob(stmt, 4);
+
+                    imageSize = sqlite3_column_bytes(stmt, 4);
+
+
+                    // Close the BLOB handle
+                    //sqlite3_blob* blobHandle = reinterpret_cast<sqlite3_blob*>((char*)blobArray); // Assuming blobArray is actually a pointer to a blob handle
+                    //int close_blob = sqlite3_blob_close(blobHandle);
+
+
+                    cred.imageStructArray = new char[imageSize];
+
+                    memset(cred.imageStructArray, 0, imageSize);
+
+                    memcpy(cred.imageStructArray, (char*)blobArray, imageSize);
+
+                    blobArray = nullptr;
+
+                    /*sqlite3_blob_close((sqlite3_blob*)blobArray);
+                    blobArray = nullptr;*/
+                }
+                
+                else if (rc != SQLITE_DONE) {
+                    std::cerr << "Error executing SQL statement: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
+
+                    /*sqldb.closeDatabase(&stmt);
+                    stmt = nullptr;*/
+                }
+
+
+                char source[20] = "127.0.0.1";
+                int source_size = sizeof(source);
+
+                char destination[20] = "127.0.0.1";
+                int destination_size = sizeof(destination);
+
+                char Route[40] = "LOGIN_USERFOUNDWITHIMAGE";
+                int Route_size = sizeof(Route);
+
+                bool Authorization = true;
+
+                int length = sizeof(cred.username) + sizeof(cred.password) + sizeof(cred.email) + imageSize;
+
+
+                memcpy(pkt_login->GetHead()->Source, source, source_size);
+                memcpy(pkt_login->GetHead()->Destination, destination, destination_size);
+                memcpy(pkt_login->GetHead()->Route, Route, Route_size);
+                
+                pkt_login->GetHead()->Authorization = Authorization;
+
+                pkt_login->GetHead()->Length = length;
+
+
+                pkt_login->GetBody()->Data = new char[pkt_login->GetHead()->Length];
+                
+                memset(pkt_login->GetBody()->Data, 0, pkt_login->GetHead()->Length);
+
+                memcpy(pkt_login->GetBody()->Data, cred.username, sizeof(cred.username));
+                memcpy(pkt_login->GetBody()->Data + sizeof(cred.username), cred.password, sizeof(cred.password));
+                memcpy(pkt_login->GetBody()->Data + sizeof(cred.username) + sizeof(cred.password), cred.email, sizeof(cred.email));
+
+                memcpy(pkt_login->GetBody()->Data + sizeof(cred.username) + sizeof(cred.password) + sizeof(cred.email), cred.imageStructArray, imageSize);
+
+
+                delete[] cred.imageStructArray;
+                cred.imageStructArray = nullptr;
+
+
+
+                int totalSize = sizeof(*(pkt_login->GetHead())) + sizeof(pkt_login->GetBody()->User) + pkt_login->GetHead()->Length;
+
+                char* TxBuffer = new char[totalSize];
+                memset(TxBuffer, 0, totalSize);
+
+                
+                memcpy(TxBuffer, pkt_login->GetHead(), sizeof(*(pkt_login->GetHead())));
+                memcpy(TxBuffer + sizeof(*(pkt_login->GetHead())), &(pkt_login->GetBody()->User), sizeof(pkt_login->GetBody()->User));
+                memcpy(TxBuffer + sizeof(*(pkt_login->GetHead())) + sizeof(pkt_login->GetBody()->User), pkt_login->GetBody()->Data, pkt_login->GetHead()->Length);
+
+                int sendSize = send(ConnectionSocket, TxBuffer, totalSize, 0);
+
+                if (sendSize < 0) {
+                    std::cout << "Failed to Send the Data" << std::endl;
+                }
+
+                delete[] TxBuffer;
+                TxBuffer = nullptr;
+
+                delete[] pkt_login->GetBody()->Data;
+                pkt_login->GetBody()->Data = nullptr;
+
+            }
+
+            sqldb.closeDatabase(&stmt);
+            stmt = nullptr;
         }
 
         else if (strcmp(Pkt->GetHead()->Route, "SIGNUP_USERCHECK") == 0) {
