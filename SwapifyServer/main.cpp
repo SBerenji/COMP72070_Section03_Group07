@@ -1,10 +1,3 @@
-//#include "TCPServer.h"
-
-//int main(void) {
-//	TCPServer server = TCPServer(27000);
-//	server.start();
-//	return 1;
-//}
 #include <windows.networking.sockets.h>
 #include <cstring>
 #include <iostream>
@@ -86,64 +79,23 @@ SOCKET setupConnection(int (*funcptr)(SOCKET)) {
         return -1;
     }
 
-    /**threadObjArray = new std::thread*[20];
-
-    memset(*threadObjArray, 0, 20);
-
-    int offset = 0;
-
-    std::thread** temp = *threadObjArray;*/
-
     int i = 0;
 
     while (1) {
         SOCKET* ConnectionSocket = new SOCKET();
         if ((*ConnectionSocket = accept(ServerSocket, NULL, NULL)) == -1) {
             continue;
-
-            /*closesocket(ServerSocket);
-
-            WSACleanup();
-
-            return -1;*/
         }
 
 
         // printing out a message if the process is succesful
         std::cout << "Server Socket Successfully Binded" << endl;
 
-
-        // Lambda function to capture the parameters and call the desired function
-        //auto threadFuncWithParams = [&](std::thread& threadObj) {
-        //    threadedFunc(ConnectionSocket); // Pass the parameters to the function
-        //    };
-
-         // Create a copy of ConnectionSocket to pass to the thread
-        /*SOCKET* connectionCopy = new SOCKET(ConnectionSocket);*/
-
-        ///*std::thread* thread1 = new std::thread(funcptr, *ConnectionSocket);
-
-        //*temp = thread1;*/
-
-        //memcpy(**threadObjArray + offset, thread1, sizeof(thread1));
-
-        /*(*thread1).join();*/
-
-        /*(*threadObjArray + offset) = new std::thread(threadFuncWithParams, std::ref(*threadObjArray[count]));*/
-
-        ///*offset++;
-
-        //temp = temp + offset;*/
-
         std::thread clientThread(funcptr, *ConnectionSocket);
 
         {
             std::lock_guard<std::mutex> lock(threadMutex);
             threadPool.push_back(std::move(clientThread));
-
-            //while (i <= cleanupFlags.size()) {
-            //    cleanupFlags.push_back(std::atomic<bool>(false)); // Add new elements with initial value false // Add new elements with initial value false
-            //}
 
             cleanupFlags[i].store(false);
 
@@ -171,29 +123,6 @@ void cleanupThreads() {
             return false;
         });
 
-
-        //// Find and mark threads for cleanup
-        //std::vector<size_t> threadsToRemove;
-        //for (size_t i = 0; i < cleanupFlags.size(); ++i) {
-        //    if (cleanupFlags[i]) {
-        //        threadsToRemove.push_back(i);
-        //    }
-        //}
-
-
-        //// Find and Join threads marked for cleanup
-        //for (auto it = threadsToRemove.rbegin(); it != threadsToRemove.rend(); ++it) {
-        //    if (threadPool[*it].joinable()) {
-        //        threadPool[*it].join();
-        //    }
-
-        //    cleanupFlags.erase(cleanupFlags.begin() + *it);
-
-        //    threadPool.erase(threadPool.begin() + *it);
-
-        //    //break;
-        //}
-
         // Find and mark threads for cleanup
         for (size_t i = 0; i < cleanupFlags.size(); ++i) {
             if (cleanupFlags[i].load()) {
@@ -209,11 +138,6 @@ void cleanupThreads() {
 }
 
 
-//int sendData(SOCKET ConnectionSocket, char* TxBuffer, int size) {
-//
-//}
-
-
 bool userFound;
 
 int callback(void* NotUsed, int argc, char** argv, char** azColName) {
@@ -224,18 +148,6 @@ int callback(void* NotUsed, int argc, char** argv, char** azColName) {
 
 
 int threadedFunc(SOCKET ConnectionSocket) {
-    /*while (1) {
-        SOCKET ConnectionSocket;
-        if ((ConnectionSocket = accept(ServerSocket, NULL, NULL)) == -1) {
-            closesocket(ServerSocket);
-
-            WSACleanup();
-
-            return -1;
-        }*/
-
-    // printing out a message if the process is succesful
-    /*std::cout << "Server Socket Successfully Binded" << endl;*/
 
     unsigned int clientID = ++nextClientID;
     clientIDToConnections[clientID] = ConnectionSocket;
@@ -249,7 +161,6 @@ int threadedFunc(SOCKET ConnectionSocket) {
         // receive the client message by passing the ServerSocket, address and size of the receive buffer, the 0 flag, client address structure, and the size of the client address structure
         //Note: buffer is a pointer to the data (it is an array which means it acts as a pointer to the first element of the array)
 
-        /* recv(ServerSocket, RxBuffer, sizeof(RxBuffer), 0);*/
 
         int receive_result = recv(ConnectionSocket, RxBuffer, sizeof(RxBuffer), 0);
 
@@ -633,8 +544,6 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             int sendSize = send(ConnectionSocket, imageArray, imageSize, 0);
 
-            /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
-
             if (sendSize < 0) {
                 std::cout << "Sending Image Failed!!" << std::endl;
 
@@ -646,8 +555,6 @@ int threadedFunc(SOCKET ConnectionSocket) {
             }
 
             delete[] imageArray;
-
-            /*sqlite3_finalize(stmt);*/
 
             /*Finalize the statement and close the database connection*/
             sqldb.closeDatabase(&stmt);
@@ -684,7 +591,6 @@ int threadedFunc(SOCKET ConnectionSocket) {
                 return SignUpdataInsertionReturn;
             }
 
-            /*sqlite3_finalize(stmt);*/
             sqldb.closeDatabase(&stmt);
             stmt = nullptr;
         }
@@ -717,8 +623,6 @@ int threadedFunc(SOCKET ConnectionSocket) {
             if (rc != SQLITE_OK) {
                 std::cerr << "SQL error: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
             }
-
-
 
             // Execute the SQL statement
             rc = sqlite3_step(stmt);
@@ -758,8 +662,6 @@ int threadedFunc(SOCKET ConnectionSocket) {
                 // Execute the SQL statement
                 rc = sqlite3_step(stmt);
                 if (rc == SQLITE_ROW) {
-                    //// Open the BLOB handle
-                    //sqlite3_blob* blobHandle; 
 
                     pkt_login->GetBody()->User = sqlite3_column_int(stmt, 0);
 
@@ -772,17 +674,10 @@ int threadedFunc(SOCKET ConnectionSocket) {
                     memset(cred.email, 0, sizeof(cred.email));
                     memcpy(cred.email, sqlite3_column_text(stmt, 3), sqlite3_column_bytes(stmt, 3));
 
-                    /*int blob_return = sqlite3_blob_open(sqldb.getDB(), "main", "UsersWithProfile", "profile_picture", sqlite3_column_int(stmt, 4), 0, &blobHandle);*/
-
                      /*Retrieve BLOB data*/
                     const void* blobArray = sqlite3_column_blob(stmt, 4);
 
                     imageSize = sqlite3_column_bytes(stmt, 4);
-
-
-                    // Close the BLOB handle
-                    //sqlite3_blob* blobHandle = reinterpret_cast<sqlite3_blob*>((char*)blobArray); // Assuming blobArray is actually a pointer to a blob handle
-                    //int close_blob = sqlite3_blob_close(blobHandle);
 
 
                     cred.imageStructArray = new char[imageSize];
@@ -792,16 +687,10 @@ int threadedFunc(SOCKET ConnectionSocket) {
                     memcpy(cred.imageStructArray, (char*)blobArray, imageSize);
 
                     blobArray = nullptr;
-
-                    /*sqlite3_blob_close((sqlite3_blob*)blobArray);
-                    blobArray = nullptr;*/
                 }
                 
                 else if (rc != SQLITE_DONE) {
                     std::cerr << "Error executing SQL statement: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
-
-                    /*sqldb.closeDatabase(&stmt);
-                    stmt = nullptr;*/
                 }
 
 
@@ -938,8 +827,6 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
 
-            /*Pkt->GetHead()->Length - (sizeof(signup.username) + sizeof(signup.password) + sizeof(signup.email))*/
-
             if (sendSize < 0) {
                 std::cout << "Sending User Check Failed!!" << std::endl;
 
@@ -965,11 +852,6 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
 int main()
 {
-    //std::thread** threadObjArray = nullptr;
-
-    //SOCKET ServerSocket = setupConnection(threadedFunc);
-
-
     // Start the server in a separate thread
     std::thread serverThread(setupConnection, threadedFunc);
 
@@ -985,50 +867,8 @@ int main()
     cleanupThread.join();
     
 
-    /*for (int offset = 0; offset < 20; offset++) {
-        if (!(threadObjArray)[offset]) {
-            break;
-        }
-
-        else if (std::thread::id() != (*(threadObjArray[offset])).get_id()) {
-            (*(threadObjArray[offset])).join();
-        }
-
-    }
-
-    for (int i = 0; i < 20; i++) {
-        if (!threadObjArray[i]) {
-            break;
-        }
-
-        else {
-            delete threadObjArray[i];
-        }
-    }
-
-    delete[] threadObjArray;*/
-
-    /*int (*funcptr)(SOCKET&) = threadedFunc;
-
-    std::thread thread1(funcptr, std::ref(ServerSocket));
-
-    std::thread thread2(funcptr, std::ref(ServerSocket));
-
-
-    thread1.join();
-    thread2.join();*/
-
-
-    // Cleaning up the ClientSocket and Winsock library
-    /*closesocket(ServerSocket);
-    std::cout << "Server socket closed" << endl;*/
-
     WSACleanup();
     std::cout << "Winsock library resources cleaned up and released" << endl;
 
-
-
-
     return 0;
 }
-
