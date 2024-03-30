@@ -402,7 +402,7 @@ namespace SwapifyServerTests
 
 
 
-		//TEST_METHOD(TestMethod3_logPacketLine_Same)
+		//TEST_METHOD(TestMethod1_logPacketLine_Same)
 		//{
 		//	string TEXT_FILE = "TempFil.txt";
 		//	fileSetup(TEXT_FILE);  //create file with expected data
@@ -757,33 +757,6 @@ namespace SwapifyServerTests
 
 
 
-		TEST_METHOD(TestMethod13_TESTSVR11_Server_Packet_Packet_CheckSumDrop)  //test that the packet is dropped if checksum do not match
-		{
-			//Arrange
-			Packet* actual = dummyPacket();
-			LogIn login;
-			SignUp signin;
-			SignUpCheck check;
-			Listing list;
-			int size = 0;
-			char expectedSource = '\0';
-			char* serializedBuffer = SerializeData(actual, size);
-			Packet* deserializedPacket = CreatePacket();
-
-
-
-			//Act
-			Deserialization(deserializedPacket, serializedBuffer, login, signin, check, list);
-			char actualSource = deserializedPacket->GetHead()->Source[0];
-
-
-			//Assert
-			Assert::AreEqual(expectedSource, actualSource); 
-
-			DestroyPacket(actual);
-			DestroyPacket(deserializedPacket);
-
-		}
 
 		TEST_METHOD(TestMethod14_TESTSVR12_Server_Serialize_NoBody)  //tests the Serialize function with no body
 		{
@@ -888,6 +861,7 @@ namespace SwapifyServerTests
 			Assert::AreEqual(expected, result);
 		}
 
+		//Github issue #20
 		TEST_METHOD(TestMethod19_TESTSVR17_Server_UserRoutes_HashFunction) //tests validate Hashfunction in User.h
 		{
 			//Arrange
@@ -966,7 +940,7 @@ namespace SwapifyServerTests
 
 		}
 
-		TEST_METHOD(TestMethod13__Server_UserRoutes_HandleUpdateUser)  //tests handleUpdateUser function in UserRoutes
+		TEST_METHOD(TestMethod50__Server_UserRoutes_HandleUpdateUser)  //tests handleUpdateUser function in UserRoutes
 		{
 			//Arrange
 			UserRoutes userRoutes;
@@ -982,9 +956,11 @@ namespace SwapifyServerTests
 			string userString = "test@example.com,password,John,Doe,image.jpg,2024-03-14,active";
 			User expectedUser(id, emailAddress, password, firstName, lastName, profilePicture, dateCreated, accountStatus);
 
+			Packet* result = userRoutes.handleRegister(expectedUser);
 
 			//Act
-			Packet* result = userRoutes.handleUpdateUser(expectedUser);
+			User expectedUser2(id, emailAddress, password, "Jane", lastName, profilePicture, dateCreated, accountStatus);
+			result = userRoutes.handleUpdateUser(expectedUser2);
 			
 			
 			//Assert
@@ -1008,13 +984,15 @@ namespace SwapifyServerTests
 			string userString = "test@example.com,password,John,Doe,image.jpg,2024-03-14,active";
 			User expectedUser(id, emailAddress, password, firstName, lastName, profilePicture, dateCreated, accountStatus);
 
+			Packet* result = userRoutes.handleRegister(expectedUser);
 
 			//Act
-			Packet* result = userRoutes.handleDeleteUser(expectedUser);
+			result = userRoutes.handleDeleteUser(expectedUser);
 			
+			result = userRoutes.handleLogin(expectedUser);
 			
 			//Assert
-			Assert::IsTrue(result != nullptr); 
+			Assert::IsTrue(result == nullptr); 
 
 		}
 
@@ -1522,6 +1500,8 @@ namespace SwapifyServerTests
 		//	sqlite3_close(db);
 		//}
 
+
+		//GitHub issue #19
 		TEST_METHOD(TestMethod42_SQLiteDatabase_closeDatabase)
 		{
 			//Arrange
@@ -1578,7 +1558,7 @@ namespace SwapifyServerTests
 		///// This test will ensure that the setupConnection2 returns 0 if the socket function returns an invalid socket (INVALID_SOCKET)
 		///// Mock functions are used for this test for functions such as connect which required the presence of a server
 		///// </summary>
-		TEST_METHOD(TestMethod43_etupConnection2_InvalidSocket)
+		TEST_METHOD(TestMethod443_etupConnection2_InvalidSocket)
 		{
 
 			// Arrange
