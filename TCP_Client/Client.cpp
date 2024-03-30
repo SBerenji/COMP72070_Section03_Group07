@@ -9,6 +9,7 @@
 #include "Packet.h"
 #include "PacketWrapper.h"
 
+//extern "C" __declspec(dllexport) int setupConnection();
 extern "C" __declspec(dllexport) SOCKET setupConnection(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanupfunc = WSACleanup);
 extern "C" __declspec(dllexport) SOCKET setupConnection2();
 
@@ -16,7 +17,6 @@ extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket, const char* T
 
 extern "C" __declspec(dllexport) int sendDataFunc(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc = send);
 
-extern "C" __declspec(dllexport) int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunction recvFunc = recv);
 extern "C" __declspec(dllexport) int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize);
 
 
@@ -93,24 +93,14 @@ int sendDataFunc(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendF
     // returning 1 upon successful completion.
 }
 
-
-
-
-int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize)
-{
-    return recvDataFunc(ClientSocket, RxBuffer, RxBufferSize);
-}
-
-
-
-int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunction recvFunc) {
+int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize) {
     // The order matters, therefore the send is before receive on Client side.
     // Send
 
     //char sendBuffer[20] = "Hello World!";
     // buffer to store address of the string
 
-    int recvSize = recvFunc(ClientSocket, RxBuffer, RxBufferSize, 0);
+    int recvSize = recv(ClientSocket, RxBuffer, RxBufferSize, 0);
     // here we are passing the clientSocket, the address of the string and the size of the string that we want the server to receive
     // +1 becuase of NULL terminator
 
@@ -118,7 +108,9 @@ int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunc
     {
         std::cout << "Sending Failed" << std::endl;
 
-        CloseSocket(ClientSocket);
+        closesocket(ClientSocket);
+
+        WSACleanup();
 
         return 0;
     }
@@ -148,7 +140,7 @@ SOCKET setupConnection(WSAStartupFunc wsaStartup, socketFunc socketfunc, connect
 
     WSADATA wsaData;
 
-    if (wsaStartup(MAKEWORD(2, 2), &wsaData) != 0)
+    if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0)
         // providing the address of the object (&wsaData) into the library's startup function
     {
         std::cout << "ERROR: Failed to start WSA" << std::endl;
@@ -164,12 +156,12 @@ SOCKET setupConnection(WSAStartupFunc wsaStartup, socketFunc socketfunc, connect
     // This is to make the call to the server
 
     SOCKET ClientSocket;
-    ClientSocket = socketfunc(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    ClientSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     // here we are using TCP protocol
 
     if (ClientSocket == INVALID_SOCKET)
     {
-        wsacleanupfunc();
+        WSACleanup();
 
         std::cout << "ERROR: Failed to create ServerSocket" << std::endl;
 
@@ -196,7 +188,7 @@ SOCKET setupConnection(WSAStartupFunc wsaStartup, socketFunc socketfunc, connect
     SvrAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     // The IPV4 address the server is located on. Since different network we are gonna send the request to the NAT using localhost.
 
-    if ((connectfunc(ClientSocket, (struct sockaddr*)&SvrAddr, sizeof(SvrAddr))) == SOCKET_ERROR)
+    if ((connect(ClientSocket, (struct sockaddr*)&SvrAddr, sizeof(SvrAddr))) == SOCKET_ERROR)
     {
         closesocket(ClientSocket);
         WSACleanup();
