@@ -134,33 +134,42 @@ namespace WPF_Front_End.View.UserControls
 
                 Packet.DeserializeHeader(RxBuffer, ref head);
 
-
-                globalVariables.ClientID = Packet.DeserializeClientID(RxBuffer);
+                head.Length = Packet.DeserializeHeaderLengthMember(RxBuffer);
+                
 
                 int sizeofHeader;
 
                 sizeofHeader = (int)((2 * ConstantVariables.Source_Destination_ByteArraySize) + (ConstantVariables.Route_ByteArraySize) + (Marshal.SizeOf(typeof(bool))) + (Marshal.SizeOf(typeof(UInt32))));
-              
-                
 
-                Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)), cred.username, 0, ConstantVariables.username_ByteArraySize);
-                Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize, cred.password, 0, ConstantVariables.password_ByteArraySize);
-                Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize, cred.email, 0, ConstantVariables.email_ByteArraySize);
+                
 
                 if (Encoding.ASCII.GetString(head.Route).TrimEnd('\0') == Route.LOGIN_USERFOUNDWITHIMAGE.ToString())
                 {
-                    uint dataSize = Packet.DeserializeHeaderLengthMember(RxBuffer);
+                    globalVariables.ClientID = Packet.DeserializeClientID(RxBuffer);
 
-                    //int size_test = dataSize - (int)(ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize + ConstantVariables.email_ByteArraySize);
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)), cred.username, 0, ConstantVariables.username_ByteArraySize);
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize, cred.password, 0, ConstantVariables.password_ByteArraySize);
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize, cred.email, 0, ConstantVariables.email_ByteArraySize);
 
-                    globalVariables.receivedPostLoginImage = new byte[dataSize - (int)(ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize + ConstantVariables.email_ByteArraySize)];
+                    globalVariables.receivedPostLoginImage = new byte[head.Length - (int)(ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize + ConstantVariables.email_ByteArraySize)];
 
                     int length = globalVariables.receivedPostLoginImage.Length;
 
+                    Packet.CopyImageFromRawBufferToByteArray(RxBuffer, globalVariables.receivedPostLoginImage, ((int)head.Length - (int)(ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize + ConstantVariables.email_ByteArraySize)));
 
-                    Packet.CopyImageFromRawBufferToByteArray(RxBuffer, globalVariables.receivedPostLoginImage, ((int)dataSize - (int)(ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize + ConstantVariables.email_ByteArraySize)));
+                    globalVariables.imageUploaded = true;
+                }
 
-                    //Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize + ConstantVariables.email_ByteArraySize, globalVariables.receivedPostLoginImage, 0, dataSize - (int)(ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize + ConstantVariables.email_ByteArraySize));
+                else if (Encoding.ASCII.GetString(head.Route).TrimEnd('\0') == Route.LOGIN_USERFOUNDWITHOUTIMAGE.ToString())
+                {
+                    globalVariables.ClientID = Packet.DeserializeClientID(RxBuffer);
+
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)), cred.username, 0, ConstantVariables.username_ByteArraySize);
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize, cred.password, 0, ConstantVariables.password_ByteArraySize);
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize, cred.email, 0, ConstantVariables.email_ByteArraySize);
+
+                    globalVariables.imageUploaded = false;
+                    globalVariables.receivedPostLoginImage = Array.Empty<byte>();
                 }
 
 
@@ -174,7 +183,7 @@ namespace WPF_Front_End.View.UserControls
                 {
                     globalVariables.OneClientFirstSignUp = false;
 
-                    globalVariables.imageUploaded = true;
+                    
 
                     Window parentWindow = Window.GetWindow(this);
 
