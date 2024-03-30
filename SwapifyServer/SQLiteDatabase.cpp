@@ -42,8 +42,8 @@ bool SQLiteDatabase::executeQuery(const char* sqlQuery) {
     return true;
 }
 
-int SQLiteDatabase::ListingPostInsert(sqlite3_stmt** stmt, Packet* Pkt, Listing& Listing, int post_id) {
-    const char* sql = "INSERT INTO listings (id, title, location, condition, estimated_worth, delivery, looking_for, listing_picture, postID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+int SQLiteDatabase::ListingPostInsert(sqlite3_stmt** stmt, Packet* Pkt, Listing& Listing) {
+    const char* sql = "INSERT INTO listings (id, title, location, condition, estimated_worth, delivery, looking_for, listing_picture) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     sqlite3_prepare_v2(db, sql, -1, stmt, nullptr);
 
     sqlite3_bind_int(*stmt, 1, (int)(Pkt->GetBody()->User));
@@ -54,7 +54,6 @@ int SQLiteDatabase::ListingPostInsert(sqlite3_stmt** stmt, Packet* Pkt, Listing&
     sqlite3_bind_text(*stmt, 6, Listing.Delivery, -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(*stmt, 7, Listing.LookingFor, -1, SQLITE_TRANSIENT);
     sqlite3_bind_blob(*stmt, 8, Listing.ImageStructArray, Pkt->GetHead()->Length - (sizeof(Listing.Title) + sizeof(Listing.EstimatedWorth) + sizeof(Listing.Location) + sizeof(Listing.Condition) + sizeof(Listing.Delivery) + sizeof(Listing.LookingFor)), SQLITE_STATIC);
-    sqlite3_bind_int(*stmt, 9, post_id);
 
     int rc = sqlite3_step(*stmt);
 
