@@ -47,7 +47,7 @@ namespace WPF_Front_End
     }
 
 
-    public enum Route {STARTUP_GETID, LOGIN, LOGIN_USERFOUNDWITHIMAGE, LOGIN_USERFOUNDWITHOUTIMAGE, LOGIN_USERNOTFOUND, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT, DELETE_POST}
+    public enum Route {STARTUP_GETID, LOGIN, LOGIN_USERFOUNDWITHIMAGE, LOGIN_USERFOUNDWITHOUTIMAGE, LOGIN_USERNOTFOUND, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT, PRELOGIN_LISTINGS_COUNT, POSTLOGIN_LISTINGS_COUNT, DELETE_POST}
 
 
     public class CloseClient
@@ -400,6 +400,8 @@ namespace WPF_Front_End
         public static List<uint> MyPostImageSize = new List<uint>();
 
         public static ObservableCollection<MyPostsItem> Posts = new ObservableCollection<MyPostsItem>();
+
+        public static ObservableCollection<Post> exchangePosts = new ObservableCollection<Post>();
         public static byte[] MyPostImage1 {  get; set; }
         public static string bodyBuffer {  get; set; }
 
@@ -446,6 +448,7 @@ namespace WPF_Front_End
                 listings.Clear();
                 MyPostImageSize.Clear();
                 Posts.Clear();
+                exchangePosts.Clear();
             }
         } 
     }
