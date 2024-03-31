@@ -25,6 +25,7 @@ typedef int (*WSACleanupFunc)();
 
 typedef int (*SendFunction)(SOCKET, const char*, int, int);
 
+typedef int(*RecvFunction)(SOCKET s, char* buf, int len, int flags);
 
 
 

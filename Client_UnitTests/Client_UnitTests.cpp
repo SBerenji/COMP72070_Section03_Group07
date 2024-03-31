@@ -7,6 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 extern "C" int CloseSocketFunc(SOCKET ClientSocket, closesocketFunc closeFunc = closesocket, WSACleanupFunc wsacleanupfunc = WSACleanup);
 extern "C" int sendDataFunc(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc = send);
+extern "C" int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize);
 extern "C" SOCKET setupConnection(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanup = WSACleanup);
 extern "C" char* SerializeData(Packet * Pkt, int& TotalSize);
 extern "C" Packet * CreatePacket();
@@ -16,6 +17,8 @@ extern "C" char* AllocateHeaderPtr();
 extern "C" void Deserialization(Packet * Pkt, char* src);
 extern "C" void SetHeader(Packet * Pkt, void* Head);
 extern "C" void SetBody(Packet * Pkt, unsigned char User, char* Data, int DataSize);
+extern "C" int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunction recvFunc = recv);
+extern "C" int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize);
 
 
 
@@ -93,13 +96,76 @@ int MockWSACleanupFailure()
     return SOCKET_ERROR; // This function will return SOCKET_ERROR upon failure
 }
 
+//  *****  Creating mock functions for the recvDataFunc() function   ******
+int MockRecvFailure(SOCKET s, char* buf, int len, int flags)
+{
+    return -1; // This function will return -1 upon failure
+}
+
+int MockRecvSuccess(SOCKET s, char* buf, int len, int flags)
+{
+    return 1; // This function will return 1 upon success
+}
 
 namespace ClientUnitTests
 {
 	TEST_CLASS(ClientUnitTests)
 	{
 	public:
-		
+
+        ///// <summary>
+      ///// This test ensures that the recvDataFunc function will return 0 upon unsuccessfully receiving data
+      ///// </summary> 
+        TEST_METHOD(RecvPacket_Failure)
+        {
+
+            WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
+            socketFunc socketfunc = MockSocketSuccess;
+            connectFunc connectfunc = MockConnectSuccess;
+            WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
+            RecvFunction recvFunction = MockRecvFailure;
+
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+
+            Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
+
+            char RxBuffer[20];
+            int totalSize = sizeof(RxBuffer);
+
+            // Act
+            int result = recvDataFunc(clientSocket, RxBuffer, totalSize, recvFunction);
+
+            // Assert
+            Assert::AreEqual(0, result);
+        }
+
+        ///// <summary>
+        ///// This test ensures that the recvDataFunc function will return 1 upon successfully receiving data
+        ///// </summary> 
+        TEST_METHOD(RecvPacket_Success)
+        {
+
+            WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
+            socketFunc socketfunc = MockSocketSuccess;
+            connectFunc connectfunc = MockConnectSuccess;
+            WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
+            RecvFunction recvFunction = MockRecvSuccess;
+
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+
+            Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
+
+            char RxBuffer[20];
+            int totalSize = sizeof(RxBuffer);
+
+            // Act
+            int result = recvDataFunc(clientSocket, RxBuffer, totalSize, recvFunction);
+
+            // Assert
+            Assert::AreEqual(1, result);
+        }
+
+
         ///// <summary>
            ///// This test will ensure that the setupConnection2 returns a valid socket
            ///// Mock functions are used for this test for functions such as connect which required the presence of a server
@@ -258,7 +324,7 @@ namespace ClientUnitTests
         ///// <summary>
         ///// This test ensures that the sendData function (here using a mock function) will return 1 in case of a successfull send
         ///// </summary>
-        TEST_METHOD(sendData_ValidSocket_SuccessfullSend)
+        TEST_METHOD(sendDataFunc_ValidSocket_SuccessfullSend)
         {
             // Arrange
 
@@ -285,7 +351,7 @@ namespace ClientUnitTests
         ///// <summary>
         ///// This test ensures that the sendData function will return 0 in case of an unsuccessfull send
         ///// </summary>
-        TEST_METHOD(sendData_InvalidSocket_UnsuccessfulSend)
+        TEST_METHOD(sendDataFunc_ValidSocket_UnsuccessfulSend)
         {
             // Arrange
 
@@ -308,6 +374,9 @@ namespace ClientUnitTests
             // Assert
             Assert::AreEqual(0, result);
         }
+
+
+
 
         ///// <summary>
         ///// This test ensures that the CreatePacket function successfully instantiates the Packet class
