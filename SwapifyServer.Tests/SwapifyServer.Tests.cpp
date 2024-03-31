@@ -61,26 +61,26 @@ Packet* dummyPacketLogIn() //creates a filled packet to be tested
 }
 
 
-Packet* dummyPacketSignUp() //creates a filled packet to be tested
-{
-	Packet* actual = CreatePacket(); //creates a new packet
-
-
-	strcpy_s(actual->GetHead()->Source, "Client"); //sets source
-	strcpy_s(actual->GetHead()->Destination, "Server"); //sets destination
-	strcpy_s(actual->GetHead()->Route, "SIGNUP_IMAGEUPLOADED"); //sets route
-	actual->GetHead()->Authorization = true; //sets authorization
-	actual->GetHead()->Length = 12; //sets legnth
-	int DataSize = 5;
-	char* Data = "username..password..email...................................1";
-	actual->GetBody()->User = 2; //sets user
-	actual->GetBody()->Data = new char[DataSize]; //assigns memory for data
-	actual->GetBody()->Data[DataSize - 1] = '\0'; //sets last item in data to null
-	memcpy(actual->GetBody()->Data, Data, DataSize); //sets data 
-	actual->GetTail()->Checksum = 2; //sets checksum
-
-	return actual;
-}
+//Packet* dummyPacketSignUp() //creates a filled packet to be tested
+//{
+//	Packet* actual = CreatePacket(); //creates a new packet
+//
+//
+//	strcpy_s(actual->GetHead()->Source, "Client"); //sets source
+//	strcpy_s(actual->GetHead()->Destination, "Server"); //sets destination
+//	strcpy_s(actual->GetHead()->Route, "SIGNUP_IMAGEUPLOADED"); //sets route
+//	actual->GetHead()->Authorization = true; //sets authorization
+//	actual->GetHead()->Length = 12; //sets legnth
+//	int DataSize = 5;
+//	char* Data = "username..password..email...................................1";
+//	actual->GetBody()->User = 2; //sets user
+//	actual->GetBody()->Data = new char[DataSize]; //assigns memory for data
+//	actual->GetBody()->Data[DataSize - 1] = '\0'; //sets last item in data to null
+//	memcpy(actual->GetBody()->Data, Data, DataSize); //sets data 
+//	actual->GetTail()->Checksum = 2; //sets checksum
+//
+//	return actual;
+//}
 
 
 
@@ -120,33 +120,33 @@ Listing dummyListing()
 	return list;
 }
 
-Packet* dummyPacketPost(const char* title, const char* location, const char* condition, const char* worth, const char* delivery, const char* lookingfor) //creates a filled packet to be tested
-{
-	Packet* actual = CreatePacket(); //creates a new packet
-
-
-	strcpy_s(actual->GetHead()->Source, "Client"); //sets source
-	strcpy_s(actual->GetHead()->Destination, "Server"); //sets destination
-	strcpy_s(actual->GetHead()->Route, "POST"); //sets route
-	actual->GetHead()->Authorization = true; //sets authorization
-	actual->GetHead()->Length = strlen(title) + strlen(location) + strlen(condition) + strlen(worth) + strlen(delivery) + strlen(lookingfor); //sets legnth
-	actual->GetBody()->Data = new char[actual->GetHead()->Length];
-
-	
-	strcpy_s(actual->GetBody()->Data, strlen(title) + 1, title); //sets data 
-	strcpy_s(actual->GetBody()->Data + strlen(title) + 1, strlen(location) + 1, location); //sets data 
-	strcpy_s(actual->GetBody()->Data + strlen(title) + 1 + strlen(location) + 1, strlen(condition) + 1, condition); //sets data 
-	strcpy_s(actual->GetBody()->Data + strlen(title) + 1 + strlen(location) + 1 + strlen(condition) + 1, strlen(worth) + 1, worth); //sets data 
-	strcpy_s(actual->GetBody()->Data + strlen(title) + 1 + strlen(location) + 1 + strlen(condition) + 1 + strlen(worth) + 1, strlen(delivery) + 1, delivery); //sets data 
-	strcpy_s(actual->GetBody()->Data + strlen(title) + 1 + strlen(location) + 1 + strlen(condition) + 1 + strlen(worth) + 1 + strlen(delivery) + 1, strlen(lookingfor) + 1, lookingfor); //sets data 
-
-	
-	
-
-	actual->GetTail()->Checksum = 2; //sets checksum
-
-	return actual;
-}
+//Packet* dummyPacketPost(const char* title, const char* location, const char* condition, const char* worth, const char* delivery, const char* lookingfor) //creates a filled packet to be tested
+//{
+//	Packet* actual = CreatePacket(); //creates a new packet
+//
+//
+//	strcpy_s(actual->GetHead()->Source, "Client"); //sets source
+//	strcpy_s(actual->GetHead()->Destination, "Server"); //sets destination
+//	strcpy_s(actual->GetHead()->Route, "POST"); //sets route
+//	actual->GetHead()->Authorization = true; //sets authorization
+//	actual->GetHead()->Length = strlen(title) + strlen(location) + strlen(condition) + strlen(worth) + strlen(delivery) + strlen(lookingfor); //sets legnth
+//	actual->GetBody()->Data = new char[actual->GetHead()->Length];
+//
+//	
+//	strcpy_s(actual->GetBody()->Data, strlen(title) + 1, title); //sets data 
+//	strcpy_s(actual->GetBody()->Data + strlen(title) + 1, strlen(location) + 1, location); //sets data 
+//	strcpy_s(actual->GetBody()->Data + strlen(title) + 1 + strlen(location) + 1, strlen(condition) + 1, condition); //sets data 
+//	strcpy_s(actual->GetBody()->Data + strlen(title) + 1 + strlen(location) + 1 + strlen(condition) + 1, strlen(worth) + 1, worth); //sets data 
+//	strcpy_s(actual->GetBody()->Data + strlen(title) + 1 + strlen(location) + 1 + strlen(condition) + 1 + strlen(worth) + 1, strlen(delivery) + 1, delivery); //sets data 
+//	strcpy_s(actual->GetBody()->Data + strlen(title) + 1 + strlen(location) + 1 + strlen(condition) + 1 + strlen(worth) + 1 + strlen(delivery) + 1, strlen(lookingfor) + 1, lookingfor); //sets data 
+//
+//	
+//	
+//
+//	actual->GetTail()->Checksum = 2; //sets checksum
+//
+//	return actual;
+//}
 
 
 
@@ -247,35 +247,6 @@ public:
 //	return result;
 //}
 
-
-//class MockSQLiteDatabase : public SQLiteDatabase {
-//public:
-//	MockSQLiteDatabase(const std::string & dbPath) : SQLiteDatabase(dbPath) {}
-//
-//	bool executeQuery(const char* sqlQuery) {
-//		return true;
-//	}
-//
-//	int ListingPostInsert(sqlite3_stmt** stmt, Packet* Pkt, Listing& Listing)  {
-//		return 0;
-//	}
-//
-//	int SignUpWithImageDataInsert(sqlite3_stmt** stmt, Packet* Pkt, SignUp& signup) {
-//		return 0;
-//	}
-//
-//	int SignUpWithoutImageDataInsert(sqlite3_stmt** stmt, Packet* Pkt, SignUp& signup) {
-//		return 0;
-//	}
-//
-//	int FetchListingImage(sqlite3_stmt** stmt, std::string title, char** imageArray, int& imageSize) {
-//		return 0;
-//	}
-//
-//	int FetchImage(sqlite3_stmt** stmt, std::string email, char** imageArray, int& imageSize) {
-//		return 0;
-//	}
-//};
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -383,6 +354,9 @@ namespace SwapifyServerTests
 	TEST_CLASS(SwapifyServerTests)
 	{
 	public:
+
+
+
 
 
 		////Sets up a test file to be tested with a itemType, linedetails and TEXT_FILE
@@ -1158,28 +1132,28 @@ namespace SwapifyServerTests
 
 		//}
 
-		//TEST_METHOD(TestMethod30_SQLiteDatabase_ExecuteQuery)
-		//{
-		//	//Arrange
-		//	//std::string dbPath = "executeQuereDB.db";
-		//	SQLiteDatabase sqldb(":memory:");
-		//	const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
-		//		"id INTEGER NOT NULL,"
-		//		"title TEXT PRIMARY KEY,"
-		//		"location TEXT NOT NULL,"
-		//		"condition TEXT NOT NULL,"
-		//		"estimated_worth TEXT NOT NULL,"
-		//		"delivery TEXT NOT NULL,"
-		//		"looking_for TEXT NOT NULL,"
-		//		"listing_picture BLOB NOT NULL);";
+		TEST_METHOD(TestMethod30_SQLiteDatabase_ExecuteQuery)
+		{
+			//Arrange
+			//std::string dbPath = "executeQuereDB.db";
+			SQLiteDatabase sqldb(":memory:");
+			const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
+				"id INTEGER NOT NULL,"
+				"title TEXT PRIMARY KEY,"
+				"location TEXT NOT NULL,"
+				"condition TEXT NOT NULL,"
+				"estimated_worth TEXT NOT NULL,"
+				"delivery TEXT NOT NULL,"
+				"looking_for TEXT NOT NULL,"
+				"listing_picture BLOB NOT NULL);";
 
-		//	//Act
-		//	bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
+			//Act
+			bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
 
 
-		//	//Assert
-		//	Assert::IsTrue(query_exe_result);
-		//}
+			//Assert
+			Assert::IsTrue(query_exe_result);
+		}
 
 		//TEST_METHOD(TestMethod31_SQLiteDatabase_PostInsert)
 		//{
