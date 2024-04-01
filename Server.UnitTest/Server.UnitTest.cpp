@@ -1294,7 +1294,7 @@ namespace ServerUnitTest
 		///// <summary>
 		///// This test ensures that the sendData function will return 0 in case of an unsuccessfull send
 		///// </summary>
-		TEST_METHOD(TestMethod32_sendData_InvalidSocket_UnsuccessfulSend)
+		TEST_METHOD(TESTSVR32_sendData_InvalidSocket_UnsuccessfulSend)
 		{
 			// Arrange
 
