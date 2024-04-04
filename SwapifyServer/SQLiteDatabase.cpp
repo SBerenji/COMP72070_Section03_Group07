@@ -2,6 +2,7 @@
 #include "SQLiteDatabase.h"
 #include <fstream>
 
+
 //database.db
 SQLiteDatabase::SQLiteDatabase(const std::string& dbPath) : db(nullptr) {
     // Check if the database file exists

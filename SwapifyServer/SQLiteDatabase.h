@@ -11,6 +11,7 @@ private:
     sqlite3* db;
 
 public:
+    
     SQLiteDatabase(const std::string& dbPath);
 
     ~SQLiteDatabase();

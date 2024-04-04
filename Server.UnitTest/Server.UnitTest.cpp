@@ -487,7 +487,7 @@ namespace ServerUnitTest
 
 		}
 
-		TEST_METHOD(TESTSVR05_Deserializefunction_LogIn) //tests the deserialize function in Packet.h
+		TEST_METHOD(TESTSVR06_Deserializefunction_LogIn) //tests the deserialize function in Packet.h
 		{
 			//Arrange
 			Packet* actual = dummyPacket();
@@ -533,7 +533,7 @@ namespace ServerUnitTest
 
 		}
 
-		TEST_METHOD(TESTSVR05_Deserializefunction_SignUp) //test Deserialize function with SignUp route in Packet.h
+		TEST_METHOD(TESTSVR10_Deserializefunction_SignUp) //test Deserialize function with SignUp route in Packet.h
 		{
 			//Arrange
 			SignUp signin;
@@ -563,7 +563,7 @@ namespace ServerUnitTest
 
 		}
 
-		TEST_METHOD(TESTSVR05_Deserializefunction_SIGNUP_USERCHECK) //test Deserialize function with SignUp route in Packet.h
+		TEST_METHOD(TESTSVR10_Deserializefunction_SIGNUP_USERCHECK) //test Deserialize function with SignUp route in Packet.h
 		{
 			//Arrange
 			SignUp signin;
@@ -594,7 +594,7 @@ namespace ServerUnitTest
 
 		}
 
-		TEST_METHOD(TESTSVR05_Deserializefunction_POST) //test Deserialize function with SignUp route in Packet.h
+		TEST_METHOD(TESTSVR10_Deserializefunction_POST) //test Deserialize function with SignUp route in Packet.h
 		{
 			//Arrange
 			SignUp signin;
@@ -625,7 +625,7 @@ namespace ServerUnitTest
 
 		}
 
-
+		///////////////////////////
 		TEST_METHOD(TESTSVR27_SetHeaderfunction) //testing the SetHeader function in Packet.h
 		{
 			//Arrange
@@ -690,7 +690,7 @@ namespace ServerUnitTest
 
 		}
 
-		TEST_METHOD(TESTSVR06_Serializefunction) //testing the Serialize function in Packet.h
+		TEST_METHOD(TESTSVR05_Serializefunction) //testing the Serialize function in Packet.h
 		{
 			//Arrange
 			Packet* actual = dummyPacket();
@@ -954,7 +954,7 @@ namespace ServerUnitTest
 			sqlite3_stmt* stmt = nullptr;
 			sqldb.closeDatabase(&stmt);
 		}
-		
+		///////////////////////////////////////////////
 		TEST_METHOD(TESTSVR09_ListingPostInsert)
 		{
 			//Arrange
@@ -1080,7 +1080,7 @@ namespace ServerUnitTest
 		///// This test will ensure that the setupConnection2 returns a valid socket
 		///// Mock functions are used for this test for functions such as connect which required the presence of a server
 		///// </summary>
-		TEST_METHOD(TESTSVR34_setupConnection2_ValidSocket)
+		TEST_METHOD(TESTSV18_setupConnection2_ValidSocket)
 		{
 
 			// Arrange
@@ -1106,7 +1106,7 @@ namespace ServerUnitTest
 		///// This test will ensure that the setupConnection2 returns 0 if the socket function returns an invalid socket (INVALID_SOCKET)
 		///// Mock functions are used for this test for functions such as connect which required the presence of a server
 		///// </summary>
-		TEST_METHOD(TESTSVR34_SetupConnection2_InvalidSocket)
+		TEST_METHOD(TESTSVR18_SetupConnection2_InvalidSocket)
 		{
 
 			// Arrange
@@ -1180,7 +1180,7 @@ namespace ServerUnitTest
 		/// <summary>
 		/// This test will ensure that the CloseSocket funciton returns 1 upon success and handles all the closing and cleaning properly
 		/// </summary>
-		TEST_METHOD(TESTSVR35_CloseSocket_ValidSocket)
+		TEST_METHOD(TESTSVR19_CloseSocket_ValidSocket)
 		{
 			// Arrange
 			WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
@@ -1264,7 +1264,7 @@ namespace ServerUnitTest
 		///// <summary>
 		///// This test ensures that the sendData function (here using a mock function) will return 1 in case of a successfull send
 		///// </summary>
-		TEST_METHOD(TESTSVR34_sendData_ValidSocket_SuccessfullSend)
+		TEST_METHOD(TESTSVR18_sendData_ValidSocket_SuccessfullSend)
 		{
 			// Arrange
 

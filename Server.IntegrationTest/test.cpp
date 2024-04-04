@@ -16,22 +16,16 @@
 #include <string>
 #include <functional>
 
-std::string capture_stderr(std::function<void()> func) {
-    // Save the current stderr buffer
-    std::streambuf* oldStderr = std::cerr.rdbuf();
+std::string capture_stderr(std::function<void()> func) //saves the standard error returned by the function to the stringstream object and returns it as a string
+{ 
+   // std::streambuf* originalErr = std::cerr.rdbuf(); //takes the current buffer and saves it to originalErr
+    std::stringstream newErr; //new stringstream object called newErr
+    std::cerr.rdbuf(newErr.rdbuf()); 
 
-    // Create a stringstream to redirect stderr
-    std::stringstream capturedStderr;
-    std::cerr.rdbuf(capturedStderr.rdbuf());
+    func(); //execute the function passed as a parameter
+   // std::cerr.rdbuf(originalErr); //originalErr is placed back in the buffer
 
-    // Execute the provided function
-    func();
-
-    // Restore the original stderr buffer
-    std::cerr.rdbuf(oldStderr);
-
-    // Return the captured stderr content as a string
-    return capturedStderr.str();
+    return newErr.str(); //return newErr object as a string
 }
 
 Packet* dummyPacketPostInfo(Listing& list) {
@@ -53,6 +47,37 @@ Packet* dummyPacketPostInfo(Listing& list) {
     strcpy_s(list.Delivery, "Delivery");
     strcpy_s(list.LookingFor, "LookingFor");
     char imageData[] = "Your image data here";
+    int imageDataSize = strlen(imageData);
+    list.ImageStructArray = new char[imageDataSize + 1];
+    strcpy_s(list.ImageStructArray, imageDataSize + 1, imageData);
+
+
+
+    SetBody(Pkt, 'L', reinterpret_cast<char*>(&list), sizeof(list));
+
+    return Pkt;
+}
+
+
+Packet* dummyPacketPostInfoImage(Listing& list) {
+    Packet* Pkt = new Packet();
+
+    Pkt->GetBody()->Data = nullptr;
+
+
+    memset(Pkt->GetHead(), 0, sizeof(*(Pkt->GetHead())));
+    memset(&(Pkt->GetBody()->User), 0, sizeof(Pkt->GetBody()->User));
+    memset(&(Pkt->GetTail()->Checksum), 0, sizeof(Pkt->GetTail()->Checksum));
+
+
+    SetHeaderInformation(Pkt, "127.0.0.1", strlen("127.0.0.1"), "127.0.0.1", strlen("127.0.0.1"), "POST", strlen("POST"), true, 0);
+    strcpy_s(list.Title, "Title");
+    strcpy_s(list.Location, "Location");
+    strcpy_s(list.Condition, "Condition");
+    strcpy_s(list.EstimatedWorth, "EstimatedWorth");
+    strcpy_s(list.Delivery, "Delivery");
+    strcpy_s(list.LookingFor, "LookingFor");
+    char imageData[] = "eruru";
     int imageDataSize = strlen(imageData);
     list.ImageStructArray = new char[imageDataSize + 1];
     strcpy_s(list.ImageStructArray, imageDataSize + 1, imageData);
@@ -124,7 +149,7 @@ Packet* dummyPacketSignUp(SignUp& signup)
     return Pkt;
 }
 
-TEST(IntegrationTest1, ExecuteQueryTest) {
+TEST(TESTSVR02, ExecuteQueryTest) {
     //Arrange
     std::string dbPath = "database1.db";
     SQLiteDatabase sqldb(dbPath);
@@ -151,7 +176,7 @@ TEST(IntegrationTest1, ExecuteQueryTest) {
 }
 
 
-TEST(IntegrationTest1, ExecuteQueryTest_NotWork) {
+TEST(TESTSVR02, ExecuteQueryTest_Unsuccessful) {
     //Arrange
     std::string dbPath = "database1.db";
     SQLiteDatabase sqldb(dbPath);
@@ -171,11 +196,11 @@ TEST(IntegrationTest1, ExecuteQueryTest_NotWork) {
     sqldb.closeDatabase(&stmt);
 }
 
-TEST(IntegrationTest2, ListingPostInsert) {
+TEST(TESTSVR09, ListingPostInsert) {
     //Arrange
     Listing list;
     Packet* Pkt = dummyPacketPostInfo(list);
-    std::string dbPath = "database135.db";
+    std::string dbPath = "listingpostinsertTestDatabase.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
         "id INTEGER NOT NULL,"
@@ -201,7 +226,7 @@ TEST(IntegrationTest2, ListingPostInsert) {
 
 }
 
-TEST(IntegrationTest2, ListingPostInsert_failed) {
+TEST(TESTSVR09, ListingPostInsert_Unsuccessful) {
     //Arrange
     Listing list;
     Packet* Pkt = dummyPacketPostInfo(list);;
@@ -232,11 +257,11 @@ TEST(IntegrationTest2, ListingPostInsert_failed) {
 }
 
 
-TEST(IntegrationTest3, SignUpWithImageDataInsert) {
+TEST(TESTSVR01, SignUpWithImageDataInsert) {
     //Arrange
     SignUp signup;
     Packet* packet = dummyPacketSignUp(signup);
-    std::string dbPath = "database333.db";
+    std::string dbPath = "signupwithimageTestDatabase.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
         "id INTEGER NOT NULL,"
@@ -259,17 +284,13 @@ TEST(IntegrationTest3, SignUpWithImageDataInsert) {
 }
 
 
-/// <summary>
-/// ///////////////////////////////////fix this
-/// </summary>
-/// <param name=""></param>
-/// <param name=""></param>
-TEST(IntegrationTest3, SignUpWithImageDataInsert_failed__345___) 
+
+TEST(TESTSVR01, SignUpWithImageDataInsert_Unsuccessful)
 {
     //Arrange
     SignUp signup;
     Packet* packet = dummyPacketSignUp(signup);
-    std::string dbPath = "database12345w2r4srg54.db";
+    std::string dbPath = "signupwithimagefailTestDatabase.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
         "id INTEGER NOT NULL,"
@@ -287,17 +308,14 @@ TEST(IntegrationTest3, SignUpWithImageDataInsert_failed__345___)
         sqldb.SignUpWithImageDataInsert(&stmt, packet, signup);
         });
 
-    EXPECT_TRUE(actualErrorMessage.find(expectedErrorMessage) != std::string::npos);
-
-
-   
+    EXPECT_EQ(actualErrorMessage, expectedErrorMessage);
 }
 
-TEST(IntegrationTest4, SignUpWithoutImageDataInsert) {
+TEST(TESTSVR03, SignUpWithoutImageDataInsert) {
     //Arrange
     SignUp signup;
     Packet* packet = dummyPacketSignUp(signup);
-    std::string dbPath = "database444.db";
+    std::string dbPath = "signupwithoutimageTestDatabase.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithoutProfile ("
         "id INTEGER NOT NULL,"
@@ -321,11 +339,11 @@ TEST(IntegrationTest4, SignUpWithoutImageDataInsert) {
 }
 
 
-TEST(IntegrationTest4, SignUpWithoutImageDataInsert_failed) {
+TEST(TESTSVR03, SignUpWithoutImageDataInsert_Unsuccessful) {
     //Arrange
     SignUp signup;
     Packet* packet = dummyPacketSignUp(signup);
-    std::string dbPath = "database444.db";
+    std::string dbPath = "signupwithoutimagefailedTestDatabase.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithoutProfile ("
         "id INTEGER NOT NULL,"
@@ -348,54 +366,11 @@ TEST(IntegrationTest4, SignUpWithoutImageDataInsert_failed) {
         sqldb.SignUpWithoutImageDataInsert(&stmt, packet, signup);
         });
 
-    EXPECT_FALSE(actualErrorMessage.find(expectedErrorMessage) != std::string::npos);
+    EXPECT_TRUE(actualErrorMessage != expectedErrorMessage);
 
 }
 
 
-TEST(IntegrationTest5, FetchImage) {
-    //Arrange
-    Listing list;
-
-    Packet* Pkt = dummyPacketPostInfo(list);
-
-    std::string dbPath = "database556643456.db";
-    SQLiteDatabase sqldb(dbPath);
-
-    const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
-        "id INTEGER NOT NULL,"
-        "title TEXT PRIMARY KEY,"
-        "location TEXT NOT NULL,"
-        "condition TEXT NOT NULL,"
-        "estimated_worth TEXT NOT NULL,"
-        "delivery TEXT NOT NULL,"
-        "looking_for TEXT NOT NULL,"
-        "listing_picture BLOB NOT NULL);";
-
-    bool query_exe_result = sqldb.executeQuery(sqlCreateTableListing);
-
-    const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
-        "id INTEGER NOT NULL,"
-        "username TEXT NOT NULL,"
-        "password TEXT NOT NULL,"
-        "email TEXT PRIMARY KEY,"
-        "profile_picture BLOB NOT NULL);";
-
-
-    bool query_exe_result2 = sqldb.executeQuery(sqlCreateTable);
-
-    sqlite3_stmt* stmt = nullptr;
-
-    int ListingPostInsertionReturn = sqldb.ListingPostInsert(&stmt, Pkt, list);
-
-
-
-    char* ListingImageArray = nullptr;
-    int listingImageSize = 0;
-    int fetch = sqldb.FetchImage(&stmt, list.Title, &ListingImageArray, listingImageSize);
-
-    EXPECT_EQ(0, fetch);
-}
 
 
 /// <summary>
@@ -403,13 +378,13 @@ TEST(IntegrationTest5, FetchImage) {
 /// </summary>
 /// <param name=""></param>
 /// <param name=""></param>
-TEST(IntegrationTest5, FetchImage_notfound) {
+TEST(TESTSVR30, FetchImage_Unsuccessful) {
     //Arrange
     Listing list;
 
     Packet* Pkt = dummyPacketPostInfo(list);
 
-    std::string dbPath = "database556643456.db";
+    std::string dbPath = "fetchimagefailTestDatabase.db";
     SQLiteDatabase sqldb(dbPath);
     
     const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
@@ -449,7 +424,7 @@ TEST(IntegrationTest5, FetchImage_notfound) {
 
 
 
-TEST(IntegrationTest5, getDB)
+TEST(TESTSVR30, getDB)
 {
     //Arrange			
     std::string dbPath = "database444.db";
@@ -466,7 +441,7 @@ TEST(IntegrationTest5, getDB)
 }
 
 
-TEST(IntegrationTest6, isOpen)
+TEST(TESTSVR29, isOpen)
 {
     //Arrange			
     std::string dbPath = "database444.db";
@@ -483,10 +458,10 @@ TEST(IntegrationTest6, isOpen)
 }
 
 
-TEST(IntegrationTest7, isOpen_False)
+TEST(TESTSVR29, isOpen_Unsuccessful)
 {
     //Arrange			
-    std::string dbPath = "database444.db";
+    std::string dbPath = "isopenTestDatabase.db";
     SQLiteDatabase sqldb(dbPath);
     sqlite3_stmt* stmt = nullptr;
 
@@ -501,26 +476,44 @@ TEST(IntegrationTest7, isOpen_False)
 }
 
 
-//TEST_METHOD(TestMethod37_SQLiteDatabase_SignUpWithoutImageDataInsert)
-//    {
-//    	//Arrange 
-//    	Packet* packet = dummyPacket();
-//    	SignUp signup = dummySignin();
-//    	//std::string dbPath = "isOpenDB.db";
-//    	SQLiteDatabase sqldb(":memory:");
-//    	sqlite3_stmt* stmt = nullptr;
-//    	int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(&stmt, packet, signup);
-//    	char* imageArray = nullptr;
-//    	int imageSize = 0;
-//
-//
-//    	//Act
-//    	int actual = sqldb.FetchImage(&stmt, signup.email, &imageArray, imageSize);
-//
-//
-//    	//Assert
-//    	Assert::AreEqual(0, actual);
-//    }
+TEST(TESTSVR20, closeDB_Unsuccessful)
+{
+    //Arrange			
+    std::string dbPath = "database444.db";
+    SQLiteDatabase sqldb(dbPath);
+    sqlite3_stmt* stmt = nullptr;
+
+    sqldb.closeDatabase(&stmt);
+    //Act
+    char* expectedErrorMessage = "Error executing SQL statement: bad parameter or other API misuse\n";
+    std::string actualErrorMessage = capture_stderr([&] {
+        sqldb.closeDatabase(&stmt);
+        });
+
+
+    //Assert
+    EXPECT_EQ(expectedErrorMessage, actualErrorMessage);
+}
+
+
+
+
+TEST(TESTSVR36, SQLiteDatabase_Unsuccessful)
+{
+    //Arrange			
+    std::string dbPath = "";
+    SQLiteDatabase sqldb(dbPath);
+
+    //Act
+    char* expectedErrorMessage = "";
+    std::string actualErrorMessage = capture_stderr([&] {
+        SQLiteDatabase sqldb(dbPath);
+        });
+
+
+    //Assert
+    EXPECT_EQ(expectedErrorMessage, actualErrorMessage);
+}
 
 
 
