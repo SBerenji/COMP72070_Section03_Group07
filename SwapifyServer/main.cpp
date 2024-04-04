@@ -151,17 +151,18 @@ int threadedFunc(SOCKET ConnectionSocket) {
     unsigned int clientID = ++nextClientID;
     clientIDToConnections[clientID] = ConnectionSocket;
 
-    while (1) {
-        char RxBuffer[400000];   //declaring a receive buffer with size 128
+    char* RxBuffer = new char[2500000];   //declaring a receive buffer with size 128
 
-        memset(RxBuffer, 0, 400000);
+    while (1) {
+
+        memset(RxBuffer, 0, 2500000);
 
 
         // receive the client message by passing the ServerSocket, address and size of the receive buffer, the 0 flag, client address structure, and the size of the client address structure
         //Note: buffer is a pointer to the data (it is an array which means it acts as a pointer to the first element of the array)
 
 
-        int receive_result = recv(ConnectionSocket, RxBuffer, sizeof(RxBuffer), 0);
+        int receive_result = recv(ConnectionSocket, RxBuffer, 2500000, 0);
 
 
         // if the return value of the 'recvfrom' function is -1, close the server socket and end the program execution
