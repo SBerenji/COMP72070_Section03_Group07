@@ -10,7 +10,7 @@
 #include "PacketWrapper.h"
 
 //extern "C" __declspec(dllexport) int setupConnection();
-extern "C" __declspec(dllexport) SOCKET setupConnection(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanupfunc = WSACleanup);
+extern "C" __declspec(dllexport) SOCKET setupConnection(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanupfunc = WSACleanup, int socketType = SOCK_STREAM);
 extern "C" __declspec(dllexport) SOCKET setupConnection2();
 
 extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize);
@@ -130,12 +130,12 @@ int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunc
 // this is for compatibility with c# since c# does not support default parameters
 SOCKET setupConnection2()
 {
-    return setupConnection(WSAStartup, socket, connect, WSACleanup);
+    return setupConnection();   // no need to pass arguments since the paremters have default values
 }
 
 
 
-SOCKET setupConnection(WSAStartupFunc wsaStartup, socketFunc socketfunc, connectFunc connectfunc, WSACleanupFunc wsacleanupfunc) {
+SOCKET setupConnection(WSAStartupFunc wsaStartup, socketFunc socketfunc, connectFunc connectfunc, WSACleanupFunc wsacleanupfunc, int socketType) {
     // starting up and configuring the Winsock dynamically linked library
 
     WSADATA wsaData;
@@ -156,7 +156,7 @@ SOCKET setupConnection(WSAStartupFunc wsaStartup, socketFunc socketfunc, connect
     // This is to make the call to the server
 
     SOCKET ClientSocket;
-    ClientSocket = socketfunc(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    ClientSocket = socketfunc(AF_INET, socketType, IPPROTO_TCP);
     // here we are using TCP protocol
 
     if (ClientSocket == INVALID_SOCKET)

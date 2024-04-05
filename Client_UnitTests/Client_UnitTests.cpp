@@ -8,7 +8,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 extern "C" int CloseSocketFunc(SOCKET ClientSocket, closesocketFunc closeFunc = closesocket, WSACleanupFunc wsacleanupfunc = WSACleanup);
 extern "C" int sendDataFunc(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc = send);
 extern "C" int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize);
-extern "C" SOCKET setupConnection(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanup = WSACleanup);
+extern "C" SOCKET setupConnection(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanup = WSACleanup, int socketType = SOCK_STREAM);
 extern "C" char* SerializeData(Packet * Pkt, int& TotalSize);
 extern "C" Packet * CreatePacket();
 extern "C" void DestroyPacket(Packet * &Pkt);
@@ -107,6 +107,17 @@ int MockRecvSuccess(SOCKET s, char* buf, int len, int flags)
     return 1; // This function will return 1 upon success
 }
 
+// Function to get the type of a socket
+int GetSocketType(SOCKET socket) {
+    int type;
+    int optlen = sizeof(type);
+    if (getsockopt(socket, SOL_SOCKET, SO_TYPE, (char*)&type, &optlen) == SOCKET_ERROR) {
+        return -1; // Indicate failure
+    }
+    return type;
+}
+
+
 namespace ClientUnitTests
 {
 	TEST_CLASS(ClientUnitTests)
@@ -114,18 +125,51 @@ namespace ClientUnitTests
 	public:
 
         ///// <summary>
+         ///// This test ensures that the connection between the client connects to the server using a TCP protocol
+         ///// </summary> 
+        TEST_METHOD(TCP_Confirmation)
+        {
+            // Arrange
+            WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
+            socketFunc socketfunc = MockSocketSuccess; // Mock socket creation success
+            connectFunc connectfunc = MockConnectSuccess;
+            WSACleanupFunc wsacleanup = MockWSACleanupSuccess;
+
+            // Act
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanup, SOCK_STREAM);
+
+            // Assert
+            Assert::AreNotEqual((SOCKET)0, clientSocket);  // check if socket creation was successful
+
+            // Get the socket type of the created socket
+            int socketType = GetSocketType(clientSocket);
+
+            // Assert 
+            Assert::AreEqual(SOCK_STREAM, socketType);   // this is to assert that the socket created is of type SOCK_STREAM which indicated TCP connection
+        }
+
+
+
+
+
+
+
+
+
+
+        ///// <summary>
       ///// This test ensures that the recvDataFunc function will return 0 upon unsuccessfully receiving data
       ///// </summary> 
         TEST_METHOD(RecvPacket_Failure)
         {
-
+            // Arrange
             WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
             socketFunc socketfunc = MockSocketSuccess;
             connectFunc connectfunc = MockConnectSuccess;
             WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
             RecvFunction recvFunction = MockRecvFailure;
 
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
@@ -151,7 +195,7 @@ namespace ClientUnitTests
             WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
             RecvFunction recvFunction = MockRecvSuccess;
 
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
@@ -179,7 +223,7 @@ namespace ClientUnitTests
             WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
 
             // Act
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             // Assert
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
@@ -200,7 +244,7 @@ namespace ClientUnitTests
             WSACleanupFunc wsacleanup = MockWSACleanupSuccess;
 
             // Act
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanup);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanup, SOCK_STREAM);
 
             // Assert
             Assert::AreEqual((SOCKET)0, clientSocket);
@@ -220,7 +264,7 @@ namespace ClientUnitTests
             WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
 
             // Act
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             // Assert
             Assert::AreEqual((SOCKET)0, clientSocket);
@@ -240,7 +284,7 @@ namespace ClientUnitTests
             WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
 
             // Act
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             // Assert
             Assert::AreEqual((SOCKET)0, clientSocket);
@@ -257,7 +301,7 @@ namespace ClientUnitTests
             connectFunc connectfunc = MockConnectSuccess;
             WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
 
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
@@ -284,7 +328,7 @@ namespace ClientUnitTests
 
             closesocketFunc closeMocFunc = MockCloseSocketFailure;
 
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             Assert::AreEqual((SOCKET)0, clientSocket);
 
@@ -307,7 +351,7 @@ namespace ClientUnitTests
             connectFunc connectfunc = MockConnectSuccess;
             WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
 
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
@@ -334,7 +378,7 @@ namespace ClientUnitTests
             WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
             SendFunction sendfunc = MockSendSuccess;
 
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
@@ -361,7 +405,7 @@ namespace ClientUnitTests
             WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
             SendFunction sendfunc = MockSendFailure;
 
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc);
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
