@@ -80,7 +80,7 @@ DockPanel.Dock="Left" Width="55" Height="28" BorderThickness="0"
 
         <Grid Grid.Row="6">
             <Button x:Name="LogOut" Content="Log Out" FontSize="16" FontWeight="Bold" Background="#385638" 
-             Foreground="White" Margin="43,40,26,4" Click="LogOutClick" local:CornerRadiusSetter.CornerRadius="5" Height="40" Width="125" />
+             Foreground="White" Margin="43,40,26,4" Click="LogOutClick" local:CornerRadiusSetter.CornerRadius="5" Height="40" Width="125" AutomationProperties.AutomationId="LogOutButton"/>
         </Grid>
 
         <!--<DockPanel Grid.Row="1" Margin="65,24,71,11" Width="100" LastChildFill="True">

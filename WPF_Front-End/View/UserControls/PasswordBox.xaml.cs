@@ -17,186 +17,186 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPF_Front_End.View.UserControls
-{
+//namespace WPF_Front_End.View.UserControls
+//{
     /// <summary>
     /// Interaction logic for PasswordBox.xaml
     /// </summary>
-    public partial class PasswordBox : UserControl
-    {
-        private bool _isPasswordChanging;
+    //public partial class PasswordBox : UserControl
+    //{
+    //    private bool _isPasswordChanging;
 
-        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty PasswordProperty =
-            DependencyProperty.Register("Password", typeof(string), typeof(PasswordBox),
-                new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
-                    PasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+    //    // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+    //    public static readonly DependencyProperty PasswordProperty =
+    //        DependencyProperty.Register("Password", typeof(string), typeof(PasswordBox),
+    //            new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, 
+    //                PasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
                 
-        private static void PasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is PasswordBox passwordBox)
-            {
-                passwordBox.UpdatePassword();
-            }
-        }
+    //    private static void PasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    //    {
+    //        if (d is PasswordBox passwordBox)
+    //        {
+    //            passwordBox.UpdatePassword();
+    //        }
+    //    }
 
 
         
 
-        public string Password
-        {
-            get { return (string)GetValue(PasswordProperty); }
-            set { SetValue(PasswordProperty, value); }
-        }
+    //    public string Password
+    //    {
+    //        get { return (string)GetValue(PasswordProperty); }
+    //        set { SetValue(PasswordProperty, value); }
+    //    }
 
-        public PasswordBox()
-        {
-            InitializeComponent();
-        }
+    //    public PasswordBox()
+    //    {
+    //        InitializeComponent();
+    //    }
 
-        private string placeholder;
+    //    private string placeholder;
 
-        public string Placeholder
-        {
-            get { return placeholder; }
-            set
-            {
-                placeholder = value;
+    //    public string Placeholder
+    //    {
+    //        get { return placeholder; }
+    //        set
+    //        {
+    //            placeholder = value;
 
-                tbPlaceholder.Text = placeholder;
-            }
-        }
+    //            tbPlaceholder.Text = placeholder;
+    //        }
+    //    }
 
-        private void txtInput_TextChanged(object sender, TextChangedEventArgs e)
-        {
+    //    private void txtInput_TextChanged(object sender, TextChangedEventArgs e)
+    //    {
 
-        }
+    //    }
 
-        private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrEmpty(passwordBox.Password))
-            {
-                tbPlaceholder.Visibility = Visibility.Visible;
-            }
+    //    private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
+    //    {
+    //        if (string.IsNullOrEmpty(passwordBox.Password))
+    //        {
+    //            tbPlaceholder.Visibility = Visibility.Visible;
+    //        }
 
-            else
-            {
-                tbPlaceholder.Visibility = Visibility.Hidden;
-            }
+    //        else
+    //        {
+    //            tbPlaceholder.Visibility = Visibility.Hidden;
+    //        }
 
-            _isPasswordChanging = true;
-            Password = passwordBox.Password;
-            _isPasswordChanging = false;
-        }
+    //        _isPasswordChanging = true;
+    //        Password = passwordBox.Password;
+    //        _isPasswordChanging = false;
+    //    }
 
-        private void UpdatePassword()
-        {
-            if (!_isPasswordChanging)
-            {
-                passwordBox.Password = Password;
-            }
-        }
-
-
-        //private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        //{
-        //    //if (sender is PasswordBox passwordBox)
-        //    //{
-        //    //    SetPassword(passwordBox.Password);
-        //    //}
-        //}
+    //    private void UpdatePassword()
+    //    {
+    //        if (!_isPasswordChanging)
+    //        {
+    //            passwordBox.Password = Password;
+    //        }
+    //    }
 
 
-        //    public SecureString Password
-        //    {
-        //        get { return (SecureString)GetValue(PasswordProperty); }
-        //        set { SetValue(PasswordProperty, value); }
-        //    }
+    //    //private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+    //    //{
+    //    //    //if (sender is PasswordBox passwordBox)
+    //    //    //{
+    //    //    //    SetPassword(passwordBox.Password);
+    //    //    //}
+    //    //}
 
 
-        //    public static readonly DependencyProperty PasswordProperty =
-        //        DependencyProperty.Register("Password", typeof(SecureString), typeof(PasswordBox), new PropertyMetadata(new SecureString()));
-
-        //    private void SetPassword(SecureString securePassword) {
-        //        Password = securePassword.Copy();
-        //    }
-        //}
+    //    //    public SecureString Password
+    //    //    {
+    //    //        get { return (SecureString)GetValue(PasswordProperty); }
+    //    //        set { SetValue(PasswordProperty, value); }
+    //    //    }
 
 
+    //    //    public static readonly DependencyProperty PasswordProperty =
+    //    //        DependencyProperty.Register("Password", typeof(SecureString), typeof(PasswordBox), new PropertyMetadata(new SecureString()));
 
-        //public class CornerRadiusSetter
-        //{
-        //    public static CornerRadius GetCornerRadius(DependencyObject obj) => (CornerRadius)obj.GetValue(CornerRadiusProperty);
+    //    //    private void SetPassword(SecureString securePassword) {
+    //    //        Password = securePassword.Copy();
+    //    //    }
+    //    //}
 
-        //    public static void SetCornerRadius(DependencyObject obj, CornerRadius value) => obj.SetValue(CornerRadiusProperty, value);
 
-        //    public static readonly DependencyProperty CornerRadiusProperty =
-        //        DependencyProperty.RegisterAttached(nameof(Border.CornerRadius), typeof(CornerRadius),
-        //            typeof(CornerRadiusSetter), new UIPropertyMetadata(new CornerRadius(), CornerRadiusChangedCallback));
 
-        //    public static void CornerRadiusChangedCallback(object sender, DependencyPropertyChangedEventArgs e)
-        //    {
-        //        Control control = sender as Control;
+    //    //public class CornerRadiusSetter
+    //    //{
+    //    //    public static CornerRadius GetCornerRadius(DependencyObject obj) => (CornerRadius)obj.GetValue(CornerRadiusProperty);
 
-        //        if (control == null) return;
+    //    //    public static void SetCornerRadius(DependencyObject obj, CornerRadius value) => obj.SetValue(CornerRadiusProperty, value);
 
-        //        control.Loaded += Control_Loaded;
-        //    }
+    //    //    public static readonly DependencyProperty CornerRadiusProperty =
+    //    //        DependencyProperty.RegisterAttached(nameof(Border.CornerRadius), typeof(CornerRadius),
+    //    //            typeof(CornerRadiusSetter), new UIPropertyMetadata(new CornerRadius(), CornerRadiusChangedCallback));
 
-        //    private static void Control_Loaded(object sender, EventArgs e)
-        //    {
-        //        Control control = sender as Control;
+    //    //    public static void CornerRadiusChangedCallback(object sender, DependencyPropertyChangedEventArgs e)
+    //    //    {
+    //    //        Control control = sender as Control;
 
-        //        if (control == null || control.Template == null) return;
+    //    //        if (control == null) return;
 
-        //        control.ApplyTemplate();
+    //    //        control.Loaded += Control_Loaded;
+    //    //    }
 
-        //        CornerRadius cornerRadius = GetCornerRadius(control);
+    //    //    private static void Control_Loaded(object sender, EventArgs e)
+    //    //    {
+    //    //        Control control = sender as Control;
 
-        //        Control toggleButton = control.Template.FindName("toggleButton", control) as Control;
+    //    //        if (control == null || control.Template == null) return;
 
-        //        if (control is ComboBox && toggleButton != null)
-        //        {
-        //            toggleButton.ApplyTemplate();
+    //    //        control.ApplyTemplate();
 
-        //            // Set border radius for border radius border
-        //            Border toggleButtonBorder = toggleButton.Template.FindName("templateRoot", toggleButton) as Border;
-        //            toggleButtonBorder.CornerRadius = cornerRadius;
+    //    //        CornerRadius cornerRadius = GetCornerRadius(control);
 
-        //            // Expand padding for combobox to avoid text clipping by border radius
-        //            control.Padding = new Thickness(
-        //                    control.Padding.Left + cornerRadius.BottomLeft,
-        //                    control.Padding.Top,
-        //                    control.Padding.Right + cornerRadius.BottomRight,
-        //                    control.Padding.Bottom);
+    //    //        Control toggleButton = control.Template.FindName("toggleButton", control) as Control;
 
-        //            // Decrease width of dropdown and center it to avoid showing "sticking" dropdown corners
-        //            Popup popup = control.Template.FindName("PART_Popup", control) as Popup;
+    //    //        if (control is ComboBox && toggleButton != null)
+    //    //        {
+    //    //            toggleButton.ApplyTemplate();
 
-        //            if (popup != null)
-        //            {
-        //                double offset = cornerRadius.BottomLeft - 1;
-        //                if (offset > 0)
-        //                    popup.HorizontalOffset = offset;
-        //            }
+    //    //            // Set border radius for border radius border
+    //    //            Border toggleButtonBorder = toggleButton.Template.FindName("templateRoot", toggleButton) as Border;
+    //    //            toggleButtonBorder.CornerRadius = cornerRadius;
 
-        //            SystemDropShadowChrome shadowChrome = control.Template.FindName("shadow", control) as SystemDropShadowChrome;
+    //    //            // Expand padding for combobox to avoid text clipping by border radius
+    //    //            control.Padding = new Thickness(
+    //    //                    control.Padding.Left + cornerRadius.BottomLeft,
+    //    //                    control.Padding.Top,
+    //    //                    control.Padding.Right + cornerRadius.BottomRight,
+    //    //                    control.Padding.Bottom);
 
-        //            if (shadowChrome != null)
-        //            {
-        //                double minWidth = control.ActualWidth - cornerRadius.BottomLeft - cornerRadius.BottomRight;
-        //                if (minWidth > 0)
-        //                    shadowChrome.MinWidth = minWidth;
-        //            }
-        //        }
+    //    //            // Decrease width of dropdown and center it to avoid showing "sticking" dropdown corners
+    //    //            Popup popup = control.Template.FindName("PART_Popup", control) as Popup;
 
-        //        // setting borders for non-combobox controls
-        //        Border border = control.Template.FindName("border", control) as Border;
+    //    //            if (popup != null)
+    //    //            {
+    //    //                double offset = cornerRadius.BottomLeft - 1;
+    //    //                if (offset > 0)
+    //    //                    popup.HorizontalOffset = offset;
+    //    //            }
 
-        //        if (border == null) return;
+    //    //            SystemDropShadowChrome shadowChrome = control.Template.FindName("shadow", control) as SystemDropShadowChrome;
 
-        //        border.CornerRadius = cornerRadius;
-        //    }
-    }
-}
+    //    //            if (shadowChrome != null)
+    //    //            {
+    //    //                double minWidth = control.ActualWidth - cornerRadius.BottomLeft - cornerRadius.BottomRight;
+    //    //                if (minWidth > 0)
+    //    //                    shadowChrome.MinWidth = minWidth;
+    //    //            }
+    //    //        }
+
+    //    //        // setting borders for non-combobox controls
+    //    //        Border border = control.Template.FindName("border", control) as Border;
+
+    //    //        if (border == null) return;
+
+    //    //        border.CornerRadius = cornerRadius;
+    //    //    }
+    //}
+//}
 

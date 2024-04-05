@@ -24,19 +24,248 @@ namespace WPF_Front_End.View.UserControls
     /// </summary>
     public partial class Controls : UserControl
     {
+
+        //public bool _isPasswordChanging;
+
+        //// Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty PasswordProperty =
+        //    DependencyProperty.Register("Password", typeof(string), typeof(PasswordBox),
+        //        new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        //            PasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+
+
+        //public static void PasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is PasswordBox passwordBox)
+        //    {
+        //        UpdatePassword();
+        //    }
+        //}
+
+
+
+
+        //public string Password
+        //{
+        //    get { return (string)GetValue(PasswordProperty); }
+        //    set { SetValue(PasswordProperty, value); }
+        //}
+
+        ////public PasswordBox()
+        ////{
+        ////    InitializeComponent();
+        ////}
+
+        //public string placeholder2;
+
+        //public string Placeholder2
+        //{
+        //    get { return placeholder2; }
+        //    set
+        //    {
+        //        placeholder2 = value;
+
+        //        tbPlaceholder.Text = placeholder2;
+        //    }
+        //}
+
+        //public void txtInput_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+
+        //}
+
+        //public void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        //{
+        //    if (string.IsNullOrEmpty(passwordBox.Password))
+        //    {
+        //        tbPlaceholder.Visibility = Visibility.Visible;
+        //    }
+
+        //    else
+        //    {
+        //        tbPlaceholder.Visibility = Visibility.Hidden;
+        //    }
+
+        //    _isPasswordChanging = true;
+        //    Password = passwordBox.Password;
+        //    _isPasswordChanging = false;
+        //}
+
+        //public void UpdatePassword()
+        //{
+        //    if (!_isPasswordChanging)
+        //    {
+        //        passwordBox.Password = Password;
+        //    }
+        //}
+
+
+
+
+
+
+
+    // Define events to notify when password changes and when the control gains/loses focus
+    public event EventHandler PasswordChanged;
+        public event EventHandler GotFocus;
+        public event EventHandler LostFocus;
+
+
+        //private bool _isPasswordChanging;
+
+        //// Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty PasswordProperty =
+        //    DependencyProperty.Register("Password", typeof(string), typeof(PasswordBox),
+        //        new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+        //            PasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+
+        //public void UpdatePassword()
+        //{
+        //    if (!_isPasswordChanging)
+        //    {
+        //        passwordBox.Password = Password;
+        //    }
+        //}
+
+        //private static void PasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is PasswordBox passwordBox)
+        //    {
+        //        passwordBox.UpdatePassword();
+        //    }
+        //}
+
+
         string userinputUsernameText;
 
         public Controls()
         {
             InitializeComponent();
+
+
+            passwordBox.PasswordChanged += (sender, e) => PasswordChanged?.Invoke(this, EventArgs.Empty);
+            passwordBox.GotFocus += (sender, e) => GotFocus?.Invoke(this, EventArgs.Empty);
+            passwordBox.LostFocus += (sender, e) => LostFocus?.Invoke(this, EventArgs.Empty);
+
+            //PasswordBox pBox = new PasswordBox();
+
+            //passwordBox.Template = pBox;
+
+            //passwordBox = (System.Windows.Controls.PasswordBox)pBox;
+
+            //passwordBox.PasswordChanged += pBox.passwordBox_PasswordChanged;
+
+
+            //pBox.Placeholder2 = "Password";
+
+            //tbPlaceholder2.Text = pBox.Placeholder2;
+
+
+            Placeholder = "Username";
         }
+
+        private string placeholder;
+
+        public string Placeholder
+        {
+            get { return placeholder; }
+            set
+            {
+                placeholder = value;
+
+                tbPlaceholder.Text = placeholder;
+            }
+        }
+
+        private void txtInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(username.Text))
+            {
+                tbPlaceholder.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tbPlaceholder.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            username.Clear();
+            username.Focus();
+        }
+
+
+        //public string Password
+        //{
+        //    get { return (string)GetValue(PasswordProperty); }
+        //    set { SetValue(PasswordProperty, value); }
+        //}
+
+
+
+
+
+
+        //public string password_placeholder
+        //{
+        //    get { return placeholder; }
+        //    set
+        //    {
+        //        placeholder = value;
+
+        //        tbPlaceholder.Text = placeholder;
+        //    }
+        //}
+
+        //private void password_txtInput_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+
+        //}
+
+        //private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        //{
+        //    if (string.IsNullOrEmpty(passwordBox.Password))
+        //    {
+        //        tbPlaceholder.Visibility = Visibility.Visible;
+        //    }
+
+        //    else
+        //    {
+        //        tbPlaceholder.Visibility = Visibility.Hidden;
+        //    }
+
+        //    _isPasswordChanging = true;
+        //    Password = passwordBox.Password;
+        //    _isPasswordChanging = false;
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
         private void login_Click(object sender, RoutedEventArgs e)
         {
-            if (username.txtInput.Text == "" || password.Password == "")
+            if (username.Text == "" || passwordBox.Password == "")
             {
                 MessageBox.Show("Please enter Username AND Password!!");
             }
@@ -48,9 +277,9 @@ namespace WPF_Front_End.View.UserControls
                 login.username = new byte[ConstantVariables.username_ByteArraySize];
                 login.password = new byte[ConstantVariables.password_ByteArraySize];
 
-                globalVariables.username = username.txtInput.Text;
+                globalVariables.username = username.Text;
 
-                globalVariables.password = password.Password;
+                globalVariables.password = passwordBox.Password;
 
                 login.username = Encoding.ASCII.GetBytes(globalVariables.username);
                 login.password = Encoding.ASCII.GetBytes(globalVariables.password);
@@ -229,7 +458,7 @@ namespace WPF_Front_End.View.UserControls
 
         private void username_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.userinputUsernameText = username.txtInput.Text;
+            this.userinputUsernameText = username.Text;
         }
 
 
@@ -257,4 +486,88 @@ namespace WPF_Front_End.View.UserControls
             parentWindow.Close();
         }
     }
+
+
+
+
+
+
+
+
+    public partial class PasswordBox
+    {
+        public bool _isPasswordChanging;
+
+        // Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PasswordProperty =
+            DependencyProperty.Register("Password", typeof(string), typeof(PasswordBox),
+                new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                    PasswordPropertyChanged, null, false, UpdateSourceTrigger.PropertyChanged));
+
+        public static void PasswordPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PasswordBox passwordBox)
+            {
+                passwordBox.UpdatePassword();
+            }
+        }
+
+
+
+
+        public string Password
+        {
+            get { return (string)GetValue(PasswordProperty); }
+            set { SetValue(PasswordProperty, value); }
+        }
+
+        public PasswordBox()
+        {
+            InitializeComponent();
+        }
+
+        public string placeholder2;
+
+        public string Placeholder2
+        {
+            get { return placeholder2; }
+            set
+            {
+                placeholder2 = value;
+
+                tbPlaceholder.Text = placeholder2;
+            }
+        }
+
+        public void txtInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        public void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(passwordBox.Password))
+            {
+                tbPlaceholder.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tbPlaceholder.Visibility = Visibility.Hidden;
+            }
+
+            _isPasswordChanging = true;
+            Password = passwordBox.Password;
+            _isPasswordChanging = false;
+        }
+
+        public void UpdatePassword()
+        {
+            if (!_isPasswordChanging)
+            {
+                passwordBox.Password = Password;
+            }
+        }
+    }
+
 }

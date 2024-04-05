@@ -258,7 +258,7 @@ namespace WPF_Front_End.View.UserControls
 
         private void SignUp_Click(object sender, RoutedEventArgs e)
         {
-            if (username.txtInput.Text == "" || password.Password == "" || email.txtInput.Text == "")
+            if (username.txtInput.Text == "" || /*password.Password == "" ||*/ email.txtInput.Text == "")
             {
                 MessageBox.Show("Please enter Username, Password AND Email Address!!");
             }
@@ -291,7 +291,7 @@ namespace WPF_Front_End.View.UserControls
                     SignUp signup = new SignUp();
 
                     globalVariables.username = username.txtInput.Text;
-                    globalVariables.password = password.Password;
+                    //globalVariables.password = password.Password;
                     globalVariables.email = email.txtInput.Text;
 
                     signup.username = new byte[ConstantVariables.username_ByteArraySize];
