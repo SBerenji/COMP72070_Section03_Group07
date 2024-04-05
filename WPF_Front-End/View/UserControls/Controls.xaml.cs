@@ -24,6 +24,7 @@ namespace WPF_Front_End.View.UserControls
     /// </summary>
     public partial class Controls : UserControl
     {
+
         //public bool _isPasswordChanging;
 
         //// Using a DependencyProperty as the backing store for MyProperty.  This enables animation, styling, binding, etc...
@@ -133,6 +134,7 @@ namespace WPF_Front_End.View.UserControls
         //        passwordBox.UpdatePassword();
         //    }
         //}
+
 
         string userinputUsernameText;
 
@@ -305,7 +307,7 @@ namespace WPF_Front_End.View.UserControls
                 int size = ((int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize) * sizeof(byte);
 
 
-                Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+                Packet.SetBody(PktPtr, globalVariables.ClientID, BodyBuffer, size);
 
 
                 IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
@@ -341,21 +343,97 @@ namespace WPF_Front_End.View.UserControls
 
                 //Packet.DeallocateMemoryGivenToIntPtr(Head);
 
-                Window parentWindow = Window.GetWindow(this);
 
-                double windowWidth = parentWindow.ActualWidth;
-                double windowHeight = parentWindow.ActualHeight;
+                byte[] RxBuffer = new byte[200000];
 
-                NewHomeScreenPostLogin hspl = new NewHomeScreenPostLogin();
+                Packet.recvData(MySocket.ClientSocket, RxBuffer, 200000);
 
-                hspl.Width = windowWidth;
-                hspl.Height = windowHeight;
+                UserCredentials cred = new UserCredentials();
 
-                hspl.Show();
+                cred.username = new byte[ConstantVariables.username_ByteArraySize];
+                cred.password = new byte[ConstantVariables.password_ByteArraySize];
+                cred.email = new byte[ConstantVariables.email_ByteArraySize];
 
-                parentWindow.Closing -= CloseClient.Client_Closing;
+                PktPtr = Packet.CreatePacket();
 
-                parentWindow.Close();
+                Packet.DeserializationWithoutTail(PktPtr, RxBuffer);
+
+
+                Header head = new Header();
+
+                Packet.DeserializeHeader(RxBuffer, ref head);
+
+                head.Length = Packet.DeserializeHeaderLengthMember(RxBuffer);
+                
+
+                int sizeofHeader;
+
+                sizeofHeader = (int)((2 * ConstantVariables.Source_Destination_ByteArraySize) + (ConstantVariables.Route_ByteArraySize) + (Marshal.SizeOf(typeof(bool))) + (Marshal.SizeOf(typeof(UInt32))));
+
+                
+
+                if (Encoding.ASCII.GetString(head.Route).TrimEnd('\0') == Route.LOGIN_USERFOUNDWITHIMAGE.ToString())
+                {
+                    globalVariables.ClientID = Packet.DeserializeClientID(RxBuffer);
+
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)), cred.username, 0, ConstantVariables.username_ByteArraySize);
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize, cred.password, 0, ConstantVariables.password_ByteArraySize);
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize, cred.email, 0, ConstantVariables.email_ByteArraySize);
+
+                    globalVariables.receivedPostLoginImage = new byte[head.Length - (int)(ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize + ConstantVariables.email_ByteArraySize)];
+
+                    int length = globalVariables.receivedPostLoginImage.Length;
+
+                    Packet.CopyImageFromRawBufferToByteArray(RxBuffer, globalVariables.receivedPostLoginImage, ((int)head.Length - (int)(ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize + ConstantVariables.email_ByteArraySize)));
+
+                    globalVariables.imageUploaded = true;
+                }
+
+                else if (Encoding.ASCII.GetString(head.Route).TrimEnd('\0') == Route.LOGIN_USERFOUNDWITHOUTIMAGE.ToString())
+                {
+                    globalVariables.ClientID = Packet.DeserializeClientID(RxBuffer);
+
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)), cred.username, 0, ConstantVariables.username_ByteArraySize);
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize, cred.password, 0, ConstantVariables.password_ByteArraySize);
+                    Array.Copy(RxBuffer, sizeofHeader + Marshal.SizeOf(typeof(UInt32)) + ConstantVariables.username_ByteArraySize + ConstantVariables.password_ByteArraySize, cred.email, 0, ConstantVariables.email_ByteArraySize);
+
+                    globalVariables.imageUploaded = false;
+                    globalVariables.receivedPostLoginImage = Array.Empty<byte>();
+                }
+
+
+                RxBuffer = null;
+
+                Packet.DestroyPacket(ref PktPtr);
+                PktPtr = IntPtr.Zero;
+
+
+                if (head.Authorization)
+                {
+                    globalVariables.OneClientFirstSignUp = false;
+
+                    
+
+                    Window parentWindow = Window.GetWindow(this);
+
+                    double windowWidth = parentWindow.ActualWidth;
+                    double windowHeight = parentWindow.ActualHeight;
+
+                    NewHomeScreenPostLogin hspl = new NewHomeScreenPostLogin();
+
+                    hspl.Width = windowWidth;
+                    hspl.Height = windowHeight;
+
+                    hspl.Show();
+
+                    parentWindow.Closing -= CloseClient.Client_Closing;
+
+                    parentWindow.Close();
+                }
+                else
+                {
+                    MessageBox.Show("User doesn't Exist!! Please sign up instead.");
+                }
             }
         }
 

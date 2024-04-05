@@ -222,7 +222,7 @@ namespace WPF_Front_End.View.UserControls
             Packet.SerializeSignUpCheckInfo(ref BodyBuffer, check);
 
 
-            Packet.SetBody(PktPtr, '1', BodyBuffer, DataSize);
+            Packet.SetBody(PktPtr, globalVariables.ClientID, BodyBuffer, DataSize);
 
 
             IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
@@ -332,7 +332,7 @@ namespace WPF_Front_End.View.UserControls
                         int size = (int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize + (int)ConstantVariables.email_ByteArraySize + imageSize;
 
 
-                        Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+                        Packet.SetBody(PktPtr, globalVariables.ClientID, BodyBuffer, size);
 
                         IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
 
@@ -393,7 +393,7 @@ namespace WPF_Front_End.View.UserControls
 
                         int size = (int)ConstantVariables.username_ByteArraySize + (int)ConstantVariables.password_ByteArraySize + (int)ConstantVariables.email_ByteArraySize + imageSize;
 
-                        Packet.SetBody(PktPtr, '1', BodyBuffer, size);
+                        Packet.SetBody(PktPtr, globalVariables.ClientID, BodyBuffer, size);
 
                         IntPtr serializedRecv = Packet.SerializeData(PktPtr, out Packet.totalPktSize);
 
@@ -426,6 +426,7 @@ namespace WPF_Front_End.View.UserControls
                         signup.ImageStructArray = IntPtr.Zero;
                     }
 
+                    globalVariables.OneClientFirstSignUp = true;
 
 
                     Window parentWindow = Window.GetWindow(this);

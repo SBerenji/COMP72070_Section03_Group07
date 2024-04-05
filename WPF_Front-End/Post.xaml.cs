@@ -21,7 +21,7 @@ namespace WPF_Front_End
     public partial class Post : UserControl
     {
 
-        public string Image { get; set; }
+        public BitmapImage Image { get; set; }
         public string Title { get; set; }
         public string EstimatedWorth { get; set; }
         public string Location { get; set; }
@@ -34,7 +34,7 @@ namespace WPF_Front_End
         {
             InitializeComponent();
 
-            Image = string.Empty;
+            // Image = string.Empty;
             Title = string.Empty;
             EstimatedWorth = string.Empty;
             Location = string.Empty;

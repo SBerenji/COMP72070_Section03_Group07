@@ -4,9 +4,6 @@
 #include <fstream>
 
 
-
-
-
 #include <windows.networking.sockets.h>
 #pragma comment(lib, "Ws2_32.lib")
 
@@ -26,13 +23,6 @@ typedef int (*WSACleanupFunc)();
 typedef int (*SendFunction)(SOCKET, const char*, int, int);
 
 typedef int(*RecvFunction)(SOCKET s, char* buf, int len, int flags);
-
-
-
-
-
-
-
 
 
 
@@ -83,7 +73,7 @@ public:
 
 private:
 	struct Body {
-		unsigned char User;
+		unsigned int User;
 		char* Data;
 	} BodyContents;
 

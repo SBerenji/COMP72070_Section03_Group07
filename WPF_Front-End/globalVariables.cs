@@ -15,6 +15,7 @@ using System.Printing.IndexedProperties;
 using System.Windows.Media.Imaging;
 using System.Reflection.PortableExecutable;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace WPF_Front_End
 {
@@ -32,11 +33,21 @@ namespace WPF_Front_End
                 return image;
             }
         }
+
+
+
+        public static byte[] ToArrayFromImage(BitmapImage imageC)
+        {
+            MemoryStream memStream = new MemoryStream();
+            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(imageC));
+            encoder.Save(memStream);
+            return memStream.ToArray();
+        }
     }
 
 
-    public enum Route {LOGIN, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT}
-
+    public enum Route {STARTUP_GETID, LOGIN, LOGIN_USERFOUNDWITHIMAGE, LOGIN_USERFOUNDWITHOUTIMAGE, LOGIN_USERNOTFOUND, SIGNUP_IMAGEUPLOADED, SIGNUP_IMAGENOTUPLOADED,  SIGNUP_USERCHECK, POST, MYPOSTS_COUNT, PRELOGIN_LISTINGS_COUNT, POSTLOGIN_LISTINGS_COUNT, DELETE_POST}
 
 
     public class CloseClient
@@ -119,6 +130,16 @@ namespace WPF_Front_End
 
         public IntPtr ImageStructArray;
     };
+
+
+    public struct UserCredentials
+    {
+        public byte[] username;
+        public byte[] password;
+        public byte[] email;
+
+        public IntPtr imageStructArray;
+    }
 
     public class Packet
     {
@@ -321,7 +342,7 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
-        public static extern void SetBody(IntPtr Pkt, char User, IntPtr Data, int DataSize);
+        public static extern void SetBody(IntPtr Pkt, uint User, IntPtr Data, int DataSize);
 
 
         [DllImport(dllpath)]
@@ -330,6 +351,10 @@ namespace WPF_Front_End
 
         [DllImport(dllpath)]
         public static extern IntPtr SerializeData(IntPtr Pkt, out int TotalSize);
+
+
+        [DllImport(dllpath)]
+        public static extern IntPtr SerializeHeaderOnlyPkt(IntPtr Pkt, out int TotalSize);
 
 
         [DllImport(dllpath)]
@@ -346,10 +371,28 @@ namespace WPF_Front_End
 
         [DllImport(dllpath)]
         public static extern void Deserialization(IntPtr Pkt, byte[] src);
+
+
+        [DllImport(dllpath)]
+        public static extern void DeserializationWithoutTail(IntPtr Pkt, byte[] src);
+
+
+        [DllImport(dllpath)]
+        public static extern uint DeserializeClientID(byte[] src);
+
+
+        [DllImport(dllpath)]
+        public static extern uint DeserializeHeaderLengthMember(byte[] RxBuffer);
+
+
+        [DllImport(dllpath)]
+        public static extern void CopyImageFromRawBufferToByteArray(byte[] RxBuffer, byte[] imageArray, int imageSize);
     }
 
     public static class globalVariables
     {
+        public static uint ClientID = 0;
+
         public static int PostsSend = 0;
 
         public static List<Listing> listings = new List<Listing>();
@@ -357,6 +400,8 @@ namespace WPF_Front_End
         public static List<uint> MyPostImageSize = new List<uint>();
 
         public static ObservableCollection<MyPostsItem> Posts = new ObservableCollection<MyPostsItem>();
+
+        public static ObservableCollection<Post> exchangePosts = new ObservableCollection<Post>();
         public static byte[] MyPostImage1 {  get; set; }
         public static string bodyBuffer {  get; set; }
 
@@ -381,7 +426,7 @@ namespace WPF_Front_End
         public static byte[] receivedPostLoginImage { get; set; }
 
 
-        public static bool FirstPostLogin = true;
+        public static bool OneClientFirstSignUp = false;
 
         public static byte[] createPostImage { get; set; }
 
@@ -403,6 +448,7 @@ namespace WPF_Front_End
                 listings.Clear();
                 MyPostImageSize.Clear();
                 Posts.Clear();
+                exchangePosts.Clear();
             }
         } 
     }
