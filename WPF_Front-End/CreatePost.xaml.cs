@@ -97,9 +97,15 @@ namespace WPF_Front_End
             {
                 string imagePath = files[0];
 
-
+                string extension = System.IO.Path.GetExtension(imagePath);
+                if (extension != ".jpeg")
+                {
+                    MessageBox.Show("Only JPEG files are allowed.", "Invalid File", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return; // Stop processing further
+                }
                 BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
                 DropAreaImage2.Source = bitmap;
+                DropAreaImage2.Visibility = Visibility.Visible;
 
                 // once the image is dropped, show the remove button and replace it with the text
                 RemoveButton.Visibility = Visibility.Visible;
@@ -169,7 +175,6 @@ namespace WPF_Front_End
 
 
         // source code from: Jonathan Escobedo 
-        // changed JpegBitmapEncoder to PngBitmapEncoder so it will be compatible with all image file types
         // https://stackoverflow.com/questions/553611/wpf-image-to-byte
         private byte[] getJPEGFromImageControl(BitmapImage imageC)
         {

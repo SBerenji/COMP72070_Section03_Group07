@@ -103,7 +103,13 @@ namespace WPF_Front_End.View.UserControls
             {
                 string imagePath = files[0];
 
-                
+                string extension = System.IO.Path.GetExtension(imagePath);
+                if (extension != ".jpeg")
+                {
+                    MessageBox.Show("Only JPEG files are allowed.", "Invalid File", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return; // Stop processing further
+                }
+
                 BitmapImage bitmap = new BitmapImage(new Uri(imagePath));
                 DropAreaImage.Source = bitmap;
 
