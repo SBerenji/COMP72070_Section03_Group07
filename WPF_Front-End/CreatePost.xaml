@@ -85,7 +85,7 @@ Foreground="White" FontFamily="Times New Roman" VerticalAlignment="Top" Width="1
 
                         <Viewbox Stretch="Fill" StretchDirection="Both">
 
-                            Button x:Name="RemoveButton" Background="Gray" Foreground="White" Width="100" Height="13" FontSize="7" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Margin="25,50,38,0" Click="RemoveButton_Click" Visibility="Collapsed">
+                            <Button x:Name="RemoveButton" Background="Gray" Foreground="White" Width="100" Height="13" FontSize="7" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Margin="25,50,38,0" Click="RemoveButton_Click" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Remove Image" Margin="0,0,5,0" VerticalAlignment="Center"/>
                                 </StackPanel>
