@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WPF_Front_End"
         mc:Ignorable="d"
         ResizeMode="NoResize"
+        Title="LogOut"
         Height="150" Width="400">
     <Grid Margin="0,0,0,-6">
         <Grid.ColumnDefinitions>
@@ -13,7 +14,7 @@
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Margin="84,14,47,131" FontWeight="Bold" FontSize="15" RenderTransformOrigin="0.5,0.5">
+        <TextBlock Margin="84,14,47,131" FontWeight="Bold" FontSize="15" RenderTransformOrigin="0.5,0.5" AutomationProperties.AutomationId="LogOutPopUp">
             <TextBlock.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -31,7 +32,7 @@
         HorizontalAlignment="Left"
         Click="YesButton_Click"
         Foreground="White"
-        Margin="220,59,0,66">
+        Margin="220,59,0,66"  AutomationProperties.AutomationId="LogOutYesButton">
 
             <Button.Style>
                 <Style TargetType="Button">
