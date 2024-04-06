@@ -1125,8 +1125,24 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
                     memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor) + sizeof(sizeOfImage), list.ImageStructArray, sizeOfImage);
 
-
                     int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
+
+                    delete[] TxBuffer;
+                    TxBuffer = nullptr;
+
+
+
+                    TxBuffer = new char[100];
+
+                    memset(TxBuffer, 0, 100);
+
+                    int recvSize = recv(ConnectionSocket, TxBuffer, 100, 0);
+
+
+                    std::string messageReceived(TxBuffer);
+
+                    std::cout << "Message Sent By Client: " << messageReceived << std::endl;
+
 
                     delete[] TxBuffer;
                     TxBuffer = nullptr;
