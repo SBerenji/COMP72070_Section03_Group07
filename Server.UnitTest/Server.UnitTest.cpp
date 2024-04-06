@@ -8,11 +8,18 @@
 #include <fstream>
 #include <sstream>
 #include <memory>
+#include <thread>
 #include <string>
 #include <vector>
 
+
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+extern bool userFound;
+extern int callback(void* NotUsed, int argc, char** argv, char** azColName);
+
+
 
 Packet* dummyPacket() //creates a filled packet to be tested
 {
@@ -1039,6 +1046,42 @@ namespace ServerUnitTest
 			sqldb.closeDatabase(&stmt);
 		}
 
+		TEST_METHOD(TESTSVR30_FetchImage_Successfu) {
+			//Arrange
+			SignUp signup;
+
+			Packet* Pkt = dummyPacketSignUp(signup);
+
+
+			SQLiteDatabase sqldb(":memory:");
+
+			// SQL command to create table
+			const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
+				"id INTEGER NOT NULL,"
+				"username TEXT NOT NULL,"
+				"password TEXT NOT NULL,"
+				"email TEXT PRIMARY KEY,"
+				"profile_picture BLOB NOT NULL);";
+
+
+			bool query_exe_result = sqldb.executeQuery(sqlCreateTable);
+
+			sqlite3_stmt* stmt = nullptr;
+
+			int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(&stmt, Pkt, signup);
+
+			// Retrieve BLOB data
+			char* imageArray = nullptr;
+			int imageSize = 0;
+
+
+			//Act
+			int fetch = sqldb.FetchImage(&stmt, signup.email, &imageArray, imageSize);
+
+
+			//Assert
+			Assert::AreEqual(0, fetch);
+		}
 
 		TEST_METHOD(TESTSVR30_GetDB)
 		{
@@ -1319,6 +1362,28 @@ namespace ServerUnitTest
 			Assert::AreEqual(0, result);
 		}
 
+
+
+		///// <summary>
+		///// This test ensures that the sendData function will return 0 in case of an unsuccessfull send
+		///// </summary>
+		TEST_METHOD(TESTSVR03_callback)
+		{
+			// Arrange
+			char* dummyargv[] = { "row1", "row2" };
+			char* dummyazColName[] = { "col1", "col2" };
+
+
+			// Act
+			callback(NULL, 2, dummyargv, dummyazColName);
+			
+			// Assert
+			Assert::IsTrue(userFound);
+		}
+
+
+		
+		
 
 
 	};
