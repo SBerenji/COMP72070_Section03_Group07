@@ -12,6 +12,6 @@
         WindowStartupLocation="CenterScreen">
     <Grid>
 
-        <emoji:TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="Please Log In to Continue 😁" />
+        <emoji:TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" Text="Please Log In to Continue 😁" AutomationProperties.AutomationId="BlockAccessMessage"/>
     </Grid>
 </Window>

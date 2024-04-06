@@ -89,44 +89,42 @@ namespace SystemTests_TestStack
         [TestMethod]
         public void TestLogInPage_correct_credentials()
         {
-            // Retrieve the window by its title
+            // Retrieving the window by its title
             myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
 
-            // Find the "Log In" button 
+            // Finding the "Log In" button 
             Button loginButton = myWindow.Get<Button>(SearchCriteria.ByText("Log In"));
 
-            // Click the "Log In" button
+            // Clicking the "Log In" button
             loginButton.Click();
-            //Thread.Sleep(1000); // You may replace this with a more robust waiting mechanism
 
-            // Now, switch to the next window
+            // Switch to the next window
             Window nextPageWindow = wpfApp.GetWindow("LogIn", InitializeOption.NoCache);
 
-            // Find the username text box by its Automation ID within the next window
+            // Finding the username text box by its Automation ID within the log in window
             var element = nextPageWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("UsernameTextBox"));
             Assert.IsNotNull(element, "Element not found");
 
-            // Perform actions on the element
-            // For example, if it's a TextBox, you can enter text into it
             if (element != null)
             {
+                // Entering the username into the text box
                 element.Enter("Sudhan");
             }
 
 
-            //Find the password text box by its Automation ID within the next window
+            //Finding the password text box by its Automation ID within the log in window
             var passwordTextBox = nextPageWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("PasswordTextBlock"));
             Assert.IsNotNull(passwordTextBox, "Password text box not found");
 
-            // Enter password into the text box
+            // Enterung password into the text box
             passwordTextBox.Enter("Legend27");
 
-            //Find and click the login button within the next window
+            //Finding and clicking the login button within the log in window
             Button logInButton = nextPageWindow.Get<Button>(SearchCriteria.ByAutomationId("LogInButton"));
             logInButton.Click();
 
 
-            Thread.Sleep(500); // Adjust the waiting time as necessary
+            Thread.Sleep(500);  // waiting for a whilte
 
             // Verifying log in by accessing the log out button from the post log in page meaning that the user logged in succesfully
             Window postLogInPage = wpfApp.GetWindow("NewHomeScreenPostLogin", InitializeOption.NoCache);
@@ -150,41 +148,39 @@ namespace SystemTests_TestStack
             // Retrieve the window by its title
             myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
 
-            // Find the "Log In" button 
+            // Finding the "Log In" button 
             Button loginButton = myWindow.Get<Button>(SearchCriteria.ByText("Log In"));
 
-            // Click the "Log In" button
+            // Clicking the "Log In" button
             loginButton.Click();
-            //Thread.Sleep(1000); // You may replace this with a more robust waiting mechanism
 
-            // Now, switch to the next window
+            // Switching to the log in window
             Window nextPageWindow = wpfApp.GetWindow("LogIn", InitializeOption.NoCache);
 
-            // Find the username text box by its Automation ID within the next window
+            // Finding the username text box by its Automation ID within the log in window
             var element = nextPageWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("UsernameTextBox"));
             Assert.IsNotNull(element, "Element not found");
 
-            // Perform actions on the element
-            // For example, if it's a TextBox, you can enter text into it
             if (element != null)
             {
+                // Entering username into the text box
                 element.Enter("Sudhan");
             }
 
 
-            //Find the password text box by its Automation ID within the next window
+            //Finding the password text box by its Automation ID within the log in window
             var passwordTextBox = nextPageWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("PasswordTextBlock"));
             Assert.IsNotNull(passwordTextBox, "Password text box not found");
 
-            // Enter password into the text box
+            // Entering password into the text box
             passwordTextBox.Enter("Legend27");
 
-            //Find and click the login button within the next window
+            //Finding and clicking the login button within the log in window
             Button logInButton = nextPageWindow.Get<Button>(SearchCriteria.ByAutomationId("LogInButton"));
             logInButton.Click();
 
 
-            Thread.Sleep(500); // Adjust the waiting time as necessary
+            Thread.Sleep(500);
 
             // Verifying log in by accessing the log out button from the post log in page meaning that the user logged in succesfully
             Window postLogInPage = wpfApp.GetWindow("NewHomeScreenPostLogin", InitializeOption.NoCache);
@@ -204,14 +200,83 @@ namespace SystemTests_TestStack
 
             Assert.IsNotNull(logOutText);
 
-            // Click on the 'Yes' button to log out of the account
+            // Clicking on the 'Yes' button to log out of the account
             Button logOutButton = logOutWindow.Get<Button>(SearchCriteria.ByAutomationId("LogOutYesButton"));
 
             logOutButton.Click();
 
             // Verify that the user has logged out by not having access to the my posts tab
+            // by finding and clicking on the 'Create Post' button in the pre-log in page.
+
+            Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
+
+            Button myPostsButton = preLogInWindow.Get<Button>(SearchCriteria.ByText("Create Post"));
+           
+            myPostsButton.Click();
+
+            // Verifying the pop up that would block the users from accessing the tab
+            Window notAutorizedToPostWindow = wpfApp.GetWindow("BlockUnLoggedUser", InitializeOption.NoCache);
+            Thread.Sleep(500);
 
 
+            Assert.IsNotNull(notAutorizedToPostWindow, "Message box not found");
+
+            wpfApp.Kill();
+        }
+
+
+
+
+
+
+
+        /// <summary>
+        /// This test verifies that if the user is not authorized they will not have access to the 'Create Post', 'Messages', and 'My Posts' pages
+        /// </summary>
+        [TestMethod]
+        public void TestPreLogInPageAccessAuthorization()
+        {
+            // Retrieve the window by its title
+            Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
+
+
+            // Verifying the pop up that would block the users from accessing the 'Create Post' tab
+            Button createPostButton = preLogInWindow.Get<Button>(SearchCriteria.ByText("Create Post"));
+
+            createPostButton.Click();
+            Window notAutorizedToPostWindow = wpfApp.GetWindow("BlockUnLoggedUser", InitializeOption.NoCache);
+
+            Thread.Sleep(500);
+
+            Assert.IsNotNull(notAutorizedToPostWindow);
+
+            // close the current notAutorizedToPostWindow
+            notAutorizedToPostWindow.Close();
+
+
+            // Verifying the pop up that would block the users from accessing the 'Messages' tab
+            Button messagesButton = preLogInWindow.Get<Button>(SearchCriteria.ByText("Messages"));
+
+            messagesButton.Click();
+            Thread.Sleep(500);
+
+            Window notAutorizedMessagesWindow = wpfApp.GetWindow("BlockUnLoggedUser", InitializeOption.NoCache);
+
+            Assert.IsNotNull(notAutorizedMessagesWindow);
+            notAutorizedMessagesWindow.Close();
+
+
+            // Verifying the pop up that would block the users from accessing the 'Messages' tab
+            Button myPostsButton = preLogInWindow.Get<Button>(SearchCriteria.ByText("My Posts"));
+
+
+            myPostsButton.Click();
+
+            Window notAutorizedMyPostsWindow = wpfApp.GetWindow("BlockUnLoggedUser", InitializeOption.NoCache);
+
+
+            Assert.IsNotNull(notAutorizedMyPostsWindow);
+            Thread.Sleep(1000);
 
 
             wpfApp.Kill();
@@ -228,31 +293,7 @@ namespace SystemTests_TestStack
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //verify that the user cannot access the pages on the pre log in screen
-
-
-
-
-
-
-
-
-
-    }
+        }
 }
 
 
