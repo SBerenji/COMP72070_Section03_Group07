@@ -47,6 +47,133 @@ namespace WPF_Front_End
             AddImage.MouseLeave += AddImage_MouseLeave;
         }
 
+
+
+        //public string Placeholder
+        //{
+        //    get { return Placeholder; }
+        //    set
+        //    {
+        //        Placeholder = value;
+
+        //        tb_title_Placeholder.Text = Placeholder;
+        //    }
+        //}
+
+        private void txtInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(title.Text))
+            {
+                tb_title_Placeholder.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tb_title_Placeholder.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
+        private void location_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(location.Text))
+            {
+                tb_location_Placeholder.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tb_location_Placeholder.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
+        private void condition_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(condition.Text))
+            {
+                tb_condition_Placeholder.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tb_condition_Placeholder.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
+
+        private void worth_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(worth.Text))
+            {
+                tb_worth_Placeholder.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tb_worth_Placeholder.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
+        private void delivery_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(delivery.Text))
+            {
+                tb_delivery_Placeholder.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tb_delivery_Placeholder.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
+
+        private void LookingFor_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(LookingFor.Text))
+            {
+                tb_LookingFor_Placeholder.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tb_LookingFor_Placeholder.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            title.Clear();
+            title.Focus();
+
+            location.Clear();
+            location.Focus();
+
+            condition.Clear();
+            condition.Focus();
+
+            worth.Clear();
+            worth.Focus();
+
+            delivery.Clear();
+            delivery.Focus();
+
+            LookingFor.Clear();
+            LookingFor.Focus();
+        }
+
         private void hamburger_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Hamburger Worked!!");
@@ -183,7 +310,7 @@ namespace WPF_Front_End
 
         private void NewPost_Click(object sender, RoutedEventArgs e)
         {
-            if (title.txtInput.Text == "" || Location.txtInput.Text == "" || condition.txtInput.Text == "" || worth.txtInput.Text == "" || delivery.txtInput.Text == "" || swap_idea.txtInput.Text == "")
+            if (title.Text == "" || location.Text == "" || condition.Text == "" || worth.Text == "" || delivery.Text == "" || LookingFor.Text == "")
             {
                 MessageBox.Show("Please Fill all the details!!");
             }
@@ -193,22 +320,22 @@ namespace WPF_Front_End
                 Listing list = new Listing();
 
                 list.Title = new byte[ConstantVariables.listing_ByteArraySize];
-                list.Title = Encoding.ASCII.GetBytes(title.txtInput.Text);
+                list.Title = Encoding.ASCII.GetBytes(title.Text);
 
                 list.Location = new byte[ConstantVariables.listing_ByteArraySize];
-                list.Location = Encoding.ASCII.GetBytes(Location.txtInput.Text);
+                list.Location = Encoding.ASCII.GetBytes(location.Text);
 
                 list.Condition = new byte[ConstantVariables.listing_ByteArraySize];
-                list.Condition = Encoding.ASCII.GetBytes(condition.txtInput.Text);
+                list.Condition = Encoding.ASCII.GetBytes(condition.Text);
 
                 list.EstimatedWorth = new byte[ConstantVariables.listing_ByteArraySize];
-                list.EstimatedWorth = Encoding.ASCII.GetBytes(worth.txtInput.Text);
+                list.EstimatedWorth = Encoding.ASCII.GetBytes(worth.Text);
 
                 list.Delivery = new byte[ConstantVariables.listing_ByteArraySize];
-                list.Delivery = Encoding.ASCII.GetBytes(delivery.txtInput.Text);
+                list.Delivery = Encoding.ASCII.GetBytes(delivery.Text);
 
                 list.LookingFor = new byte[ConstantVariables.listing_ByteArraySize];
-                list.LookingFor = Encoding.ASCII.GetBytes(swap_idea.txtInput.Text);
+                list.LookingFor = Encoding.ASCII.GetBytes(LookingFor.Text);
 
 
 
