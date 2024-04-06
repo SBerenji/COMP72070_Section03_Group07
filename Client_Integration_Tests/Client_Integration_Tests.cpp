@@ -16,7 +16,7 @@ extern "C" void FreeBuffer(char*& Buffer);
 extern "C" char* AllocateHeaderPtr();
 extern "C" void Deserialization(Packet * Pkt, char* src);
 extern "C" void SetHeader(Packet * Pkt, void* Head);
-extern "C" void SetBody(Packet * Pkt, unsigned char User, char* Data, int DataSize);
+extern "C" void SetBody(Packet * Pkt, unsigned int User, char* Data, int DataSize);
 extern "C" int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunction recvFunc = recv);
 extern "C" int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize);
 

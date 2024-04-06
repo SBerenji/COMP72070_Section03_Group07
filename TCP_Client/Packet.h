@@ -25,6 +25,14 @@ typedef int (*SendFunction)(SOCKET, const char*, int, int);
 typedef int(*RecvFunction)(SOCKET s, char* buf, int len, int flags);
 
 
+struct __declspec(dllexport) UserCredentials {
+	char username[10];
+	char password[20];
+	char email[20];
+
+	char* imageStructArray;
+};
+
 
 
 struct __declspec(dllexport) LogIn

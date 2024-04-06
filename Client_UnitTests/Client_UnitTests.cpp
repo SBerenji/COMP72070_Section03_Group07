@@ -16,7 +16,7 @@ extern "C" void FreeBuffer(char*& Buffer);
 extern "C" char* AllocateHeaderPtr();
 extern "C" void Deserialization(Packet * Pkt, char* src);
 extern "C" void SetHeader(Packet * Pkt, void* Head);
-extern "C" void SetBody(Packet * Pkt, unsigned char User, char* Data, int DataSize);
+extern "C" void SetBody(Packet * Pkt, unsigned int User, char* Data, int DataSize);
 extern "C" int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunction recvFunc = recv);
 extern "C" int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize);
 
@@ -156,37 +156,10 @@ namespace ClientUnitTests
 
 
 
-
         ///// <summary>
-      ///// This test ensures that the recvDataFunc function will return 0 upon unsuccessfully receiving data
-      ///// </summary> 
-        TEST_METHOD(RecvPacket_Failure)
-        {
-            // Arrange
-            WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
-            socketFunc socketfunc = MockSocketSuccess;
-            connectFunc connectfunc = MockConnectSuccess;
-            WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
-            RecvFunction recvFunction = MockRecvFailure;
-
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
-
-            Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
-
-            char RxBuffer[20];
-            int totalSize = sizeof(RxBuffer);
-
-            // Act
-            int result = recvDataFunc(clientSocket, RxBuffer, totalSize, recvFunction);
-
-            // Assert
-            Assert::AreEqual(0, result);
-        }
-
-        ///// <summary>
-        ///// This test ensures that the recvDataFunc function will return 1 upon successfully receiving data
-        ///// </summary> 
-        TEST_METHOD(RecvPacket_Success)
+       ///// This test ensures that the recvDataFunc function will return 1 upon successfully receiving data
+       ///// </summary> 
+        TEST_METHOD(TEST_CLI_16)
         {
 
             WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
@@ -211,10 +184,39 @@ namespace ClientUnitTests
 
 
         ///// <summary>
-           ///// This test will ensure that the setupConnection2 returns a valid socket
-           ///// Mock functions are used for this test for functions such as connect which required the presence of a server
-           ///// </summary>
-        TEST_METHOD(setupConnection2_ValidSocket) {
+      ///// This test ensures that the recvDataFunc function will return 0 upon unsuccessfully receiving data
+      ///// </summary> 
+        TEST_METHOD(TEST_CLI_17)
+        {
+            // Arrange
+            WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
+            socketFunc socketfunc = MockSocketSuccess;
+            connectFunc connectfunc = MockConnectSuccess;
+            WSACleanupFunc wsacleanupfunc = MockWSACleanupSuccess;
+            RecvFunction recvFunction = MockRecvFailure;
+
+            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanupfunc, SOCK_STREAM);
+
+            Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
+
+            char RxBuffer[20];
+            int totalSize = sizeof(RxBuffer);
+
+            // Act
+            int result = recvDataFunc(clientSocket, RxBuffer, totalSize, recvFunction);
+
+            // Assert
+            Assert::AreEqual(0, result);
+        }
+
+
+
+
+        ///// <summary>
+        ///// This test will ensure that the setupConnection2 returns a valid socket
+        ///// Mock functions are used for this test for functions such as connect which required the presence of a server
+        ///// </summary>
+        TEST_METHOD(TEST_CLI_05) {
 
             // Arrange
             WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
@@ -234,7 +236,7 @@ namespace ClientUnitTests
         ///// This test will ensure that the setupConnection2 returns 0 if the socket function returns an invalid socket (INVALID_SOCKET)
         ///// Mock functions are used for this test for functions such as connect which required the presence of a server
         ///// </summary>
-        TEST_METHOD(setupConnection2_InvalidSocket)
+        TEST_METHOD(TEST_CLI_06_01)
         {
 
             // Arrange
@@ -254,7 +256,7 @@ namespace ClientUnitTests
         ///// This test will ensure that the setupConnection2 returns 0 (exits) if the WSAStartup function does not return 0
         ///// Mock functions are used for this test for functions such as WSAStartup
         ///// </summary>
-        TEST_METHOD(setupConnection2_WSAStartupFailure)
+        TEST_METHOD(TEST_CLI_06_02)
         {
 
             // Arrange
@@ -274,7 +276,7 @@ namespace ClientUnitTests
         ///// This test will ensure that the setupConnection2 returns 0 (exits) if the connect function return SOCKET_ERROR and is unable to connect to the server
         ///// Mock functions are used for this test for functions such as connect which required the presence of a server
         ///// </summary>
-        TEST_METHOD(setupConnection2_ConnectFailure)
+        TEST_METHOD(TEST_CLI_06_03)
         {
 
             // Arrange
@@ -293,7 +295,7 @@ namespace ClientUnitTests
         /// <summary>
         /// This test will ensure that the CloseSocket funciton returns 1 upon success and handles all the closing and cleaning properly
         /// </summary>
-        TEST_METHOD(CloseSocket_ValidSocket)
+        TEST_METHOD(TEST_CLI_07)
         {
             // Arrange
             WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
@@ -318,7 +320,7 @@ namespace ClientUnitTests
         /// This test will ensure that the CloseSocket funciton returns 0 if the socket is not able to connect to the server
         /// close the socket properly
         /// </summary>
-        TEST_METHOD(CloseSocket_InvalidSocket)
+        TEST_METHOD(TEST_CLI_09_01)
         {
             // Arrange
             WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
@@ -343,7 +345,7 @@ namespace ClientUnitTests
         /// This test will ensure that the CloseSocket funciton returns 2 if there is a problem is cleaning the WSA library
         /// </summary>
 
-        TEST_METHOD(CloseSocket_WSALibraryCleaningFailure)
+        TEST_METHOD(TEST_CLI_09_02)
         {
             // Arrange
             WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
@@ -368,7 +370,7 @@ namespace ClientUnitTests
         ///// <summary>
         ///// This test ensures that the sendData function (here using a mock function) will return 1 in case of a successfull send
         ///// </summary>
-        TEST_METHOD(sendDataFunc_ValidSocket_SuccessfullSend)
+        TEST_METHOD(TEST_CLI_12)
         {
             // Arrange
 
@@ -395,7 +397,7 @@ namespace ClientUnitTests
         ///// <summary>
         ///// This test ensures that the sendData function will return 0 in case of an unsuccessfull send
         ///// </summary>
-        TEST_METHOD(sendDataFunc_ValidSocket_UnsuccessfulSend)
+        TEST_METHOD(TEST_CLI_13)
         {
             // Arrange
 
@@ -426,7 +428,7 @@ namespace ClientUnitTests
         ///// This test ensures that the CreatePacket function successfully instantiates the Packet class
         ///// </summary>
 
-        TEST_METHOD(CreatePacket_Success)
+        TEST_METHOD(TEST_CLI_01)
         {
             // Act
             Packet* packet = CreatePacket();
@@ -442,7 +444,7 @@ namespace ClientUnitTests
         ///// This test ensures that the DestroyPacket function successfully deletes the packet created from the memory
         ///// </summary>
 
-        TEST_METHOD(DestroyPacket_Success)
+        TEST_METHOD(TEST_CLI_02)
         {
             // Arrange
             Packet* Pkt = new Packet();
@@ -466,7 +468,7 @@ namespace ClientUnitTests
         ///// This test ensures that the FreeBuffer function successfully deletes the buffer pointer created and make sures there is no dangling pointer
         ///// </summary>
 
-        TEST_METHOD(FreeBuffer_Success)
+        TEST_METHOD(TEST_CLI_15)
         {
             char* TxBuffer = new char[10];
             std::string test = "Testing";
@@ -479,7 +481,7 @@ namespace ClientUnitTests
             Assert::IsNull(TxBuffer);
         }
 
-        TEST_METHOD(AllocateHeaderPtr_Success)
+        TEST_METHOD(TEST_CLI_22)
         {
 
             // Act
@@ -492,7 +494,7 @@ namespace ClientUnitTests
         ///// <summary>
         ///// This test ensures that the Deserialization function successfully deserializes the serialized data passed to it.
         ///// </summary>
-        TEST_METHOD(Deserialization_ValidData)
+        TEST_METHOD(TEST_CLI_11)
         {
             // Arrange
             Packet* Pkt = new Packet(); // create a new packet:
@@ -540,7 +542,7 @@ namespace ClientUnitTests
         ///// <summary>
         ///// This test ensures that the SerializeData function successfully deserializes the serialized data passed to it.
         ///// </summary>
-        TEST_METHOD(SerializeData_ValidData)
+        TEST_METHOD(TEST_CLI_10)
         {
             // Arrange
             Packet* Pkt = new Packet(); // create a new packet:
