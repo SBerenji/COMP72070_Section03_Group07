@@ -178,6 +178,15 @@ unsigned int DeserializeHeaderLengthMember(char* RxBuffer) {
 }
 
 
+unsigned int DeserializeImageLength(char* RxBuffer, int offset) {
+	unsigned int imageLength;
+
+	memcpy(&imageLength, RxBuffer + offset, sizeof(imageLength));
+
+	return imageLength;
+}
+
+
 void CopyImageFromRawBufferToByteArray(char* RxBuffer, char* imageArray, int imageSize) {
 	Packet* p = CreatePacket();
 

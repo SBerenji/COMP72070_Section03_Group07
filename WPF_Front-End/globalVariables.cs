@@ -362,7 +362,7 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
-        public static extern int recvData(MySocket ClientSocket, byte[] RxBuffer, int RxBufferSize);
+        public static extern int recvData(MySocket ClientSocket, ref IntPtr RxBuffer, int RxBufferSize);
 
 
         [DllImport(dllpath)]
@@ -383,6 +383,10 @@ namespace WPF_Front_End
 
         [DllImport(dllpath)]
         public static extern uint DeserializeHeaderLengthMember(byte[] RxBuffer);
+
+
+        [DllImport(dllpath)]
+        public static extern uint DeserializeImageLength(byte[] RxBuffer, int offset);
 
 
         [DllImport(dllpath)]

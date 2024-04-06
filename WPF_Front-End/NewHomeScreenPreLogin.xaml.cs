@@ -96,9 +96,15 @@ namespace WPF_Front_End
 
 
 
-                Packet.RxBuffer = new byte[500];
+                IntPtr recvBuffer = IntPtr.Zero;
 
-                int recvSize = Packet.recvData(MySocket.ClientSocket, Packet.RxBuffer, 500);
+                int bufferSize = 500;
+
+                Packet.RxBuffer = new byte[bufferSize];
+
+                int recvSize = Packet.recvData(MySocket.ClientSocket, ref recvBuffer, bufferSize);
+
+                Marshal.Copy(recvBuffer, Packet.RxBuffer, 0, bufferSize);
 
 
                 Header head = new Header();
@@ -116,6 +122,8 @@ namespace WPF_Front_End
                 //MessageBox.Show(globalVariables.ClientID.ToString());
 
                 globalVariables.initialLogin = false;
+
+                Packet.FreeBuffer(ref recvBuffer);
             }
         }
 
@@ -165,9 +173,15 @@ namespace WPF_Front_End
 
         private int RecvAckOfNumberOfPosts()
         {
-            byte[] RxBuffer = new byte[500];
+            IntPtr recvBuffer = IntPtr.Zero;
 
-            Packet.recvData(MySocket.ClientSocket, RxBuffer, 500);
+            int bufferSize = 500;
+
+            byte[] RxBuffer = new byte[bufferSize];
+
+            Packet.recvData(MySocket.ClientSocket, ref recvBuffer, bufferSize);
+
+            Marshal.Copy(recvBuffer, RxBuffer, 0, bufferSize);
 
             IntPtr PktPtr = Packet.CreatePacket();
 
@@ -180,6 +194,8 @@ namespace WPF_Front_End
 
             RxBuffer = null;
 
+            Packet.FreeBuffer(ref recvBuffer);
+
 
             return numberOfPosts;
         }
@@ -190,9 +206,15 @@ namespace WPF_Front_End
         {
             while (numberOfPosts > 0)
             {
-                byte[] RxBuffer = new byte[200000];
+                IntPtr recvBuffer = IntPtr.Zero;
 
-                Packet.recvData(MySocket.ClientSocket, RxBuffer, 200000);
+                int bufferSize = 2500000;
+
+                byte[] RxBuffer = new byte[bufferSize];
+
+                Packet.recvData(MySocket.ClientSocket, ref recvBuffer, bufferSize);
+
+                Marshal.Copy(recvBuffer, RxBuffer, 0, bufferSize);
 
                 Listing list = new Listing();
 
@@ -229,7 +251,9 @@ namespace WPF_Front_End
                 Array.Copy(RxBuffer, 1000, list.LookingFor, 0, 200);
 
 
-                uint imageSize = BitConverter.ToUInt32(RxBuffer, 1200);
+                //uint imageSize = BitConverter.ToUInt32(RxBuffer, 1200);
+
+                uint imageSize = Packet.DeserializeImageLength(RxBuffer, 1200);
 
                 globalVariables.MyPostImage1 = new byte[imageSize];
 
@@ -248,6 +272,19 @@ namespace WPF_Front_End
                 AddImageSize(ref imageSize);
 
                 numberOfPosts -= 1;
+
+
+
+                String msg_str = "I am ready to receive next post :)";
+
+                byte[] message = Encoding.ASCII.GetBytes(msg_str);
+
+
+                int sendSize = Packet.sendData(MySocket.ClientSocket, message, message.Length);
+
+
+
+                Packet.FreeBuffer(ref recvBuffer);
             }
         }
 

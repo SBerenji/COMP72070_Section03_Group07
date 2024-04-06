@@ -28,6 +28,51 @@ namespace WPF_Front_End.View.UserControls
         private NewPostHamburger hamburgerMenu;
 
 
+
+        private void passwordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(passwordBox.Password))
+            {
+                tbPlaceholder_password.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tbPlaceholder_password.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
+        private void username_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(username.Text))
+            {
+                tbPlaceholder_username.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tbPlaceholder_username.Visibility = Visibility.Hidden;
+            }
+        }
+
+
+
+        private void email_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(email.Text))
+            {
+                tbPlaceholder_email.Visibility = Visibility.Visible;
+            }
+
+            else
+            {
+                tbPlaceholder_email.Visibility = Visibility.Hidden;
+            }
+        }
+
+
         public SignUpControl()
         {
             InitializeComponent();
@@ -201,8 +246,8 @@ namespace WPF_Front_End.View.UserControls
         {
             SignUpCheck check = new SignUpCheck();
 
-            globalVariables.username = username.txtInput.Text;
-            globalVariables.email = email.txtInput.Text;
+            globalVariables.username = username.Text;
+            globalVariables.email = email.Text;
 
             check.username = new byte[ConstantVariables.username_ByteArraySize];
             check.email = new byte[ConstantVariables.email_ByteArraySize];
@@ -264,7 +309,7 @@ namespace WPF_Front_End.View.UserControls
 
         private void SignUp_Click(object sender, RoutedEventArgs e)
         {
-            if (username.txtInput.Text == "" || /*password.Password == "" ||*/ email.txtInput.Text == "")
+            if (username.Text == "" || /*password.Password == "" ||*/ email.Text == "")
             {
                 MessageBox.Show("Please enter Username, Password AND Email Address!!");
             }
@@ -273,9 +318,15 @@ namespace WPF_Front_End.View.UserControls
             {
                 int checkFuncReturn = userExistsCheck();
 
-                Packet.RxBuffer = new byte[500];
+                IntPtr recvBuffer = IntPtr.Zero;
 
-                int recvSize = Packet.recvData(MySocket.ClientSocket, Packet.RxBuffer, 500);
+                int bufferSize = 500;
+
+                Packet.RxBuffer = new byte[bufferSize];
+
+                int recvSize = Packet.recvData(MySocket.ClientSocket, ref recvBuffer, bufferSize);
+
+                Marshal.Copy(recvBuffer, Packet.RxBuffer, 0, bufferSize);
 
                 
                 Header head = new Header();
@@ -287,6 +338,9 @@ namespace WPF_Front_End.View.UserControls
 
                 Packet.DeserializeHeader(Packet.RxBuffer, ref head);
 
+
+                Packet.FreeBuffer(ref recvBuffer);
+
                 if (head.Authorization)
                 {
                     MessageBox.Show("User Already exits!! Please LogIn instead!!");
@@ -296,9 +350,9 @@ namespace WPF_Front_End.View.UserControls
                 {
                     SignUp signup = new SignUp();
 
-                    globalVariables.username = username.txtInput.Text;
+                    globalVariables.username = username.Text;
                     //globalVariables.password = password.Password;
-                    globalVariables.email = email.txtInput.Text;
+                    globalVariables.email = email.Text;
 
                     signup.username = new byte[ConstantVariables.username_ByteArraySize];
                     signup.password = new byte[ConstantVariables.password_ByteArraySize];

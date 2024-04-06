@@ -51,6 +51,8 @@ extern "C" {
 
 	__declspec(dllexport) unsigned int DeserializeHeaderLengthMember(char* RxBuffer);
 
+	__declspec(dllexport) unsigned int DeserializeImageLength(char* RxBuffer, int offset);
+
 	__declspec(dllexport) void CopyImageFromRawBufferToByteArray(char* RxBuffer, char* imageArray, int imageSize);
 
 
