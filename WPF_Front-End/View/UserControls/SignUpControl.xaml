@@ -167,10 +167,10 @@
                 <Image Source="/Images/addUser.png" x:Name="AddUserImage" Width="40" Height="40" Stretch="UniformToFill" Grid.Column="0" Margin="6,5,38,2" 
                        AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="DropArea_DragOver"  Visibility="Visible" MouseDown="AddUserImage_MouseDown" MouseEnter="AddUserImage_MouseEnter" Cursor="Hand"/>
 
-                <Image x:Name="DropAreaImage" Width="55" Height="55" Stretch="UniformToFill" Grid.Column="0" Margin="6,-10,38,2"/>
+                <Image x:Name="DropAreaImage" Width="55" Height="55" Stretch="Uniform" Grid.Column="0" Margin="6,-10,38,2"/>
 
                 <!--this is for the image that the user will add using browsing-->
-                <Image x:Name="SelectedImage" Width="55" Height="55" Stretch="UniformToFill" Grid.Column="0" Margin="6,-10,38,2" Visibility="Collapsed"/>
+                <Image x:Name="SelectedImage" Width="55" Height="55" Stretch="Uniform" Grid.Column="0" Margin="6,-10,38,2" Visibility="Collapsed"/>
 
 
 

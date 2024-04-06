@@ -85,7 +85,7 @@ Foreground="White" FontFamily="Times New Roman" VerticalAlignment="Top" Width="1
 
                         <Viewbox Stretch="Fill" StretchDirection="Both">
 
-                            <Button x:Name="RemoveButton" Background="Gray" Foreground="White" Width="100" Height="13" FontSize="7" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Margin="25,80,38,0" Click="RemoveButton_Click" Visibility="Collapsed">
+                            Button x:Name="RemoveButton" Background="Gray" Foreground="White" Width="100" Height="13" FontSize="7" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Margin="25,50,38,0" Click="RemoveButton_Click" Visibility="Collapsed">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Remove Image" Margin="0,0,5,0" VerticalAlignment="Center"/>
                                 </StackPanel>
@@ -99,9 +99,9 @@ Foreground="White" FontFamily="Times New Roman" VerticalAlignment="Top" Width="1
                         </Viewbox>
 
 
-                        <Viewbox Stretch="Fill" StretchDirection="Both">
+                        <Viewbox Stretch="UniformToFill" StretchDirection="Both">
 
-                            <Image Name="AddImage" Source="/Images/addphoto.jpg" Width="60" Height="20" Margin="10, 10, 20, 20"
+                            <Image Name="AddImage" Source="/Images/addphoto.jpg" Width="60" Height="20" Margin="10, 10, 20, 20" 
 AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="DropArea_DragOver" Visibility="Visible" MouseDown="AddImage_MouseDown" MouseEnter="AddImage_MouseEnter" Cursor="Hand"/>
 
                         </Viewbox>
@@ -109,12 +109,12 @@ AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="D
 
                         <!--This is the placeholder for the image that is selected through browsing-->
                         <Viewbox Stretch="Uniform"  StretchDirection="Both">
-                            <Image x:Name="SelectedImage2" Width="60" Height="20" Stretch="UniformToFill" Margin="10, 10, 20, 20" Visibility="Collapsed"/>
+                            <Image x:Name="SelectedImage2" Width="90" Height="90" Margin="10, 10, 20, 30" Visibility="Collapsed"/>
                         </Viewbox>
 
                         <!--This is the placeholder for the image that is selected through drag and drop feature-->
-                        <Viewbox Stretch="Uniform"  StretchDirection="Both">
-                            <Image x:Name="DropAreaImage2" Stretch="UniformToFill" Margin="130,46,250,250"/>
+                        <Viewbox Stretch="UniformToFill"  StretchDirection="Both">
+                            <Image x:Name="DropAreaImage2" Stretch="UniformToFill" Margin="160,46,250,250"  Width="316" Height="241"  />
 
                         </Viewbox>
 
@@ -124,7 +124,7 @@ AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="D
 
 
 
-                        <Viewbox Stretch="Fill" StretchDirection="Both">
+                        <Viewbox Stretch="Uniform" StretchDirection="Both">
                             <TextBlock Text="Browse/Drop a JPEG photo of your Item" TextWrapping="Wrap" Name="RemoveText1" Foreground="Black" HorizontalAlignment="Left" 
                             FontSize="30" VerticalAlignment="Top" TextAlignment="Center" Margin="56,150,110,30" 
                             Visibility="Visible" Width="350" Height="84"/>
