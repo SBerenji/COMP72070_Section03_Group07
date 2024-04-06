@@ -11,6 +11,7 @@ private:
     sqlite3* db;
 
 public:
+    
     SQLiteDatabase(const std::string& dbPath);
 
     ~SQLiteDatabase();
@@ -23,7 +24,7 @@ public:
 
     int ListingPostInsert(sqlite3_stmt** stmt, Packet* Pkt, Listing& Listing);
 
-    int FetchListingImage(sqlite3_stmt** stmt, std::string title, char** imageArray, int& imageSize);
+    //int FetchListingImage(sqlite3_stmt** stmt, std::string title, char** imageArray, int& imageSize);
 
     int FetchImage(sqlite3_stmt** stmt, std::string email, char** imageArray, int& imageSize);
 

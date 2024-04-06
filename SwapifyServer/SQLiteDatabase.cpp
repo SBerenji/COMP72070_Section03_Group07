@@ -2,6 +2,7 @@
 #include "SQLiteDatabase.h"
 #include <fstream>
 
+
 //database.db
 SQLiteDatabase::SQLiteDatabase(const std::string& dbPath) : db(nullptr) {
     // Check if the database file exists
@@ -131,49 +132,49 @@ int SQLiteDatabase::SignUpWithoutImageDataInsert(sqlite3_stmt** stmt, Packet* Pk
 }
 
 
-int SQLiteDatabase::FetchListingImage(sqlite3_stmt** stmt, std::string title, char** imageArray, int& imageSize) {
-    // Construct the query as a std::string
-    std::ostringstream oss;
-    oss << "SELECT profile_picture FROM UsersWithProfile WHERE title = '" << title << "';";
-    std::string query_str = oss.str();
-
-
-
-    // Convert the std::string query to a const char*
-    const char* query = query_str.c_str();
-
-    //memcpy(query, ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).c_str(), ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).length());
-
-
-    // Prepare the SQL statement
-    int rc = sqlite3_prepare_v2(db, query, -1, stmt, nullptr);
-    if (rc != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        return -1;
-    }
-
-
-    // Execute the query
-    rc = sqlite3_step(*stmt);
-    if (rc != SQLITE_ROW) {
-        std::cerr << "No data found" << std::endl;
-        sqlite3_finalize(*stmt);
-        return -1;
-    }
-
-
-    // Retrieve BLOB data
-    const void* blobArray = sqlite3_column_blob(*stmt, 0);
-
-    imageSize = sqlite3_column_bytes(*stmt, 0);
-
-
-    *imageArray = new char[imageSize];
-
-    memcpy(*imageArray, (char*)blobArray, imageSize);
-
-    return 0;
-}
+//int SQLiteDatabase::FetchListingImage(sqlite3_stmt** stmt, std::string title, char** imageArray, int& imageSize) {
+//    // Construct the query as a std::string
+//    std::ostringstream oss;
+//    oss << "SELECT profile_picture FROM UsersWithProfile WHERE title = '" << title << "';";
+//    std::string query_str = oss.str();
+//
+//
+//
+//    // Convert the std::string query to a const char*
+//    const char* query = query_str.c_str();
+//
+//    //memcpy(query, ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).c_str(), ("SELECT profile_picture FROM users WHERE id = " + std::to_string(id)).length());
+//
+//
+//    // Prepare the SQL statement
+//    int rc = sqlite3_prepare_v2(db, query, -1, stmt, nullptr);
+//    if (rc != SQLITE_OK) {
+//        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+//        return -1;
+//    }
+//
+//
+//    // Execute the query
+//    rc = sqlite3_step(*stmt);
+//    if (rc != SQLITE_ROW) {
+//        std::cerr << "No data found" << std::endl;
+//        sqlite3_finalize(*stmt);
+//        return -1;
+//    }
+//
+//
+//    // Retrieve BLOB data
+//    const void* blobArray = sqlite3_column_blob(*stmt, 0);
+//
+//    imageSize = sqlite3_column_bytes(*stmt, 0);
+//
+//
+//    *imageArray = new char[imageSize];
+//
+//    memcpy(*imageArray, (char*)blobArray, imageSize);
+//
+//    return 0;
+//}
 
 
 

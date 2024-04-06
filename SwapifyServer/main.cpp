@@ -19,6 +19,125 @@
 
 using namespace std;
 
+///////////////////////////////////////////
+extern "C" __declspec(dllexport) SOCKET setupConnection2(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanupfunc = WSACleanup);
+extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc = send);
+extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket, closesocketFunc closeFunc = closesocket, WSACleanupFunc wsacleanupfunc = WSACleanup);
+
+int CloseSocket(SOCKET ClientSocket, closesocketFunc closeFunc, WSACleanupFunc wsacleanupfunc) {
+
+    // Cleaning up the socket
+if (closeFunc(ClientSocket) == SOCKET_ERROR)
+{
+    std::cerr << "Error closing the socket" << std::endl;
+    return 0;
+}
+
+std::cout << "Client Socket Closed" << std::endl;
+
+
+// Cleaning up the winsock library
+if (wsacleanupfunc() == SOCKET_ERROR)
+{
+    std::cerr << "Error cleaning WSACleanup" << std::endl;
+    return 2;
+}
+
+std::cout << "WSA Closed" << std::endl;
+
+return 1;
+}
+
+int sendData(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc) {
+
+    int sendSize = sendFunc(ClientSocket, TxBuffer, totalSize, 0);
+
+    if (sendSize < 0) {
+        std::cout << "Sending Failed" << std::endl;
+
+        CloseSocket(ClientSocket);
+
+        return 0;
+    }
+    else {
+        std::cout << "Message Successfully sent: " << TxBuffer << std::endl;
+    }
+
+    return 1;
+    // returning 1 upon successful completion.
+}
+
+
+SOCKET setupConnection2(WSAStartupFunc wsaStartup, socketFunc socketfunc, connectFunc connectfunc, WSACleanupFunc wsacleanupfunc) {
+    // starting up and configuring the Winsock dynamically linked library
+
+    WSADATA wsaData;
+
+    if (wsaStartup(MAKEWORD(2, 2), &wsaData) != 0)
+        // providing the address of the object (&wsaData) into the library's startup function
+    {
+        std::cout << "ERROR: Failed to start WSA" << std::endl;
+
+        return 0;
+    }
+
+    else {
+        std::cout << "WSA Started" << std::endl;
+    }
+
+    // Create a Socket
+    // This is to make the call to the server
+
+    SOCKET ServerSocket;
+    ServerSocket = socketfunc(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    // here we are using TCP protocol
+
+    if (ServerSocket == INVALID_SOCKET)
+    {
+        wsacleanupfunc();
+
+        std::cout << "ERROR: Failed to create ServerSocket" << std::endl;
+
+        return 0;
+    }
+
+    else {
+        std::cout << "Client Socket Created" << std::endl;
+    }
+
+    // Connect
+    // starting up the three way handshake process
+    // The server should have binded and configured a socket for Listening by now.
+
+    sockaddr_in SvrAddr;
+    // This object contains necessary information needed by the library to setup the TCP/IP headers correctly.
+
+    SvrAddr.sin_family = AF_INET;
+    // The family which specifies the protocol that will be used.
+
+    SvrAddr.sin_port = htons(27000);
+    // The client is using the port 27500.
+
+    SvrAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    // The IPV4 address the server is located on. Since different network we are gonna send the request to the NAT using localhost.
+
+    if ((connectfunc(ServerSocket, (struct sockaddr*)&SvrAddr, sizeof(SvrAddr))) == SOCKET_ERROR)
+    {
+        CloseSocket(ServerSocket);
+
+        std::cout << "ERROR: Connection attempted Failed" << std::endl;
+
+        return 0;
+    }
+
+    else {
+        std::cout << "Connection Established" << std::endl;
+    }
+
+
+    return ServerSocket;
+}
+////////////////////////////////////////////////////////////////
 
 std::vector<std::thread> threadPool;
 std::vector<std::atomic<bool>> cleanupFlags(20);
@@ -119,8 +238,8 @@ void cleanupThreads() {
                 if (flag.load()) return true; // Check if flag is set
             }
 
-            return false;
-        });
+        return false;
+            });
 
         // Find and mark threads for cleanup
         for (size_t i = 0; i < cleanupFlags.size(); ++i) {
@@ -276,7 +395,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
 
             memcpy(TxBuffer, pkt->GetHead(), sizeof(*(pkt->GetHead())));
-            
+
             memcpy(TxBuffer + sizeof(*(pkt->GetHead())), &clientID, sizeof(clientID));
 
 
@@ -296,7 +415,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             oss << "SELECT postID FROM listings WHERE " << "(id = " << (int)Pkt->GetBody()->User << ") " << "AND " << "(title = '" << list.Title << "') " << "AND " << "(location = '" << list.Location << "') " << "AND " << "(condition = '" << list.Condition << "') " << "AND " << "(estimated_worth = '" << list.EstimatedWorth << "') " << "AND " << "(delivery = '" << list.Delivery << "') " << "AND " << "(looking_for = '" << list.LookingFor << "') " << ";";
 
-            
+
 
             std::string query_str = oss.str();
 
@@ -658,12 +777,12 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             std::ostringstream oss;
             oss << "SELECT 'UsersWithProfile' "
-                    "FROM UsersWithProfile "
-                    "WHERE (username = '" << log.username << "')" << " AND" << " (password = '" << log.password << "') "
-                    "UNION ALL "
-                    "SELECT 'UsersWithoutProfile' "
-                    "FROM UsersWithoutProfile "
-                    "WHERE (username = '" << log.username << "')" << " AND" << " (password = '" << log.password << "');";
+                "FROM UsersWithProfile "
+                "WHERE (username = '" << log.username << "')" << " AND" << " (password = '" << log.password << "') "
+                "UNION ALL "
+                "SELECT 'UsersWithoutProfile' "
+                "FROM UsersWithoutProfile "
+                "WHERE (username = '" << log.username << "')" << " AND" << " (password = '" << log.password << "');";
 
             std::string query_str = oss.str();
 
@@ -772,7 +891,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
                     memset(cred.email, 0, sizeof(cred.email));
                     memcpy(cred.email, sqlite3_column_text(stmt, 3), sqlite3_column_bytes(stmt, 3));
 
-                     /*Retrieve BLOB data*/
+                    /*Retrieve BLOB data*/
                     const void* blobArray = sqlite3_column_blob(stmt, 4);
 
                     imageSize = sqlite3_column_bytes(stmt, 4);
@@ -786,7 +905,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
                     blobArray = nullptr;
                 }
-                
+
                 else if (rc != SQLITE_DONE) {
                     std::cerr << "Error executing SQL statement: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
                 }
@@ -809,14 +928,14 @@ int threadedFunc(SOCKET ConnectionSocket) {
                 memcpy(pkt_login->GetHead()->Source, source, source_size);
                 memcpy(pkt_login->GetHead()->Destination, destination, destination_size);
                 memcpy(pkt_login->GetHead()->Route, Route, Route_size);
-                
+
                 pkt_login->GetHead()->Authorization = Authorization;
 
                 pkt_login->GetHead()->Length = length;
 
 
                 pkt_login->GetBody()->Data = new char[pkt_login->GetHead()->Length];
-                
+
                 memset(pkt_login->GetBody()->Data, 0, pkt_login->GetHead()->Length);
 
                 memcpy(pkt_login->GetBody()->Data, cred.username, sizeof(cred.username));
@@ -836,7 +955,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
                 char* TxBuffer = new char[totalSize];
                 memset(TxBuffer, 0, totalSize);
 
-                
+
                 memcpy(TxBuffer, pkt_login->GetHead(), sizeof(*(pkt_login->GetHead())));
                 memcpy(TxBuffer + sizeof(*(pkt_login->GetHead())), &(pkt_login->GetBody()->User), sizeof(pkt_login->GetBody()->User));
                 memcpy(TxBuffer + sizeof(*(pkt_login->GetHead())) + sizeof(pkt_login->GetBody()->User), pkt_login->GetBody()->Data, pkt_login->GetHead()->Length);
@@ -1150,7 +1269,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
                 sqldb2.closeDatabase(&stmt2);
                 stmt2 = nullptr;
-            } 
+            }
         }
 
 
@@ -1326,12 +1445,12 @@ int threadedFunc(SOCKET ConnectionSocket) {
                     int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
 
                     delete[] TxBuffer;
-                    TxBuffer = nullptr;  
+                    TxBuffer = nullptr;
                 }
 
                 sqldb2.closeDatabase(&stmt2);
                 stmt2 = nullptr;
-            }          
+            }
         }
 
 
@@ -1433,13 +1552,13 @@ int main()
     // Start the Cleanup thread
     std::thread cleanupThread(cleanupThreads);
 
-     
+
     // Wait for the server thread to finish (never returns)
     serverThread.join();
 
     // Wait for the cleanup thread to finish (never returns)
     cleanupThread.join();
-    
+
 
     WSACleanup();
     std::cout << "Winsock library resources cleaned up and released" << endl;
