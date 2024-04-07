@@ -12,7 +12,7 @@
 			time_t currentTime = time(0); //determines the current dat and time on system
 			char* timeString = ctime(&currentTime); //converts time to string 
             
-            outFile << "Time: " << timeString << " Source: " << "Client" << " Destination: " << "Server" << " Route: " << head->Route << std::endl;
+            outFile << "Time: " << timeString << "; Source: " << "Client" << "; Destination: " << "Server" << "; Route: " << head->Route << std::endl;
 
             outFile.close();
         }

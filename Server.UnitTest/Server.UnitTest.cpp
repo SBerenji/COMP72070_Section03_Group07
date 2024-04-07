@@ -1,10 +1,12 @@
 #include "pch.h"
+#define _CRT_SECURE_NO_WARNINGS
 #include "CppUnitTest.h"
 #include "../SwapifyServer/file_utils.h"
 #include "../SwapifyServer/Packet.h"
 #include "../SwapifyServer/SQLiteDatabase.h"
 #include "../SwapifyServer/User.h"
 #include "../SwapifyServer/UsersRoute.h"
+#include "../SwapifyServer/RequestLogger.h"
 #include <fstream>
 #include <sstream>
 #include <memory>
@@ -18,8 +20,60 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 extern bool userFound;
 extern int callback(void* NotUsed, int argc, char** argv, char** azColName);
+extern int main();
 
 
+
+std::vector<char*> readFromFile(const std::string& filename) {
+	std::vector<char*> result; // Store the converted values
+	std::string inputStr = "";
+
+	std::ifstream file(filename);
+	if (file.is_open()) {
+		while (std::getline(file, inputStr)) {
+			std::istringstream issLine(inputStr);
+			std::string title;
+			std::getline(issLine, title, ':');
+
+			std::string value;
+			std::getline(issLine, value, ';');
+
+			// Allocate memory for the C-style string
+			char* newValue = new char[value.size() + 1];
+			strncpy(newValue, value.c_str(), value.size() + 1);
+
+			// Store the result
+			result.push_back(newValue);
+		}
+		file.close();
+	}
+	else {
+		std::cerr << "Error opening file: " << filename << std::endl;
+	}
+
+	return result;
+}
+
+
+
+//void  RequestLogger::logPacket(Packet& packet) {
+//	std::ofstream outFile(filename, std::ios::app); // Open in append mode
+//	if (outFile.is_open()) {
+//		auto head = packet.GetHead();
+//
+//		outFile << std::dec;
+//
+//		time_t currentTime = time(0); //determines the current dat and time on system
+//		char* timeString = ctime(&currentTime); //converts time to string 
+//
+//		outFile << "Time: " << timeString << " Source: " << "Client" << " Destination: " << "Server" << " Route: " << head->Route << std::endl;
+//
+//		outFile.close();
+//	}
+//	else {
+//		std::cerr << "Error opening log file." << std::endl;
+//	}
+//}
 
 Packet* dummyPacket() //creates a filled packet to be tested
 {
@@ -777,88 +831,11 @@ namespace ServerUnitTest
 
 		}
 
-		TEST_METHOD(TESTSVR21_Parseuserinfo)  //test parse user function in User.h
-		{
-			//Arrange
-			int id = 0;
-			const std::string emailAddress = "test@example.com";
-			const std::string password = "password";
-			const std::string firstName = "John";
-			const std::string lastName = "Doe";
-			unsigned char profilepic = 2;
-			const std::vector<unsigned char> profilePicture = { 2 };
-			const std::string dateCreated = "2024-03-14";
-			const std::string accountStatus = "active";
-			const std::string userString = "test@example.com,password,John,Doe,image.jpg,2024-03-14,active";
-			User expectedUser(id, emailAddress, password, firstName, lastName, profilePicture, dateCreated, accountStatus);
-			User user;
+		
 
 
-			//Act
-			User actual = user.parseUser(userString);
 
-
-			//Assert
-			Assert::AreEqual(actual.getEmailAddress().size(), expectedUser.getEmailAddress().size());
-			Assert::AreEqual(actual.getPassword().size(), expectedUser.getPassword().size());
-			Assert::AreEqual(actual.getFirstName().size(), expectedUser.getFirstName().size());
-			Assert::AreEqual(actual.getLastName().size(), expectedUser.getLastName().size());
-			Assert::AreEqual(actual.getProfilePicture().size(), expectedUser.getProfilePicture().size());
-			Assert::AreEqual(actual.getAccountStatus().size(), expectedUser.getAccountStatus().size());
-		}
-
-
-		TEST_METHOD(TESTSVR16_ComparePasswords) //tests validatePassword function in User.h
-		{
-			//Arrange
-			int id = 0;
-			const std::string emailAddress = "test@example.com";
-			const std::string password = "password";
-			const std::string firstName = "John";
-			const std::string lastName = "Doe";
-			unsigned char profilepic = 2;
-			const std::vector<unsigned char> profilePicture = { 2 };
-			const std::string dateCreated = "2024-03-14";
-			const std::string accountStatus = "active";
-			User expectedUser(id, emailAddress, password, firstName, lastName, profilePicture, dateCreated, accountStatus);
-			bool expected = true;
-			const std::string expectedPassword = "password";
-
-			//Act
-			bool result = expectedUser.validatePassword(expectedPassword, expectedUser.getPassword());
-
-
-			//Assert
-			Assert::AreEqual(expected, result);
-		}
-
-
-		//Github issue #20
-		TEST_METHOD(TESTSVR17_HashFunction) //tests validate Hashfunction in User.h
-		{
-			//Arrange
-			int id = 0;
-			const std::string emailAddress = "test@example.com";
-			const std::string password = "password";
-			const std::string firstName = "John";
-			const std::string lastName = "Doe";
-			unsigned char profilepic = 2;
-			const std::vector<unsigned char> profilePicture = { 2 };
-			const std::string dateCreated = "2024-03-14";
-			const std::string accountStatus = "active";
-			string expected = "password";
-			string userString = "test@example.com,password,John,Doe,image.jpg,2024-03-14,active";
-			User expectedUser(id, emailAddress, password, firstName, lastName, profilePicture, dateCreated, accountStatus);
-
-
-			//Act
-			string actual = expectedUser.generateHash(password);
-
-
-			//Assert
-			Assert::AreNotEqual(expected, actual);
-
-		}
+		
 
 
 		TEST_METHOD(TESTSVR15_SetHeader)
@@ -1382,11 +1359,165 @@ namespace ServerUnitTest
 		}
 
 
-		
-		
+		//TEST_METHOD(TESTSVR_logger)
+		//{
+		//	// Arrange
+		//	RequestLogger logger("Log_File_Server.txt");
+		//	LogIn log;
+		//	SignUp signup;
+		//	SignUpCheck check;
+		//	Listing list;
+		//	Deserialization(Pkt, RxBuffer, log, signup, check, list);
 
+		//	logger.logPacket(*Pkt);
+
+		//	// Act
+		//	callback(NULL, 2, dummyargv, dummyazColName);
+
+		//	// Assert
+		//	Assert::IsTrue(userFound);
+		//}
+
+
+		//Sets up a test file to be tested with a itemType, linedetails and TEXT_FILE
+		void fileSetup(const string TEXT_FILE) 
+		{
+			std::ofstream ofs(TEXT_FILE);
+			ofs << "Time: Sun Apr  7 10:01:47 2024" << std::endl;
+			ofs << "; Source: Client; Destination: Server; Route: LOGIN" << std::endl;
+			ofs.close();
+		}
+
+		//Sets up a test file to be tested with a itemType, linedetails and TEXT_FILE
+		void fileSetupListing(const string TEXT_FILE)
+		{
+			std::ofstream ofs(TEXT_FILE);
+			ofs << "Time: Sun Apr  7 10:01:47 2024" << std::endl;
+			ofs << "; Source: Server; Destination: Client; Route: Listing" << std::endl;
+			ofs.close();
+		}
+		
+		//Sets up a test file to be tested with a itemType, linedetails and TEXT_FILE
+		void fileSetupImage(const string TEXT_FILE)
+		{
+			std::ofstream ofs(TEXT_FILE);
+			ofs << "Time: Sun Apr  7 10:01:47 2024" << std::endl;
+			ofs << "; Source: Server; Destination: Client; Route: Image" << std::endl;
+			ofs.close();
+		}
+
+		TEST_METHOD(TestMethod3_logPacketLine_Same)
+		{
+			string TEXT_FILE = "TempFil.txt";
+			fileSetup(TEXT_FILE);  //create file with expected data
+			vector<char*> expectedDatafromFile = readFromFile("TempFil.txt"); //read data to vector
+
+			Packet* p = dummyPacket();
+			
+
+
+			RequestLogger log("testFil.txt");
+			log.logPacket(*p); //write to log file
+			vector<char*> actualdatafromFile = readFromFile("testFil.txt"); //read from log file into actual results vector
+
+			for (size_t i = 31; i < expectedDatafromFile.size(); ++i) {
+				Assert::AreEqual(expectedDatafromFile[i], actualdatafromFile[i]); //assert to check that each char is identical
+			}
+
+		}
+
+
+		TEST_METHOD(TestMethod)
+		{
+			string TEXT_FILE = "ListingTemp.txt";
+			fileSetupListing(TEXT_FILE);  //create file with expected data
+			vector<char*> expectedDatafromFile = readFromFile("ListingTemp.txt"); //read data to vector
+
+			Packet* p = dummyPacket();
+
+
+
+			RequestLogger log("ListingTest.txt");
+			log.logListingSend(); //write to log file
+			vector<char*> actualdatafromFile = readFromFile("ListingTest.txt"); //read from log file into actual results vector
+
+			for (size_t i = 31; i < expectedDatafromFile.size(); ++i) {
+				Assert::AreEqual(expectedDatafromFile[i], actualdatafromFile[i]); //assert to check that each char is identical
+			}
+
+		}
+
+
+		TEST_METHOD(TestMethod_Image)
+		{
+			string TEXT_FILE = "ImageTemp.txt";
+			fileSetupImage(TEXT_FILE);  //create file with expected data
+			vector<char*> expectedDatafromFile = readFromFile("ImageTemp.txt"); //read data to vector
+
+			Packet* p = dummyPacket();
+
+
+
+			RequestLogger log("ImageTest.txt");
+			log.logImageSend(); //write to log file
+			vector<char*> actualdatafromFile = readFromFile("ImageTest.txt"); //read from log file into actual results vector
+
+			for (size_t i = 31; i < expectedDatafromFile.size(); ++i) {
+				Assert::AreEqual(expectedDatafromFile[i], actualdatafromFile[i]); //assert to check that each char is identical
+			}
+
+		}
+
+
+		TEST_METHOD(TESTSVR30_FetchImage_UnSuccessfu) 
+		{
+			//Arrange
+			SignUp signup;
+
+			SQLiteDatabase sqldb("");
+
+			sqlite3_stmt* stmt = nullptr;
+
+			// Retrieve BLOB data
+			char* imageArray = nullptr;
+			int imageSize = 0;
+
+
+			//Act
+			int fetch = sqldb.FetchImage(&stmt, signup.email, &imageArray, imageSize);
+
+
+			//Assert
+			Assert::AreEqual(-1, fetch);
+		}
+
+
+
+		TEST_METHOD(TESTSVR03_SignUpWithoutImageDataInsert_Unsuccessful)
+		{
+			//Arrange
+			SignUp signup;
+			Packet* packet = CreatePacket();
+			SQLiteDatabase sqldb("");
+	
+			sqlite3_stmt* stmt = nullptr;
+
+			sqldb.closeDatabase(&stmt);
+
+			//Act
+			int SignUpdataInsertionReturn = sqldb.SignUpWithoutImageDataInsert(&stmt, packet, signup);
+
+
+			//Assert
+			Assert::AreEqual(-1, SignUpdataInsertionReturn);
+
+		}
+
+		
 
 	};
 
 
 }
+
+

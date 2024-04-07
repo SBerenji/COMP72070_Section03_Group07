@@ -4,7 +4,6 @@
 #include <fstream>
 #include <sstream>
 #include "SQLiteDatabase.h"
-#include "file_utils.h"
 #include "RequestLogger.h"
 #include <random>
 #include <thread>
