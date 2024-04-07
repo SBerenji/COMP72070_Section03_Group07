@@ -172,6 +172,9 @@
     <ProjectReference Include="..\TCP_Client\TCP_Client.vcxproj">
       <Project>{3372c0de-1a67-44a8-80eb-1c5f5528d933}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\WPF_Front-End\WPF_Front-End.csproj">
+      <Project>{4e3f63fc-822b-4475-8491-668ba9bea268}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
