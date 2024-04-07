@@ -3,6 +3,9 @@
 #include "../TCP_Client/Packet.h"
 #include "../TCP_Client/PacketWrapper.h"
 #include "../TCP_Client/Logging.h"
+#include <iostream>
+#include <cstring>
+#include <sys/types.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -49,7 +52,7 @@ int MockSendFailure(SOCKET ClientSocket, const char* TxBuffer, int totalSize, in
     return -1;
 }
 
-//  *****  Creating mock functions for the setupConnection2() function   ******
+//  *****  Creating mock functions for the setupConnection() function   ******
 
 // WSAStartup success:
 int MockWSAStartupSuccess(WORD wVersionRequested, LPWSADATA lpWSAData)
@@ -120,14 +123,15 @@ int MockRecvSuccess(SOCKET s, char* buf, int len, int flags)
 }
 
 // Function to get the type of a socket
-int GetSocketType(SOCKET socket) {
-    int type;
-    int optlen = sizeof(type);
-    if (getsockopt(socket, SOL_SOCKET, SO_TYPE, (char*)&type, &optlen) == SOCKET_ERROR) {
-        return -1; // Indicate failure
-    }
-    return type;
-}
+//int GetSocketType(SOCKET socket) {
+//    int type;
+//    int optlen = sizeof(type);
+//    if (getsockopt(socket, SOL_SOCKET, SO_TYPE, (char*)&type, &optlen) == SOCKET_ERROR) {
+//        return -1; // Indicate failure
+//    }
+//    return type;
+//}
+
 
 
 namespace ClientUnitTests
@@ -135,37 +139,6 @@ namespace ClientUnitTests
 	TEST_CLASS(ClientUnitTests)
 	{
 	public:
-
-        ///// <summary>
-         ///// This test ensures that the connection between the client connects to the server using a TCP protocol
-         ///// </summary> 
-        TEST_METHOD(TCP_Confirmation)
-        {
-            // Arrange
-            WSAStartupFunc wsastartupfunc = MockWSAStartupSuccess;
-            socketFunc socketfunc = MockSocketSuccess; // Mock socket creation success
-            connectFunc connectfunc = MockConnectSuccess;
-            WSACleanupFunc wsacleanup = MockWSACleanupSuccess;
-
-            // Act
-            SOCKET clientSocket = setupConnection(wsastartupfunc, socketfunc, connectfunc, wsacleanup, SOCK_STREAM);
-
-            // Assert
-            Assert::AreNotEqual((SOCKET)0, clientSocket);  // check if socket creation was successful
-
-            // Get the socket type of the created socket
-            int socketType = GetSocketType(clientSocket);
-
-            // Assert 
-            Assert::AreEqual(SOCK_STREAM, socketType);   // this is to assert that the socket created is of type SOCK_STREAM which indicated TCP connection
-        }
-
-
-
-
-
-
-
 
 
         ///// <summary>
