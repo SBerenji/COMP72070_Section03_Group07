@@ -8,6 +8,7 @@
 
 #include "Packet.h"
 #include "PacketWrapper.h"
+#include "Logging.h"
 
 //extern "C" __declspec(dllexport) int setupConnection();
 extern "C" __declspec(dllexport) SOCKET setupConnection(WSAStartupFunc wsaStartup = WSAStartup, socketFunc socketfunc = socket, connectFunc connectfunc = connect, WSACleanupFunc wsacleanupfunc = WSACleanup, int socketType = SOCK_STREAM);
@@ -24,6 +25,14 @@ extern "C" __declspec(dllexport) int recvDataFunc(SOCKET ClientSocket, char*** R
 extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket);
 extern "C" __declspec(dllexport) int CloseSocketFunc(SOCKET ClientSocket, closesocketFunc closeFunc = closesocket, WSACleanupFunc wsacleanupfunc = WSACleanup);
 
+
+
+
+void mockLogFile(char** TxBuffer) {
+    std::string filename = "Client_Log.txt";
+    
+    Logging log(filename);
+}
 
 
 int CloseSocket(SOCKET ClientSocket) {
