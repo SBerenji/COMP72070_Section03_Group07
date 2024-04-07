@@ -351,7 +351,7 @@ namespace WPF_Front_End.View.UserControls
                     SignUp signup = new SignUp();
 
                     globalVariables.username = username.Text;
-                    //globalVariables.password = password.Password;
+                    globalVariables.password = passwordBox.Password;
                     globalVariables.email = email.Text;
 
                     signup.username = new byte[ConstantVariables.username_ByteArraySize];

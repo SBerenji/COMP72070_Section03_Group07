@@ -115,6 +115,11 @@ void Display(Packet* Pkt, std::ostream& os)
 }
 
 
+void DeserializeHeader(Packet* pkt, char** TxBuffer) {
+	memcpy(pkt->GetHead(), *TxBuffer, sizeof(*(pkt->GetHead())));
+}
+
+
 void DeserializePostCountBuffer(Packet* pkt, char* src, int& numberOfPosts) {
 	memcpy(pkt->GetHead(), src, sizeof(*(pkt->GetHead())));
 
