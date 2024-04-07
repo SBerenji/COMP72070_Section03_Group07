@@ -7,6 +7,32 @@
              xmlns:userControl ="clr-namespace:WPF_Front_End.View.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="VisibilityConverter" />
+
+        <ControlTemplate x:Key="passwordbox" TargetType="{x:Type PasswordBox}">
+            <Border Background="{TemplateBinding Background}" 
+x:Name="Bd" BorderBrush="#FFB4B4B4"
+BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
+                <ScrollViewer Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="Width" Value="Auto">
+                    <Setter Property="MinWidth" Value="100"/>
+                </Trigger>
+                <Trigger Property="Height" Value="Auto">
+                    <Setter Property="MinHeight" Value="20"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+
+
     <Grid Background="White" Height="248">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -104,9 +130,67 @@
         <TextBlock Grid.Row="0" Text="Register" FontSize="20"
            FontFamily="Times New Roman" Foreground="#385638" FontWeight="Bold" Margin="110,-1,55,4" />
 
-        <userControl:ClearableTextBox x:Name="username" Grid.Row="1" Placeholder="Username" Height="23" Margin="17,1,81,27" Grid.RowSpan="2"/>
 
-        <userControl:ClearableTextBox x:Name="email" Grid.Row="2" Placeholder="Email Address" Height="23" Margin="17,27,81,1" />
+
+        <TextBox x:Name="username" VerticalContentAlignment="Center" Grid.Row="1"
+         FontSize="10" FontWeight="Light" Background="Transparent" Height="23"
+         TextChanged="username_TextChanged" Margin="9,0,115,0" AutomationProperties.AutomationId="UsernameTextBox">
+
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" x:Name="tbPlaceholder_username" Text="Username"
+           FontSize="12" FontWeight="Light" Foreground="DarkGray"
+           Panel.ZIndex="-1" Margin="12,3,52,0" VerticalAlignment="Center" Height="19"/>
+
+
+
+        <TextBox x:Name="email" VerticalContentAlignment="Center" Grid.Row="2"
+ FontSize="10" FontWeight="Light" Background="Transparent" Height="23"
+ TextChanged="email_TextChanged" Margin="9,5,115,0" AutomationProperties.AutomationId="EmailTextBox">
+
+            <TextBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </TextBox.Resources>
+        </TextBox>
+
+        <TextBlock Grid.Column="0" Grid.Row="2" x:Name="tbPlaceholder_email" Text="Email Address"
+   FontSize="12" FontWeight="Light" Foreground="DarkGray"
+   Panel.ZIndex="-1" Margin="12,3,52,0" VerticalAlignment="Center" Height="19"/>
+
+
+
+
+        <PasswordBox x:Name="passwordBox" Template="{StaticResource passwordbox}" VerticalContentAlignment="Center"
+ FontSize="10" FontWeight="Light" Background="Transparent" Grid.Row="3" Margin="10,5,115,0" AutomationProperties.AutomationId="PasswordTextBlock"
+ PasswordChanged="passwordBox_PasswordChanged" >
+
+            <!--PasswordChanged="PasswordBox_PasswordChanged"-->
+
+            <PasswordBox.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="BorderThickness" Value="2" />
+                </Style>
+            </PasswordBox.Resources>
+        </PasswordBox>
+
+
+        <TextBlock Grid.Row="3" x:Name="tbPlaceholder_password" Text="Password"
+        FontSize="12" FontWeight="Light" Foreground="DarkGray"
+        Panel.ZIndex="-1" Margin="15,5,0,0" />
+
+
+
+        <!--<userControl:ClearableTextBox x:Name="username" Grid.Row="1" Placeholder="Username" Height="23" Margin="17,1,81,27" Grid.RowSpan="2"/>-->
+
+        <!--<userControl:ClearableTextBox x:Name="email" Grid.Row="2" Placeholder="Email Address" Height="23" Margin="17,27,81,1" />-->
 
         <!--<userControl:PasswordBox x:Name="password" Grid.Row="3" Password="{Binding Password}" Placeholder="Password" Height="23" Margin="17,2,120,39" Grid.RowSpan="2" />-->
 

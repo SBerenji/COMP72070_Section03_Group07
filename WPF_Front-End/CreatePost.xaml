@@ -153,8 +153,29 @@ Margin="73,5,391,0" Foreground="Red" />
                         </Viewbox>-->
 
                         <Viewbox Grid.Row="0" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                            <userControls:ClearableTextBox x:Name="title" Margin="0,20,0,0" Width="550" Height="20" Placeholder="Mixer" Grid.Row="0"/>
+                            <!--<userControls:ClearableTextBox x:Name="title" Margin="0,20,0,0" Width="550" Height="20" Placeholder="Mixer" Grid.Row="0"/>-->
+
+                            <TextBox x:Name="title" VerticalContentAlignment="Center" Grid.Row="0" Width="550"
+                             FontSize="10" FontWeight="Light" Background="Transparent" Height="20"
+                             TextChanged="txtInput_TextChanged" Margin="0,20,0,0" AutomationProperties.AutomationId="titleTextBox">
+
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+
                         </Viewbox>
+
+                        <Viewbox Panel.ZIndex="-5" Grid.Row="0" Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Left" Width="502" Height="30" Margin="3,30,0,0">
+                            <TextBlock Grid.Row="0" Grid.Column="0" x:Name="tb_title_Placeholder" Text="Chicken"
+                            FontSize="20" FontWeight="Light" Foreground="DarkGray"
+                            VerticalAlignment="Center" Height="30" Width="503"/>
+                        </Viewbox>
+
+
+
 
 
 
@@ -171,9 +192,35 @@ Margin="143,2,286,25" Foreground="Red" />
                         </Viewbox>-->
 
 
+
                         <Viewbox Grid.Row="1" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                            <userControls:ClearableTextBox x:Name="Location" Grid.Column="1" Width="550" Height="20" Margin="0,15,0,0" Placeholder="Waterloo" Grid.Row="1" />
+                            <!--<userControls:ClearableTextBox x:Name="title" Margin="0,20,0,0" Width="550" Height="20" Placeholder="Mixer" Grid.Row="0"/>-->
+
+                            <TextBox x:Name="location" VerticalContentAlignment="Center" Grid.Row="0" Width="550"
+     FontSize="10" FontWeight="Light" Background="Transparent" Height="20"
+     TextChanged="location_TextChanged" Margin="0,20,0,0" AutomationProperties.AutomationId="locationTextBox">
+
+                                <TextBox.Resources>
+                                    <Style TargetType="{x:Type Border}">
+                                        <Setter Property="CornerRadius" Value="5" />
+                                    </Style>
+                                </TextBox.Resources>
+                            </TextBox>
+
                         </Viewbox>
+
+                        <Viewbox Panel.ZIndex="-5" Grid.Row="1" Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Left" Width="502" Height="30" Margin="3,30,0,0">
+                            <TextBlock Grid.Row="1" Grid.Column="0" x:Name="tb_location_Placeholder" Text="Waterloo"
+                            FontSize="20" FontWeight="Light" Foreground="DarkGray"
+                            VerticalAlignment="Center" Height="30" Width="503"/>
+                        </Viewbox>
+
+
+
+
+                        <!--<Viewbox Grid.Row="1" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
+                            <userControls:ClearableTextBox x:Name="Location" Grid.Column="1" Width="550" Height="20" Margin="0,15,0,0" Placeholder="Waterloo" Grid.Row="1" />
+                        </Viewbox>-->
                     </Grid>
                 </Grid>
 
@@ -182,9 +229,36 @@ Margin="143,2,286,25" Foreground="Red" />
 FontSize="5" FontWeight="Bold"/>
                 </Viewbox>
 
+
+
+
                 <Viewbox Grid.Row="2" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                    <userControls:ClearableTextBox x:Name="condition" Grid.Row="2" Placeholder="New" Width="800" Height="30" Margin="0, 20, 0, 0" />
+                    <!--<userControls:ClearableTextBox x:Name="title" Margin="0,20,0,0" Width="550" Height="20" Placeholder="Mixer" Grid.Row="0"/>-->
+
+                    <TextBox x:Name="condition" VerticalContentAlignment="Center" Grid.Row="2" Width="550"
+                    FontSize="10" FontWeight="Light" Background="Transparent" Height="20"
+                    TextChanged="condition_TextChanged" Margin="0,20,0,0" AutomationProperties.AutomationId="conditionTextBox">
+
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5" />
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+
                 </Viewbox>
+
+                <Viewbox Panel.ZIndex="-5" Grid.Row="2" Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Left" Width="502" Height="30" Margin="3,30,0,0">
+                    <TextBlock Grid.Row="1" Grid.Column="2" x:Name="tb_condition_Placeholder" Text="New"
+                       FontSize="20" FontWeight="Light" Foreground="DarkGray"
+                       VerticalAlignment="Center" Height="30" Width="503"/>
+                </Viewbox>
+
+
+
+                <!--<Viewbox Grid.Row="2" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
+                    <userControls:ClearableTextBox x:Name="condition" Grid.Row="2" Placeholder="New" Width="800" Height="30" Margin="0, 20, 0, 0" />
+                </Viewbox>-->
 
 
                 <Viewbox Grid.Row="3" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
@@ -192,9 +266,37 @@ FontSize="5" FontWeight="Bold"/>
 FontSize="5" FontWeight="Bold"/>
                 </Viewbox>
 
+
+
+
                 <Viewbox Grid.Row="3" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                    <userControls:ClearableTextBox x:Name="worth" Grid.Row="3" Placeholder="$30" Width="800" Height="30" Margin="0, 20, 0, 0" />
+                    <!--<userControls:ClearableTextBox x:Name="title" Margin="0,20,0,0" Width="550" Height="20" Placeholder="Mixer" Grid.Row="0"/>-->
+
+                    <TextBox x:Name="worth" VerticalContentAlignment="Center" Grid.Row="3" Width="550"
+    FontSize="10" FontWeight="Light" Background="Transparent" Height="20"
+    TextChanged="worth_TextChanged" Margin="0,20,0,0" AutomationProperties.AutomationId="worthTextBox">
+
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5" />
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+
                 </Viewbox>
+
+                <Viewbox Panel.ZIndex="-5" Grid.Row="3" Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Left" Width="502" Height="30" Margin="3,30,0,0">
+                    <TextBlock Grid.Row="3" Grid.Column="2" x:Name="tb_worth_Placeholder" Text="Priceless"
+       FontSize="20" FontWeight="Light" Foreground="DarkGray"
+       VerticalAlignment="Center" Height="30" Width="503"/>
+                </Viewbox>
+
+
+
+
+                <!--<Viewbox Grid.Row="3" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
+                    <userControls:ClearableTextBox x:Name="worth" Grid.Row="3" Placeholder="$30" Width="800" Height="30" Margin="0, 20, 0, 0" />
+                </Viewbox>-->
 
 
 
@@ -203,9 +305,37 @@ FontSize="5" FontWeight="Bold"/>
 FontSize="5" FontWeight="Bold"/>
                 </Viewbox>
 
+
+
                 <Viewbox Grid.Row="4" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                    <userControls:ClearableTextBox x:Name="delivery" Grid.Row="4" Placeholder="Pick-up" Width="800" Height="30" Margin="0, 20, 0, 0" />
+                    <!--<userControls:ClearableTextBox x:Name="title" Margin="0,20,0,0" Width="550" Height="20" Placeholder="Mixer" Grid.Row="0"/>-->
+
+                    <TextBox x:Name="delivery" VerticalContentAlignment="Center" Grid.Row="4" Width="550"
+FontSize="10" FontWeight="Light" Background="Transparent" Height="20"
+TextChanged="delivery_TextChanged" Margin="0,20,0,0" AutomationProperties.AutomationId="deliveryTextBox">
+
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5" />
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+
                 </Viewbox>
+
+                <Viewbox Panel.ZIndex="-5" Grid.Row="4" Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Left" Width="502" Height="30" Margin="3,30,0,0">
+                    <TextBlock Grid.Row="4" Grid.Column="2" x:Name="tb_delivery_Placeholder" Text="Pick-up"
+   FontSize="20" FontWeight="Light" Foreground="DarkGray"
+   VerticalAlignment="Center" Height="30" Width="503"/>
+                </Viewbox>
+
+
+
+
+
+                <!--<Viewbox Grid.Row="4" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
+                    <userControls:ClearableTextBox x:Name="delivery" Grid.Row="4" Placeholder="Pick-up" Width="800" Height="30" Margin="0, 20, 0, 0" />
+                </Viewbox>-->
 
 
 
@@ -214,14 +344,42 @@ FontSize="5" FontWeight="Bold"/>
 FontSize="5" FontWeight="Bold"/>
                 </Viewbox>
 
+
+
                 <Viewbox Grid.Row="5" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
-                    <userControls:ClearableTextBox x:Name="swap_idea" Grid.Row="5" Placeholder="Books" Width="800" Height="30" Margin="0, 20, 0, 60" />
+                    <!--<userControls:ClearableTextBox x:Name="title" Margin="0,20,0,0" Width="550" Height="20" Placeholder="Mixer" Grid.Row="0"/>-->
+
+                    <TextBox x:Name="LookingFor" VerticalContentAlignment="Center" Grid.Row="5" Width="550"
+FontSize="10" FontWeight="Light" Background="Transparent" Height="20"
+TextChanged="LookingFor_TextChanged" Margin="0,15,0,40" AutomationProperties.AutomationId="LookingForTextBox">
+
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5" />
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
+
                 </Viewbox>
 
-                <Viewbox Grid.Row="6" Stretch="Fill" StretchDirection="Both">
+                <Viewbox Panel.ZIndex="-5" Grid.Row="5" Stretch="Uniform" StretchDirection="Both" HorizontalAlignment="Left" Width="736" Margin="3,25,0,55">
+                    <TextBlock Grid.Row="5" Grid.Column="2" x:Name="tb_LookingFor_Placeholder" Text="Books"
+   FontSize="15" FontWeight="Light" Foreground="DarkGray"
+   VerticalAlignment="Center" Height="30" Width="503"/>
+                </Viewbox>
 
-                    <Button Grid.Row="6" Content="Post" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" Background="#D36414"
-                Margin="250, 20, 250, 20" Width="300" Height="30" Click="NewPost_Click" >
+
+
+
+
+                <!--<Viewbox Grid.Row="5" Stretch="Fill" StretchDirection="Both" HorizontalAlignment="Center">
+                    <userControls:ClearableTextBox x:Name="swap_idea" Grid.Row="5" Placeholder="Books" Width="800" Height="30" Margin="0, 20, 0, 60" />
+                </Viewbox>-->
+
+                <Viewbox Grid.Row="5" Stretch="Fill" StretchDirection="Both" Grid.RowSpan="2" Margin="0,96,0,0">
+
+                    <Button Grid.Row="6" Grid.RowSpan="5" Content="Post" FontSize="20" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="White" Background="#D36414"
+                Margin="250, 0, 250, 10" Width="300" Height="40" Click="NewPost_Click" AutomationProperties.AutomationId="PostClick" >
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5" />

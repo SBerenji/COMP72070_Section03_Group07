@@ -17,8 +17,8 @@ extern "C" __declspec(dllexport) int sendData(SOCKET ClientSocket, const char* T
 
 extern "C" __declspec(dllexport) int sendDataFunc(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendFunction sendFunc = send);
 
-extern "C" __declspec(dllexport) int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize);
-extern "C" __declspec(dllexport) int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunction recvFunc = recv);
+extern "C" __declspec(dllexport) int recvData(SOCKET ClientSocket, char** RxBuffer, int RxBufferSize);
+extern "C" __declspec(dllexport) int recvDataFunc(SOCKET ClientSocket, char*** RxBuffer, int RxBufferSize, RecvFunction recvFunc = recv);
 
 
 extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket);
@@ -89,20 +89,24 @@ int sendDataFunc(SOCKET ClientSocket, const char* TxBuffer, int totalSize, SendF
 }
 
 
-int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize)
+int recvData(SOCKET ClientSocket, char** RxBuffer, int RxBufferSize)
 {
-    return recvDataFunc(ClientSocket, RxBuffer, RxBufferSize, recv);
+    return recvDataFunc(ClientSocket, &RxBuffer, RxBufferSize, recv);
 }
 
 
-int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunction recvFunc) {
+int recvDataFunc(SOCKET ClientSocket, char*** RxBuffer, int RxBufferSize, RecvFunction recvFunc) {
     // The order matters, therefore the send is before receive on Client side.
     // Send
 
     //char sendBuffer[20] = "Hello World!";
     // buffer to store address of the string
 
-    int recvSize = recvFunc(ClientSocket, RxBuffer, RxBufferSize, 0);
+    **RxBuffer = new char[RxBufferSize];
+
+    memset(**RxBuffer, 0, RxBufferSize);
+
+    int recvSize = recvFunc(ClientSocket, **RxBuffer, RxBufferSize, 0);
     // here we are passing the clientSocket, the address of the string and the size of the string that we want the server to receive
     // +1 becuase of NULL terminator
 
@@ -118,7 +122,7 @@ int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunc
     else
     {
 
-        std::cout << "Message Succesfully sent: " << RxBuffer << std::endl;
+        std::cout << "Message Succesfully sent: " << **RxBuffer << std::endl;
     }
 
     return 1;

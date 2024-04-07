@@ -115,6 +115,11 @@ void Display(Packet* Pkt, std::ostream& os)
 }
 
 
+void DeserializeHeader(Packet* pkt, char** TxBuffer) {
+	memcpy(pkt->GetHead(), *TxBuffer, sizeof(*(pkt->GetHead())));
+}
+
+
 void DeserializePostCountBuffer(Packet* pkt, char* src, int& numberOfPosts) {
 	memcpy(pkt->GetHead(), src, sizeof(*(pkt->GetHead())));
 
@@ -175,6 +180,15 @@ unsigned int DeserializeHeaderLengthMember(char* RxBuffer) {
 	memcpy(&headerLength, RxBuffer + sizeof(p->GetHead()->Source) + sizeof(p->GetHead()->Destination) + sizeof(p->GetHead()->Route) + sizeof(p->GetHead()->Authorization), sizeof(headerLength));*/
 
 	return p->GetHead()->Length;
+}
+
+
+unsigned int DeserializeImageLength(char* RxBuffer, int offset) {
+	unsigned int imageLength;
+
+	memcpy(&imageLength, RxBuffer + offset, sizeof(imageLength));
+
+	return imageLength;
 }
 
 

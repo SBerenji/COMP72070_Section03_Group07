@@ -65,9 +65,16 @@ namespace WPF_Front_End
 
         private int RecvAckOfNumberOfPosts()
         {
+            IntPtr recvBuffer = IntPtr.Zero;
+
+            int recvSize = 500;
+
             byte[] RxBuffer = new byte[500];
 
-            Packet.recvData(MySocket.ClientSocket, RxBuffer, 500);
+            Packet.recvData(MySocket.ClientSocket, ref recvBuffer, recvSize);
+
+            Marshal.Copy(recvBuffer, RxBuffer, 0, recvSize);
+
 
             IntPtr PktPtr = Packet.CreatePacket();
 
@@ -80,6 +87,8 @@ namespace WPF_Front_End
 
             RxBuffer = null;
 
+            Packet.FreeBuffer(ref recvBuffer);
+
 
             return numberOfPosts;
         }
@@ -90,9 +99,15 @@ namespace WPF_Front_End
         {
             while (numberOfPosts > 0)
             {
-                byte[] RxBuffer = new byte[200000];
+                IntPtr recvBuffer = IntPtr.Zero;
 
-                Packet.recvData(MySocket.ClientSocket, RxBuffer, 200000);
+                int bufferSize = 2500000;
+
+                byte[] RxBuffer = new byte[bufferSize];
+
+                Packet.recvData(MySocket.ClientSocket, ref recvBuffer, bufferSize);
+
+                Marshal.Copy(recvBuffer, RxBuffer, 0, bufferSize);
 
                 Listing list = new Listing();
 
@@ -148,6 +163,9 @@ namespace WPF_Front_End
                 AddImageSize(ref imageSize);
 
                 numberOfPosts -= 1;
+
+
+                Packet.FreeBuffer(ref recvBuffer);
             }
         }
 
@@ -199,13 +217,21 @@ namespace WPF_Front_End
 
             if (globalVariables.imageUploaded && globalVariables.OneClientFirstSignUp)
             {
-                byte[] RxBuffer = new byte[200000];
+                IntPtr recvBuffer = IntPtr.Zero;
 
-                Packet.recvData(MySocket.ClientSocket, RxBuffer, 200000);
+                int bufferSize = 2500000;
+
+                byte[] RxBuffer = new byte[bufferSize];
+
+                Packet.recvData(MySocket.ClientSocket, ref recvBuffer, bufferSize);
+
+                Marshal.Copy(recvBuffer, RxBuffer, 0, bufferSize);
 
                 globalVariables.receivedPostLoginImage = RxBuffer.ToArray();
 
                 globalVariables.OneClientFirstSignUp = false;
+
+                Packet.FreeBuffer(ref recvBuffer);
             }
 
             if (globalVariables.imageUploaded)

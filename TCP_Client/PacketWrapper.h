@@ -41,6 +41,8 @@ extern "C" {
 
 	__declspec(dllexport) void Display(Packet* Pkt, std::ostream& os);
 
+	__declspec(dllexport) void DeserializeHeader(Packet* pkt, char** TxBuffer);
+
 	__declspec(dllexport) void DeserializePostCountBuffer(Packet* pkt, char* src, int& numberOfPosts);
 
 	__declspec(dllexport) void Deserialization(Packet* Pkt, char* src);
@@ -50,6 +52,8 @@ extern "C" {
 	__declspec(dllexport) unsigned int DeserializeClientID(char* src);
 
 	__declspec(dllexport) unsigned int DeserializeHeaderLengthMember(char* RxBuffer);
+
+	__declspec(dllexport) unsigned int DeserializeImageLength(char* RxBuffer, int offset);
 
 	__declspec(dllexport) void CopyImageFromRawBufferToByteArray(char* RxBuffer, char* imageArray, int imageSize);
 
