@@ -510,7 +510,6 @@ int threadedFunc(SOCKET ConnectionSocket)
                         delete ListingImageArray;*/
 
                         sqldb.closeDatabase(&stmt);
->>>>>>> origin/FinalServerWithLogging
                     }
 
                     sqldb.closeDatabase(&stmt);
@@ -670,7 +669,7 @@ int threadedFunc(SOCKET ConnectionSocket)
 
                     const char *sqlCountListingRows = query_str.c_str();
 
-                    logger.logPacket(*pkt);
+                    //logger.logPacket(*pkt);
 
                     // Prepare the SQL statement
                     int rc = sqlite3_prepare_v2(sqldb.getDB(), sqlCountListingRows, -1, &stmt, NULL);
@@ -1725,23 +1724,25 @@ int threadedFunc(SOCKET ConnectionSocket)
 
             return 0;
         }
+    }
+}
 
-        int main()
-        {
-            // Start the server in a separate thread
-            std::thread serverThread(setupConnection, threadedFunc);
+int main()
+{
+    // Start the server in a separate thread
+    std::thread serverThread(setupConnection, threadedFunc);
 
-            // Start the Cleanup thread
-            std::thread cleanupThread(cleanupThreads);
+    // Start the Cleanup thread
+    std::thread cleanupThread(cleanupThreads);
 
-            // Wait for the server thread to finish (never returns)
-            serverThread.join();
+    // Wait for the server thread to finish (never returns)
+    serverThread.join();
 
-            // Wait for the cleanup thread to finish (never returns)
-            cleanupThread.join();
+    // Wait for the cleanup thread to finish (never returns)
+    cleanupThread.join();
 
-            WSACleanup();
-            std::cout << "Winsock library resources cleaned up and released" << endl;
+    WSACleanup();
+    std::cout << "Winsock library resources cleaned up and released" << endl;
 
-            return 0;
-        }
+    return 0;
+}
