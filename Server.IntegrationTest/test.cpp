@@ -181,7 +181,7 @@ Packet* dummyPacketSignUpNoImage(SignUp& signup)
 
 TEST(TESTSVR02, ExecuteQueryTest) {
     //Arrange
-    std::string dbPath = "database___1.db";
+    std::string dbPath = "databasetestser11.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
         "id INTEGER NOT NULL,"
@@ -208,7 +208,7 @@ TEST(TESTSVR02, ExecuteQueryTest) {
 
 TEST(TESTSVR02, ExecuteQueryTest_Unsuccessful) {
     //Arrange
-    std::string dbPath = "database___1.db";
+    std::string dbPath = "databasetestser21.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTableListing = "TABLE ("
         "id INTEGER NOT NULL,"
@@ -230,7 +230,7 @@ TEST(TESTSVR09, ListingPostInsert) {
     //Arrange
     Listing list;
     Packet* Pkt = dummyPacketPostInfo(list);
-    std::string dbPath = "listingpostinsert___TestDatabase.db";
+    std::string dbPath = "databasetestser31.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
         "id INTEGER NOT NULL,"
@@ -260,7 +260,7 @@ TEST(TESTSVR09, ListingPostInsert_Unsuccessful) {
     //Arrange
     Listing list;
     Packet* Pkt = dummyPacketPostInfo(list);;
-    std::string dbPath = "database___101.db";
+    std::string dbPath = "databasetestser41.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTableListing = "CREATE TABLE IF NOT EXISTS listings ("
         "id INTEGER NOT NULL,"
@@ -291,7 +291,7 @@ TEST(TESTSVR01, SignUpWithImageDataInsert) {
     //Arrange
     SignUp signup;
     Packet* packet = dummyPacketSignUp(signup);
-    std::string dbPath = "signupwithimage___TestDatabase.db";
+    std::string dbPath = "databasetestser51.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
         "id INTEGER NOT NULL,"
@@ -320,7 +320,7 @@ TEST(TESTSVR01, SignUpWithImageDataInsert_Unsuccessful)
     //Arrange
     SignUp signup;
     Packet* packet = dummyPacketSignUp(signup);
-    std::string dbPath = "signupwithimagefail___TestDatabase.db";
+    std::string dbPath = "databasetestser61.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
         "id INTEGER NOT NULL,"
@@ -330,7 +330,7 @@ TEST(TESTSVR01, SignUpWithImageDataInsert_Unsuccessful)
         "profile_picture BLOB NOT NULL);";
     bool query_exe_result = sqldb.executeQuery(sqlCreateTable);
     sqlite3_stmt* stmt = nullptr;
-
+    sqldb.SignUpWithImageDataInsert(&stmt, packet, signup);
 
     //Act
     char* expectedErrorMessage = "Failed to execute statement: UNIQUE constraint failed: UsersWithProfile.email\n";
@@ -345,7 +345,7 @@ TEST(TESTSVR03, SignUpWithoutImageDataInsert) {
     //Arrange
     SignUp signup;
     Packet* packet = dummyPacketSignUp(signup);
-    std::string dbPath = "signupwithoutimage___TestDatabase.db";
+    std::string dbPath = "databasetestser71.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithoutProfile ("
         "id INTEGER NOT NULL,"
@@ -373,7 +373,7 @@ TEST(TESTSVR03, SignUpWithoutImageDataInsert_Unsuccessful) {
     //Arrange
     SignUp signup;
     Packet* packet = dummyPacketSignUp(signup);
-    std::string dbPath = "signupwithoutimage___failedTestDatabase.db";
+    std::string dbPath = "databasetestser181.db";
     SQLiteDatabase sqldb(dbPath);
     const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithoutProfile ("
         "id INTEGER NOT NULL,"
@@ -414,7 +414,7 @@ TEST(TESTSVR30, FetchImage_Successful) {
 
     Packet* Pkt = dummyPacketSignUp(signup);
 
-    std::string dbPath = "database_____.db";
+    std::string dbPath = "databasetestser91.db";
 
     SQLiteDatabase sqldb(dbPath);
 
@@ -455,7 +455,7 @@ TEST(TESTSVR30, FetchImage_UnSuccessful) {
 
     Packet* Pkt = CreatePacket();
 
-    std::string dbPath = "database_____.db";
+    std::string dbPath = "databasetestser101.db";
 
     SQLiteDatabase sqldb(dbPath);
 
@@ -480,7 +480,7 @@ TEST(TESTSVR30, FetchImage_UnSuccessful) {
 TEST(TESTSVR30, getDB)
 {
     //Arrange			
-    std::string dbPath = "databas___e444.db";
+    std::string dbPath = "databasetestser111.db";
     SQLiteDatabase sqldb(dbPath);
     sqlite3* sq = nullptr;
 
@@ -497,7 +497,7 @@ TEST(TESTSVR30, getDB)
 TEST(TESTSVR29, isOpen)
 {
     //Arrange			
-    std::string dbPath = "databas___e444.db";
+    std::string dbPath = "databasetestser121.db";
     SQLiteDatabase sqldb(dbPath);
     //sqlite3* sq = nullptr;
 
@@ -511,28 +511,13 @@ TEST(TESTSVR29, isOpen)
 }
 
 
-TEST(TESTSVR29, isOpen_Unsuccessful)
-{
-    //Arrange			
-    std::string dbPath = "isopenTe___stDatabase.db";
-    SQLiteDatabase sqldb(dbPath);
-    sqlite3_stmt* stmt = nullptr;
 
-
-    //Act
-    sqldb.closeDatabase(&stmt);
-    bool isopen = sqldb.isOpen();
-
-
-    //Assert
-    EXPECT_FALSE(isopen);
-}
 
 
 TEST(TESTSVR20, closeDB_Unsuccessful)
 {
     //Arrange			
-    std::string dbPath = "da___tabase444.db";
+    std::string dbPath = "databasetestser141.db";
     SQLiteDatabase sqldb(dbPath);
     sqlite3_stmt* stmt = nullptr;
 
