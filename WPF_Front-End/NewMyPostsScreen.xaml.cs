@@ -152,7 +152,9 @@ namespace WPF_Front_End
                 Array.Copy(RxBuffer, 1000, list.LookingFor, 0, 200);
 
 
-                uint imageSize = BitConverter.ToUInt32(RxBuffer, 1200);
+                uint imageSize = Packet.DeserializeImageLength(RxBuffer, 1200);
+
+                //uint imageSize = BitConverter.ToUInt32(RxBuffer, 1200);
 
                 globalVariables.MyPostImage1 = new byte[imageSize];
 
@@ -171,6 +173,17 @@ namespace WPF_Front_End
                 AddImageSize(ref imageSize);
 
                 numberOfPosts -= 1;
+
+
+
+                String msg_str = "I am ready to receive my next post :)";
+
+                byte[] message = Encoding.ASCII.GetBytes(msg_str);
+
+
+                int sendSize = Packet.sendData(MySocket.ClientSocket, message, message.Length);
+
+
 
                 Packet.FreeBuffer(ref recvBuffer);
             }
