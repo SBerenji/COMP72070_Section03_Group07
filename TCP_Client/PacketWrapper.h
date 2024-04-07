@@ -41,7 +41,7 @@ extern "C" {
 
 	__declspec(dllexport) void Display(Packet* Pkt, std::ostream& os);
 
-	__declspec(dllexport) void DeserializeHeader(Packet* pkt, char** TxBuffer);
+	__declspec(dllexport) void DeserializeHeader(Packet* pkt, char**** TxBuffer);
 
 	__declspec(dllexport) void DeserializePostCountBuffer(Packet* pkt, char* src, int& numberOfPosts);
 

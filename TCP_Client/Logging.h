@@ -12,7 +12,7 @@ class Logging {
 public:
 	Logging(const std::string& filename);
 
-	void logPacket(char* TxBuffer);
+	void logPacket(char*** TxBuffer);
 
 private:
 	std::string filename;

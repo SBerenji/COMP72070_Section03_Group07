@@ -26,12 +26,15 @@ extern "C" __declspec(dllexport) int CloseSocket(SOCKET ClientSocket);
 extern "C" __declspec(dllexport) int CloseSocketFunc(SOCKET ClientSocket, closesocketFunc closeFunc = closesocket, WSACleanupFunc wsacleanupfunc = WSACleanup);
 
 
+extern "C" __declspec(dllexport) void mockLogFile(char** TxBuffer);
 
 
 void mockLogFile(char** TxBuffer) {
     std::string filename = "Client_Log.txt";
     
     Logging log(filename);
+
+    log.logPacket(&TxBuffer);
 }
 
 
