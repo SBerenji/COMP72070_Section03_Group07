@@ -1380,11 +1380,19 @@ namespace ServerUnitTest
 
 
 		//Sets up a test file to be tested with a itemType, linedetails and TEXT_FILE
-		void fileSetup(const string TEXT_FILE) 
+		void fileSetupRecv(const string TEXT_FILE) 
 		{
 			std::ofstream ofs(TEXT_FILE);
 			ofs << "Time: Sun Apr  7 10:01:47 2024" << std::endl;
 			ofs << "; Source: Client; Destination: Server; Route: LOGIN" << std::endl;
+			ofs.close();
+		}
+
+		void fileSetupSend(const string TEXT_FILE)
+		{
+			std::ofstream ofs(TEXT_FILE);
+			ofs << "Time: Sun Apr  7 10:01:47 2024" << std::endl;
+			ofs << "; Source: Server; Destination: Client; Route: LOGIN" << std::endl;
 			ofs.close();
 		}
 
@@ -1406,10 +1414,19 @@ namespace ServerUnitTest
 			ofs.close();
 		}
 
+		//Sets up a test file to be tested with a itemType, linedetails and TEXT_FILE
+		void fileSetupResponse(const string TEXT_FILE)
+		{
+			std::ofstream ofs(TEXT_FILE);
+			ofs << "Time: Sun Apr  7 10:01:47 2024" << std::endl;
+			ofs << "; Source: Client; Destination: Server; Route: Response" << std::endl;
+			ofs.close();
+		}
+
 		TEST_METHOD(TestMethod3_logPacketLine_Same)
 		{
 			string TEXT_FILE = "TempFil.txt";
-			fileSetup(TEXT_FILE);  //create file with expected data
+			fileSetupRecv(TEXT_FILE);  //create file with expected data
 			vector<char*> expectedDatafromFile = readFromFile("TempFil.txt"); //read data to vector
 
 			Packet* p = dummyPacket();
@@ -1417,7 +1434,7 @@ namespace ServerUnitTest
 
 
 			RequestLogger log("testFil.txt");
-			log.logPacket(*p); //write to log file
+			log.logPacketRecv(*p); //write to log file
 			vector<char*> actualdatafromFile = readFromFile("testFil.txt"); //read from log file into actual results vector
 
 			for (size_t i = 31; i < expectedDatafromFile.size(); ++i) {
@@ -1461,6 +1478,48 @@ namespace ServerUnitTest
 			RequestLogger log("ImageTest.txt");
 			log.logImageSend(); //write to log file
 			vector<char*> actualdatafromFile = readFromFile("ImageTest.txt"); //read from log file into actual results vector
+
+			for (size_t i = 31; i < expectedDatafromFile.size(); ++i) {
+				Assert::AreEqual(expectedDatafromFile[i], actualdatafromFile[i]); //assert to check that each char is identical
+			}
+
+		}
+
+
+		TEST_METHOD(TestMethod_Response)
+		{
+			string TEXT_FILE = "ResponseTemp.txt";
+			fileSetupResponse(TEXT_FILE);  //create file with expected data
+			vector<char*> expectedDatafromFile = readFromFile("ResponseTemp.txt"); //read data to vector
+
+			Packet* p = dummyPacket();
+
+
+
+			RequestLogger log("ResponseTest.txt");
+			log.logResponse(); //write to log file
+			vector<char*> actualdatafromFile = readFromFile("ResponseTest.txt"); //read from log file into actual results vector
+
+			for (size_t i = 31; i < expectedDatafromFile.size(); ++i) {
+				Assert::AreEqual(expectedDatafromFile[i], actualdatafromFile[i]); //assert to check that each char is identical
+			}
+
+		}
+
+
+		TEST_METHOD(TestMethod_send)
+		{
+			string TEXT_FILE = "sendpacketTemp.txt";
+			fileSetupSend(TEXT_FILE);  //create file with expected data
+			vector<char*> expectedDatafromFile = readFromFile("sendpacketTemp.txt"); //read data to vector
+
+			Packet* p = dummyPacket();
+
+
+
+			RequestLogger log("sendpacketTest.txt");
+			log.logPacketSend(*p); //write to log file
+			vector<char*> actualdatafromFile = readFromFile("sendpacketTest.txt"); //read from log file into actual results vector
 
 			for (size_t i = 31; i < expectedDatafromFile.size(); ++i) {
 				Assert::AreEqual(expectedDatafromFile[i], actualdatafromFile[i]); //assert to check that each char is identical
