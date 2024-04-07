@@ -21,24 +21,21 @@
     <ClCompile Include="SQLiteDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TCPServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UserRoutes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ListingRoutes.cpp">
+    <ClCompile Include="file_utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PacketWrapper.cpp">
+    <ClCompile Include="Packet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SQLiteDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TCPServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Packet.h">
@@ -50,16 +47,10 @@
     <ClInclude Include="User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PacketWrapper.h">
+    <ClInclude Include="file_utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RequestLogger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Listing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ListingRoutes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
