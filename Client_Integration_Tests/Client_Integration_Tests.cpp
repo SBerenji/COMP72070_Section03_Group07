@@ -181,58 +181,73 @@ namespace IntegrationTests
 		/// <summary>
 		/// This test ensures that the sendData function of client can send a complete packet of sing up information to the server after estalishing a connection with the server
 		///// </summary>
-		//TEST_METHOD(TEST_CLI_25_SendPacketWithPostSingUpBody)
-		//{
-		//	// Arrange
-		//	SOCKET clientSocket = setupConnection();
-		//	std::string serverAddress = "127.0.0.1";
-		//	std::string clientAddress = "127.0.0.1";
+		TEST_METHOD(TEST_CLI_25_SendPacketWithPostSingUpBody)
+		{
+			// Arrange
+			SOCKET clientSocket = setupConnection();
+			std::string serverAddress = "127.0.0.1";
+			std::string clientAddress = "127.0.0.1";
 
 
-		//	Packet* packet = CreatePacket();
+			Packet* packet = CreatePacket();
 
-		//	// Set source, destination, and route in the packet header
-		//	memcpy(packet->GetHead()->Source, serverAddress.c_str(), serverAddress.length());
-		//	memcpy(packet->GetHead()->Destination, clientAddress.c_str(), clientAddress.length());
-		//	std::string route = "SIGNUP_IMAGENOTUPLOADED";
-		//	memcpy(packet->GetHead()->Route, route.c_str(), route.length());
+			// Set source, destination, and route in the packet header
+			memcpy(packet->GetHead()->Source, serverAddress.c_str(), serverAddress.length());
+			memcpy(packet->GetHead()->Destination, clientAddress.c_str(), clientAddress.length());
+			std::string route = "SIGNUP_IMAGENOTUPLOADED";
+			memcpy(packet->GetHead()->Route, route.c_str(), route.length());
 
-		//	// Set authorization flag in the packet header
-		//	packet->GetHead()->Authorization = true;
+			// Set authorization flag in the packet header
+			packet->GetHead()->Authorization = true;
 
-		//	// Initialize login information for the body
-		//	SignUp singup;
-		//	std::string username = "Saba_b";
-		//	memcpy(singup.username, username.c_str(), username.length());
-		//	
-		//	std::string email = "berenji@gmail.com";
-		//	memcpy(singup.email, email.c_str(), email.length());
+			// Initialize login information for the body
+			SignUp singup;
+			std::string username = "Saba_b";
+			memcpy(singup.username, username.c_str(), username.length());
+			
+			std::string email = "berenji@gmail.com";
+			memcpy(singup.email, email.c_str(), email.length());
 
-		//	std::string password = "userpasswrod";
-		//	memcpy(singup.password, password.c_str(), password.length());
-		//	singup.ImageStructArray = nullptr;
+			std::string password = "userpasswrod";
+			memcpy(singup.password, password.c_str(), password.length());
+			singup.ImageStructArray = nullptr;
 
-		//	// Set body data in the packet
-		//	packet->GetBody()->User = 120; // Assuming user ID is 0
-		//	packet->GetBody()->Data = new char[sizeof(singup)];
+			std::string msg = "Image Not Uploaded";
 
-		//	// Calculate total size of the packet
-		//	int totalSize = sizeof(*(packet->GetHead())) + sizeof(packet->GetBody()->User) + sizeof(singup);
+			singup.ImageStructArray = new char[msg.length()];
 
-		//	// Serialize packet data into TxBuffer
-		//	char* TxBuffer = SerializeData(packet, totalSize);
+			memset(singup.ImageStructArray, 0, msg.length());
 
-		//	// Act
-		//	int sendDataResult = sendData(clientSocket, TxBuffer, totalSize);
+			memcpy(singup.ImageStructArray, msg.c_str(), msg.length());
 
-		//	// Clean up
-		//	FreeBuffer(TxBuffer);
-		//	DestroyPacket(packet);
+			// Set body data in the packet
+			packet->GetBody()->User = 120;
 
-		//	// Assert
-		//	Assert::AreEqual(1, sendDataResult);
+			packet->GetHead()->Length = msg.length();
 
-		//}
+			packet->GetBody()->Data = new char[packet->GetHead()->Length];
+
+			memset(packet->GetBody()->Data, 0, packet->GetHead()->Length);
+
+			memcpy(packet->GetBody()->Data, singup.ImageStructArray, packet->GetHead()->Length);
+
+			// Calculate total size of the packet
+			int totalSize = sizeof(*(packet->GetHead())) + sizeof(packet->GetBody()->User) + packet->GetHead()->Length;
+
+			// Serialize packet data into TxBuffer
+			char* TxBuffer = SerializeData(packet, totalSize);
+
+			// Act
+			int sendDataResult = sendData(clientSocket, TxBuffer, totalSize);
+
+			// Clean up
+			FreeBuffer(TxBuffer);
+			DestroyPacket(packet);
+
+			// Assert
+			Assert::AreEqual(1, sendDataResult);
+
+		}
 
 
 
@@ -277,67 +292,45 @@ namespace IntegrationTests
 
 
 
-
-
-
-
-
-
 		///// <summary>
-		///// This test ensures that the setupConnection2 returns a clientsocket upon successfully establishing a connection with the server
+		///// This test ensures that the setupConnection returns a clientsocket upon successfully establishing a connection with the server
 		//// This test should not pass whithout running the server
 		///// </summary>
+		// False positive
+
+		TEST_METHOD(TEST_CLI_25_succesfulConnectionToServer)
+		{
+			// Arrange
+			SOCKET clientSocket;
+
+			// Act
+
+			clientSocket = setupConnection();
+
+			// Assert 
+			Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
+		}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		/// <summary>
-		///  ****************************** needs fixing, currently a false positive test
-		/// </summary>
-		//TEST_METHOD(SetUpConnection2_Successful)
-		//{
-		//	// Arrange
-		//	SOCKET clientSocket;
-
-		//	// Act
-
-		//	clientSocket = setupConnection();
-
-		//	// Assert 
-		//	Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
-		//}
 
 
 
 		/////// <summary>
-		/////// This test ensures that the setupConnection2 returns 0 if unsuccesful in establishing a connection to the server 
+		/////// This test ensures that the setupConnection returns 0 if unsuccesful in establishing a connection to the server 
 		/////// Server will not run while executing this test in order to show the functionality of the function
 		/////// </summary>
-		//TEST_METHOD(SetUpConnection2_Unsuccessful)
-		//{
-		//	// Arrange
-		//	SOCKET clientSocket;
+		TEST_METHOD(TEST_CLI_25_succesfulConnectionToServer_true_negative)
+		{
+			// Arrange
+			SOCKET clientSocket;
 
-		//	// Act
+			// Act
 
-		//	clientSocket = setupConnection();
+			clientSocket = setupConnection();
 
-		//	// Assert 
-		//	Assert::AreEqual((SOCKET)0, clientSocket);
-		//}
+			// Assert 
+			Assert::AreEqual((SOCKET)0, clientSocket);
+		}
 
 
 		// test the acutal funcitonality of the closeSocket function

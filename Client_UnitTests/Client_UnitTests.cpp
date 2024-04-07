@@ -20,8 +20,7 @@ extern "C" void FreeBuffer(char*& Buffer);
 extern "C" void Deserialization(Packet * Pkt, char* src);
 extern "C" void SetHeader(Packet * Pkt, void* Head);
 extern "C" void SetBody(Packet * Pkt, unsigned int User, char* Data, int DataSize);
-extern "C" int recvDataFunc(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize, RecvFunction recvFunc = recv);
-extern "C" int recvData(SOCKET ClientSocket, char* RxBuffer, int RxBufferSize);
+extern "C" int recvDataFunc(SOCKET ClientSocket, char*** RxBuffer, int RxBufferSize, RecvFunction recvFunc = recv);
 extern "C" char* AllocateHeaderPtr();
 extern "C" char* AllocateLoginPtr();
 extern "C" char* AllocateHeapMemory(int size);
@@ -157,11 +156,11 @@ namespace ClientUnitTests
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
-            char RxBuffer[20];
+            char** RxBuffer = nullptr;
             int totalSize = sizeof(RxBuffer);
 
             // Act
-            int result = recvDataFunc(clientSocket, RxBuffer, totalSize, recvFunction);
+            int result = recvDataFunc(clientSocket, &RxBuffer, totalSize, recvFunction);
 
             // Assert
             Assert::AreEqual(1, result);
@@ -184,7 +183,7 @@ namespace ClientUnitTests
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
-            char RxBuffer[20];
+            char** RxBuffer[20];
             int totalSize = sizeof(RxBuffer);
 
             // Act
