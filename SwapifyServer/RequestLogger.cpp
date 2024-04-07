@@ -2,7 +2,7 @@
 
     RequestLogger::RequestLogger(const std::string& filename) : filename(filename) {}
 
-    void  RequestLogger::logPacket(Packet& packet) {
+    void  RequestLogger::logPacketSend(Packet& packet) {
         std::ofstream outFile(filename, std::ios::app); // Open in append mode
         if (outFile.is_open()) {
             auto head = packet.GetHead();
@@ -12,6 +12,26 @@
 			time_t currentTime = time(0); //determines the current dat and time on system
 			char* timeString = ctime(&currentTime); //converts time to string 
             
+            outFile << "Time: " << timeString << "; Source: " << "Server" << "; Destination: " << "Client" << "; Route: " << head->Route << std::endl;
+
+            outFile.close();
+        }
+        else {
+            std::cerr << "Error opening log file." << std::endl;
+        }
+    }
+
+
+    void  RequestLogger::logPacketRecv(Packet& packet) {
+        std::ofstream outFile(filename, std::ios::app); // Open in append mode
+        if (outFile.is_open()) {
+            auto head = packet.GetHead();
+
+            outFile << std::dec;
+
+            time_t currentTime = time(0); //determines the current dat and time on system
+            char* timeString = ctime(&currentTime); //converts time to string 
+
             outFile << "Time: " << timeString << "; Source: " << "Client" << "; Destination: " << "Server" << "; Route: " << head->Route << std::endl;
 
             outFile.close();
@@ -21,6 +41,23 @@
         }
     }
 
+    void  RequestLogger::logResponse() {
+        std::ofstream outFile(filename, std::ios::app); // Open in append mode
+        if (outFile.is_open()) {
+
+            outFile << std::dec;
+
+            time_t currentTime = time(0); //determines the current dat and time on system
+            char* timeString = ctime(&currentTime); //converts time to string 
+
+            outFile << "Time: " << timeString << "; Source: " << "Client" << "; Destination: " << "Server" << "; Route: " << "Response" << std::endl;
+
+            outFile.close();
+        }
+        else {
+            std::cerr << "Error opening log file." << std::endl;
+        }
+    }
 
 
     void  RequestLogger::logListingSend() {

@@ -11,7 +11,12 @@ class RequestLogger {
 public:
     RequestLogger(const std::string& filename);
 
-    void logPacket(Packet& packet);
+    void logPacketSend(Packet& packet);
+
+
+    void logPacketRecv(Packet& packet);
+    void logResponse();
+
 
     void logListingSend();
 
