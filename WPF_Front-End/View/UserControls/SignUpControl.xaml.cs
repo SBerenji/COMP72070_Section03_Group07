@@ -348,7 +348,7 @@ namespace WPF_Front_End.View.UserControls
 
                 if (head.Authorization)
                 {
-                    MessageBox.Show("User Already exits!! Please LogIn instead!!");
+                    MessageBox.Show("User Already exits!! Please LogIn instead.");
                 }
 
                 else
@@ -531,8 +531,5 @@ namespace WPF_Front_End.View.UserControls
             encoder.Save(memStream);
             return memStream.ToArray();
         }
-
-
-
     }
 }

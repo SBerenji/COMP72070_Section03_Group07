@@ -18,7 +18,7 @@
 
         <Image x:Name="profile_icon" Source="/Images/profile.jpg" HorizontalAlignment="Left" Width="56" Height="52" VerticalAlignment="Top" Margin="80,5,0,50" Visibility="Visible"/>
 
-        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Width="56" Height="52" VerticalAlignment="Top"  Stretch="UniformToFill" Margin="80,5,0,50" Visibility="Collapsed"/>
+        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Width="56" Height="52" VerticalAlignment="Top"  Stretch="UniformToFill" Margin="80,5,0,50" Visibility="Collapsed" AutomationProperties.AutomationId="ProfileImage"/>
 
         <TextBlock Grid.Row="0" x:Name="Profile" Text="My Profile" FontSize="17" VerticalAlignment="Top" TextAlignment="Center"
         HorizontalAlignment="Left" Margin="10,62,0,0" Foreground="DarkGoldenrod" Width="195" />
@@ -58,7 +58,7 @@ DockPanel.Dock="Left" Width="89" Height="27" BorderThickness="0"
             <Image Source="/Images/chat.jpg" Height="28" Width="47"/>
             <Button x:Name="Messages" Content="Messages" Margin="5" Foreground="#000000" FontSize="17" Click="MessageClick"
 DockPanel.Dock="Left" Width="77" Height="27" BorderThickness="0"  
-    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" />
+    Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" AutomationProperties.AutomationId="MessagesButton"/>
         </DockPanel>
 
 

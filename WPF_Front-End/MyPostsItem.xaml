@@ -14,12 +14,12 @@
         <TextBlock Margin="214,62,490,127"  TextWrapping="Wrap" FontWeight="Bold" FontSize="12" Language="en-ca" Text="Location:" />
         <TextBlock x:Name="location" Margin="270,62,19,126"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding Location}" />
         <TextBlock Margin="214,90,352,103"  TextWrapping="Wrap" FontWeight="Bold" FontSize="12" Language="en-ca" Text="Condition: " />
-        <TextBlock x:Name="condition" Margin="278,90,26,98"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding Condition}"/>
+        <TextBlock x:Name="condition" Margin="278,90,26,98"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding Condition}" />
         <TextBlock Margin="214,118,490,70"  TextWrapping="Wrap" FontWeight="Bold" FontSize="12" Language="en-ca" Text="Delivery: " />
         <TextBlock x:Name="delivery" Margin="267,118,31,70"  TextWrapping="Wrap" FontSize="12" Language="en-ca" Text="{Binding Delivery}"  />
 
         <TextBlock Margin="214,147,459,42"  TextWrapping="Wrap" FontWeight="Bold" FontSize="12" Language="en-ca" Text="Looking for: " />
-        <TextBlock x:Name="lookingFor" Margin="288,147,10,41"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding LookingFor}"  />
+        <TextBlock x:Name="lookingFor" Margin="288,147,10,41"  TextWrapping="Wrap"  FontSize="12" Language="en-ca" Text="{Binding LookingFor}"  AutomationProperties.AutomationId="lookingFor"/>
 
 
         <Button x:Name="Delete" Content="Delete" Click="Button_Delete" Background="Red" Foreground="white" Margin="316,173,316,8">

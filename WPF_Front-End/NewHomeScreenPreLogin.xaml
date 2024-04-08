@@ -112,7 +112,7 @@ Foreground="White" FontFamily="Times New Roman" VerticalAlignment="Top" Width="1
                         <Button Background="white" Click="CreateAccount_Click"
                           BorderBrush="white" Height="20" Width="150" Margin="-20, 0, 10, 0">
 
-                            <TextBlock Text="Create An Account" TextDecorations="Underline" Foreground="Blue" />
+                            <TextBlock Text="Create An Account" TextDecorations="Underline" Foreground="Blue" AutomationProperties.AutomationId="CreatAccountText"/>
                         </Button>
                     </Viewbox>
 

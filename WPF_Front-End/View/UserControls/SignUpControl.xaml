@@ -73,7 +73,7 @@ BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
 
 
         <Button Grid.Row="9" x:Name="loginButton" Content="Log in" Foreground="White" FontSize="10" Height="20" Click="LogIn_Click"
-        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="92,34,85,-47">
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="92,34,85,-47" AutomationProperties.AutomationId="SignUpPageLogInButton">
 
             <Button.Style>
                 <Style TargetType="Button">
@@ -134,7 +134,7 @@ BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
 
         <TextBox x:Name="username" VerticalContentAlignment="Center" Grid.Row="1"
          FontSize="10" FontWeight="Light" Background="Transparent" Height="23"
-         TextChanged="username_TextChanged" Margin="9,0,115,0" AutomationProperties.AutomationId="UsernameTextBox">
+         TextChanged="username_TextChanged" Margin="9,0,115,0" AutomationProperties.AutomationId="SignUpUsernameTextBox">
 
             <TextBox.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -151,7 +151,7 @@ BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
 
         <TextBox x:Name="email" VerticalContentAlignment="Center" Grid.Row="2"
  FontSize="10" FontWeight="Light" Background="Transparent" Height="23"
- TextChanged="email_TextChanged" Margin="9,5,115,0" AutomationProperties.AutomationId="EmailTextBox">
+ TextChanged="email_TextChanged" Margin="9,5,115,0" AutomationProperties.AutomationId="SignUpEmailTextBox">
 
             <TextBox.Resources>
                 <Style TargetType="{x:Type Border}">
@@ -168,8 +168,8 @@ BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
 
 
         <PasswordBox x:Name="passwordBox" Template="{StaticResource passwordbox}" VerticalContentAlignment="Center"
- FontSize="10" FontWeight="Light" Background="Transparent" Grid.Row="3" Margin="10,5,115,0" AutomationProperties.AutomationId="PasswordTextBlock"
- PasswordChanged="passwordBox_PasswordChanged" >
+ FontSize="10" FontWeight="Light" Background="Transparent" Grid.Row="3" Margin="10,5,115,45" AutomationProperties.AutomationId="SignUpPasswordTextBox"
+ PasswordChanged="passwordBox_PasswordChanged" Grid.RowSpan="2" >
 
             <!--PasswordChanged="PasswordBox_PasswordChanged"-->
 
@@ -196,7 +196,7 @@ BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
 
 
         <Button Grid.Row="4" x:Name="SignUpButton" Content="Sign Up" Foreground="White" FontSize="11" Height="20"
-        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="18,18,18,12" Click="SignUp_Click">
+        VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="18,18,18,12" Click="SignUp_Click" AutomationProperties.AutomationId="SignUpButton">
 
             <Button.Style>
                 <Style TargetType="Button">
@@ -236,7 +236,7 @@ BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
 
                 <Rectangle x:Name="Rectangle" Width="84" Height="78" Stroke="Gray" RadiusX="8" RadiusY="8" Margin="-16,0,16,0" Grid.RowSpan="2" />
 
-                
+
                 <Button x:Name="RemoveButton" Background="Gray" Foreground="White" Width="60" Height="13" FontSize="7" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Margin="6,62,38,2" Click="RemoveButton_Click" Visibility="Collapsed">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Remove Image" Margin="0,0,5,0" VerticalAlignment="Center"/>
@@ -249,7 +249,8 @@ BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="5">
                 </Button>
 
                 <Image Source="/Images/addUser.png" x:Name="AddUserImage" Width="40" Height="40" Stretch="UniformToFill" Grid.Column="0" Margin="6,5,38,2" 
-                       AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="DropArea_DragOver"  Visibility="Visible" MouseDown="AddUserImage_MouseDown" MouseEnter="AddUserImage_MouseEnter" Cursor="Hand"/>
+                       AllowDrop="True" Drop="DropArea_Drop" DragEnter="DropArea_DragEnter" DragOver="DropArea_DragOver"  Visibility="Visible" MouseDown="AddUserImage_MouseDown" 
+                       MouseEnter="AddUserImage_MouseEnter" Cursor="Hand"  AutomationProperties.AutomationId="BrowsingButton"/>
 
                 <Image x:Name="DropAreaImage" Width="55" Height="55" Stretch="Uniform" Grid.Column="0" Margin="6,-10,38,2"/>
 

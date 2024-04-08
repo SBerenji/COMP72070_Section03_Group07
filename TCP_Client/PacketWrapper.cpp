@@ -1,9 +1,9 @@
 #include "PacketWrapper.h"
 
 
-void serializeLoginData(char* BodyBuffer, struct LogIn login) {
-	memcpy(BodyBuffer, &login, sizeof(login));
-}
+//void serializeLoginData(char* BodyBuffer, struct LogIn login) {
+//	memcpy(BodyBuffer, &login, sizeof(login));
+//}
 
 /*__declspec(dllexport) void serializeSignupData(char* BodyBuffer, )*/
 
@@ -24,15 +24,15 @@ char* AllocateHeapMemory(int size) {
 	return TxBuffer;
 }
 
-void SerializeStaticDataToBuffer(char* heapBuffer, char* username, char* password, char* email) {
-	SignUp signup;
-
-	memcpy(heapBuffer, username, sizeof(signup.username));
-	memcpy(heapBuffer + sizeof(signup.username), password, sizeof(signup.password));
-	memcpy(heapBuffer + sizeof(signup.username) + sizeof(signup.password), email, sizeof(signup.email));
-
-	/*memcpy(heapBuffer, &signup, sizeof(signup) - sizeof(signup.ImageStructArray));*/
-}
+//void SerializeStaticDataToBuffer(char* heapBuffer, char* username, char* password, char* email) {
+//	SignUp signup;
+//
+//	memcpy(heapBuffer, username, sizeof(signup.username));
+//	memcpy(heapBuffer + sizeof(signup.username), password, sizeof(signup.password));
+//	memcpy(heapBuffer + sizeof(signup.username) + sizeof(signup.password), email, sizeof(signup.email));
+//
+//	/*memcpy(heapBuffer, &signup, sizeof(signup) - sizeof(signup.ImageStructArray));*/
+//}
 
 void CopyBufferToHeap(char* heapBuffer, char* srcBuffer, int size) {
 	memcpy(heapBuffer, srcBuffer, size);
@@ -127,16 +127,16 @@ void DeserializePostCountBuffer(Packet* pkt, char* src, int& numberOfPosts) {
 }
 
 
-void Deserialization(Packet* Pkt, char* src) {
-	memcpy(Pkt->GetHead(), src, sizeof(*(Pkt->GetHead())));
-
-	Pkt->GetBody()->Data = new char[Pkt->GetHead()->Length];
-
-	memcpy(&(Pkt->GetBody()->User), src + sizeof(*(Pkt->GetHead())), sizeof(Pkt->GetBody()->User));
-	memcpy(Pkt->GetBody()->Data, src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User), Pkt->GetHead()->Length);
-
-	memcpy(Pkt->GetTail(), src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length, sizeof(*(Pkt->GetTail())));
-}
+//void Deserialization(Packet* Pkt, char* src) {
+//	memcpy(Pkt->GetHead(), src, sizeof(*(Pkt->GetHead())));
+//
+//	Pkt->GetBody()->Data = new char[Pkt->GetHead()->Length];
+//
+//	memcpy(&(Pkt->GetBody()->User), src + sizeof(*(Pkt->GetHead())), sizeof(Pkt->GetBody()->User));
+//	memcpy(Pkt->GetBody()->Data, src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User), Pkt->GetHead()->Length);
+//
+//	memcpy(Pkt->GetTail(), src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length, sizeof(*(Pkt->GetTail())));
+//}
 
 
 void DeserializationWithoutTail(Packet* Pkt, char* src) {

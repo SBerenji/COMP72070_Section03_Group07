@@ -405,6 +405,7 @@ namespace WPF_Front_End
 
 
                 MessageBox.Show("Item successfully Posted!! You can now view your post from 'My Posts' tab.");
+                
             }
         }
     }

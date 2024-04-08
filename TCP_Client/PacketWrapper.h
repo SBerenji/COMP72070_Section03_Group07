@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-	__declspec (dllexport) void serializeLoginData(char* BodyBuffer, struct LogIn login);
+	//__declspec (dllexport) void serializeLoginData(char* BodyBuffer, struct LogIn login);
 
 	/*__declspec(dllexport) void serializeSignupData(char* BodyBuffer, )*/
 
@@ -20,7 +20,7 @@ extern "C" {
 
 	__declspec(dllexport) char* AllocateHeapMemory(int size);
 
-	__declspec(dllexport) void SerializeStaticDataToBuffer(char* heapBuffer, char* username, char* password, char* email);
+	//__declspec(dllexport) void SerializeStaticDataToBuffer(char* heapBuffer, char* username, char* password, char* email);
 
 	__declspec(dllexport) void CopyBufferToHeap(char* heapBuffer, char* srcBuffer, int size);
 
@@ -45,7 +45,7 @@ extern "C" {
 
 	__declspec(dllexport) void DeserializePostCountBuffer(Packet* pkt, char* src, int& numberOfPosts);
 
-	__declspec(dllexport) void Deserialization(Packet* Pkt, char* src);
+	//__declspec(dllexport) void Deserialization(Packet* Pkt, char* src);
 
 	__declspec(dllexport) void DeserializationWithoutTail(Packet* Pkt, char* src);
 
