@@ -315,7 +315,7 @@ namespace WPF_Front_End
 
         private void NewPost_Click(object sender, RoutedEventArgs e)
         {
-            if (title.Text == "" || location.Text == "" || condition.Text == "" || worth.Text == "" || delivery.Text == "" || LookingFor.Text == "")
+            if (title.Text == "" || location.Text == "" || condition.Text == "" || worth.Text == "" || delivery.Text == "" || LookingFor.Text == "" || (SelectedImage2.Source == null && DropAreaImage2.Source == null))
             {
                 MessageBox.Show("Please Fill all the details!!");
             }
