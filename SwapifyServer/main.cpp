@@ -330,7 +330,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
         Listing list;
 
         Deserialization(Pkt, RxBuffer, log, signup, check, list);
-        logginginfo.logPacketRecv(*Pkt);
+        logginginfo.logPacketRecv(&Pkt);
 
 
         char* errMsg = 0;
@@ -400,7 +400,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             memcpy(TxBuffer + sizeof(*(pkt->GetHead())), &clientID, sizeof(clientID));
 
-            logginginfo.logPacketSend(*pkt);
+            logginginfo.logPacketSend(&pkt);
             int sendSize = send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())) + sizeof(pkt->GetBody()->User), 0);
         }
 
@@ -555,7 +555,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             memcpy(TxBuffer, pkt->GetHead(), sizeof(*(pkt->GetHead())));
 
-            logginginfo.logPacketSend(*pkt);
+            logginginfo.logPacketSend(&pkt);
             send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())), 0);
 
 
@@ -663,7 +663,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
                     memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor) + sizeof(sizeOfImage), list.ImageStructArray, sizeOfImage);
 
-                    logginginfo.logListingSend();
+                    logginginfo.logListingSend(&list);
                     int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
 
                     delete[] TxBuffer;
@@ -680,7 +680,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
                     std::string messageReceived(TxBuffer);
 
                     std::cout << "Message Sent By Client: " << messageReceived << std::endl;
-                    logginginfo.logResponse();
+                    logginginfo.logResponse(messageReceived.c_str());
 
                     delete[] TxBuffer;
                     TxBuffer = nullptr;
@@ -731,7 +731,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
 
 
-            logginginfo.logImageSend();
+            logginginfo.logImageSend(&imageArray, imageSize);
             int sendSize = send(ConnectionSocket, imageArray, imageSize, 0);
 
             if (sendSize < 0) {
@@ -859,7 +859,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
                 memcpy(TxBuffer, pkt_login->GetHead(), sizeof(*(pkt_login->GetHead())));
 
-                logginginfo.logPacketSend(*pkt_login);
+                logginginfo.logPacketSend(&pkt_login);
                 int sendSize = send(ConnectionSocket, TxBuffer, totalSize, 0);
 
                 if (sendSize < 0) {
@@ -977,7 +977,11 @@ int threadedFunc(SOCKET ConnectionSocket) {
                 memcpy(TxBuffer, pkt_login->GetHead(), sizeof(*(pkt_login->GetHead())));
                 memcpy(TxBuffer + sizeof(*(pkt_login->GetHead())), &(pkt_login->GetBody()->User), sizeof(pkt_login->GetBody()->User));
                 memcpy(TxBuffer + sizeof(*(pkt_login->GetHead())) + sizeof(pkt_login->GetBody()->User), pkt_login->GetBody()->Data, pkt_login->GetHead()->Length);
-                logginginfo.logPacketSend(*pkt_login);
+               
+                
+                logginginfo.logPacketSend(&pkt_login);
+                
+                
                 int sendSize = send(ConnectionSocket, TxBuffer, totalSize, 0);
 
                 if (sendSize < 0) {
@@ -1079,7 +1083,11 @@ int threadedFunc(SOCKET ConnectionSocket) {
                 memcpy(TxBuffer, pkt_login->GetHead(), sizeof(*(pkt_login->GetHead())));
                 memcpy(TxBuffer + sizeof(*(pkt_login->GetHead())), &(pkt_login->GetBody()->User), sizeof(pkt_login->GetBody()->User));
                 memcpy(TxBuffer + sizeof(*(pkt_login->GetHead())) + sizeof(pkt_login->GetBody()->User), pkt_login->GetBody()->Data, pkt_login->GetHead()->Length);
-                logginginfo.logPacketSend(*pkt_login);
+                
+                
+                logginginfo.logPacketSend(&pkt_login);
+                
+                
                 int sendSize = send(ConnectionSocket, TxBuffer, totalSize, 0);
 
                 if (sendSize < 0) {
@@ -1154,7 +1162,9 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             memcpy(TxBuffer, pkt->GetHead(), sizeof(*(pkt->GetHead())));
 
-            logginginfo.logPacketSend(*pkt);
+            logginginfo.logPacketSend(&pkt);
+           
+            
             send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())), 0);
 
 
@@ -1261,7 +1271,13 @@ int threadedFunc(SOCKET ConnectionSocket) {
                     memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor), &sizeOfImage, sizeof(sizeOfImage));
 
                     memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor) + sizeof(sizeOfImage), list.ImageStructArray, sizeOfImage);
-                    logginginfo.logListingSend();
+                    
+                    
+                    
+                    logginginfo.logListingSend(&list);
+                    
+                    
+                    
                     int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
 
                     delete[] TxBuffer;
@@ -1274,9 +1290,11 @@ int threadedFunc(SOCKET ConnectionSocket) {
                     memset(TxBuffer, 0, 100);
 
                     int recvSize = recv(ConnectionSocket, TxBuffer, 100, 0);
-                    logginginfo.logResponse();
+                    
 
                     std::string messageReceived(TxBuffer);
+
+                    logginginfo.logResponse(messageReceived.c_str());
 
                     std::cout << "Message Sent By Client: " << messageReceived << std::endl;
 
@@ -1351,7 +1369,9 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             memcpy(TxBuffer, pkt->GetHead(), sizeof(*(pkt->GetHead())));
 
-            logginginfo.logPacketSend(*pkt);
+            logginginfo.logPacketSend(&pkt);
+
+
             send(ConnectionSocket, TxBuffer, sizeof(*(pkt->GetHead())), 0);
 
 
@@ -1459,7 +1479,8 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
                     memcpy(TxBuffer + sizeof(list.Title) + sizeof(list.Location) + sizeof(list.Condition) + sizeof(list.EstimatedWorth) + sizeof(list.Delivery) + sizeof(list.LookingFor) + sizeof(sizeOfImage), list.ImageStructArray, sizeOfImage);
 
-                    logginginfo.logListingSend();
+                    logginginfo.logListingSend(&list);
+
                     int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
 
                     delete[] TxBuffer;
@@ -1472,9 +1493,11 @@ int threadedFunc(SOCKET ConnectionSocket) {
                     memset(TxBuffer, 0, 100);
 
                     int recvSize = recv(ConnectionSocket, TxBuffer, 100, 0);
-                    logginginfo.logResponse();
+                    
 
                     std::string messageReceived(TxBuffer);
+
+                    logginginfo.logResponse(messageReceived.c_str());
 
                     std::cout << "Message Sent By Client: " << messageReceived << std::endl;
 
@@ -1532,7 +1555,7 @@ int threadedFunc(SOCKET ConnectionSocket) {
             /*Close the database connection*/
             sqlite3_close(sqldb.getDB());
 
-            Packet pkt;
+            Packet* pkt = CreatePacket();
 
             char source[20] = "127.0.0.1";
             int source_size = sizeof(source);
@@ -1547,12 +1570,12 @@ int threadedFunc(SOCKET ConnectionSocket) {
 
             int length = 0;
 
-            SetHeaderInformation(&pkt, source, source_size, destination, destination_size, Route, Route_size, Authorization, length);
+            SetHeaderInformation(pkt, source, source_size, destination, destination_size, Route, Route_size, Authorization, length);
 
             int TotalSize = 0;
 
-            char* TxBuffer = SerializeUserCheckingData(&pkt, TotalSize);
-            logginginfo.logPacketSend(pkt);
+            char* TxBuffer = SerializeUserCheckingData(pkt, TotalSize);
+            logginginfo.logPacketSend(&pkt);
             int sendSize = send(ConnectionSocket, TxBuffer, TotalSize, 0);
 
             if (sendSize < 0) {
