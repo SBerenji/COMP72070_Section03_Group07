@@ -17,7 +17,6 @@ extern "C" char* SerializeData(Packet * Pkt, int& TotalSize);
 extern "C" Packet * CreatePacket();
 extern "C" void DestroyPacket(Packet * &Pkt);
 extern "C" void FreeBuffer(char*& Buffer);
-extern "C" void Deserialization(Packet * Pkt, char* src);
 extern "C" void SetHeader(Packet * Pkt, void* Head);
 extern "C" void SetBody(Packet * Pkt, unsigned int User, char* Data, int DataSize);
 extern "C" int recvDataFunc(SOCKET ClientSocket, char*** RxBuffer, int RxBufferSize, RecvFunction recvFunc = recv);
@@ -26,8 +25,6 @@ extern "C" char* AllocateLoginPtr();
 extern "C" char* AllocateHeapMemory(int size);
 extern "C" void CopyBufferToHeap(char* heapBuffer, char* srcBuffer, int size);
 extern "C" char* AllocateSignupPtr(int imageSize);
-extern "C" void serializeLoginData(char* BodyBuffer, struct LogIn login);
-extern "C" void SerializeStaticDataToBuffer(char* heapBuffer, char* username, char* password, char* email);
 extern "C" char* AllocateListingPtr(int imageSize);
 extern "C" void DeserializePostCountBuffer(Packet * pkt, char* src, int& numberOfPosts);
 
@@ -121,16 +118,6 @@ int MockRecvSuccess(SOCKET s, char* buf, int len, int flags)
     return 1; // This function will return 1 upon success
 }
 
-// Function to get the type of a socket
-//int GetSocketType(SOCKET socket) {
-//    int type;
-//    int optlen = sizeof(type);
-//    if (getsockopt(socket, SOL_SOCKET, SO_TYPE, (char*)&type, &optlen) == SOCKET_ERROR) {
-//        return -1; // Indicate failure
-//    }
-//    return type;
-//}
-
 
 
 namespace ClientUnitTests
@@ -156,7 +143,9 @@ namespace ClientUnitTests
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
-            char** RxBuffer = nullptr;
+            char* testBuff = nullptr;
+
+            char** RxBuffer = &testBuff;
             int totalSize = sizeof(RxBuffer);
 
             // Act
@@ -183,11 +172,13 @@ namespace ClientUnitTests
 
             Assert::AreNotEqual(INVALID_SOCKET, clientSocket);
 
-            char** RxBuffer[20];
+            char* testBuff = nullptr;
+
+            char** RxBuffer = &testBuff;
             int totalSize = sizeof(RxBuffer);
 
             // Act
-            int result = recvDataFunc(clientSocket, RxBuffer, totalSize, recvFunction);
+            int result = recvDataFunc(clientSocket, &RxBuffer, totalSize, recvFunction);
 
             // Assert
             Assert::AreEqual(0, result);
@@ -586,28 +577,7 @@ namespace ClientUnitTests
             delete[] result;
         } 
         
-        
-        
-        ///// <summary>
-        ///// This test ensures that the serializeLoginData function successfully serializes the data in the Login structure into a pointer 
-        ///// </summary>
-        TEST_METHOD(TEST_CLI_10_serializeLoginData)
-        {
-            // Arrange
-            LogIn loginData;
-            strcpy_s(loginData.username, "testuser");
-            strcpy_s(loginData.password, "testpassword");
-
-            char* BodyBuffer = new char[sizeof(LogIn)];
-
-            // Act
-            serializeLoginData(BodyBuffer, loginData);
-
-            // Assert
-            Assert::IsTrue(memcmp(&loginData, BodyBuffer, sizeof(LogIn)) == 0);
-
-        } 
-
+       
 
 
         ///// <summary>

@@ -313,8 +313,8 @@ namespace WPF_Front_End
         public static extern IntPtr AllocateListingPtr(int imageSize);
 
 
-        [DllImport(dllpath)]
-        public static extern void SerializeStaticDataToBuffer(IntPtr heapBuffer, byte[] username, byte[] password, byte[] email);
+        //[DllImport(dllpath)]
+        //public static extern void SerializeStaticDataToBuffer(IntPtr heapBuffer, byte[] username, byte[] password, byte[] email);
 
 
         [DllImport(dllpath)]
@@ -337,8 +337,8 @@ namespace WPF_Front_End
         public static extern void SetHeader(IntPtr Packet, IntPtr Head);
 
 
-        [DllImport(dllpath)]
-        public static extern IntPtr serializeLoginData(LogIn login);
+        //[DllImport(dllpath)]
+        //public static extern IntPtr serializeLoginData(LogIn login);
 
 
         [DllImport(dllpath)]
@@ -369,8 +369,8 @@ namespace WPF_Front_End
         public static extern void DeserializePostCountBuffer(IntPtr pkt, byte[] src, out int numberOfPosts);
 
 
-        [DllImport(dllpath)]
-        public static extern void Deserialization(IntPtr Pkt, byte[] src);
+        //[DllImport(dllpath)]
+        //public static extern void Deserialization(IntPtr Pkt, byte[] src);
 
 
         [DllImport(dllpath)]
