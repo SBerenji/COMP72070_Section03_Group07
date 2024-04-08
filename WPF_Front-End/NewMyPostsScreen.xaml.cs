@@ -118,7 +118,7 @@ namespace WPF_Front_End
 
                 Packet.recvData(MySocket.ClientSocket, ref recvBuffer, bufferSize);
 
-                Packet.mockLogFile(ref recvBuffer);
+                //Packet.mockLogFile(ref recvBuffer);
 
                 Marshal.Copy(recvBuffer, RxBuffer, 0, bufferSize);
 
@@ -161,7 +161,7 @@ namespace WPF_Front_End
 
                 //uint imageSize = BitConverter.ToUInt32(RxBuffer, 1200);
 
-                globalVariables.MyPostImage1 = new byte[imageSize];
+                //globalVariables.MyPostImage1 = new byte[imageSize];
 
                 list.ImageStructArray = Packet.AllocateHeapMemory((int)imageSize);
 

@@ -411,7 +411,7 @@ namespace WPF_Front_End
         public static ObservableCollection<MyPostsItem> Posts = new ObservableCollection<MyPostsItem>();
 
         public static ObservableCollection<Post> exchangePosts = new ObservableCollection<Post>();
-        public static byte[] MyPostImage1 {  get; set; }
+        //public static byte[] MyPostImage1 {  get; set; }
         public static string bodyBuffer {  get; set; }
 
         public static string username { get; set; }

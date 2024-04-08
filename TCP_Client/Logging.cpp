@@ -32,3 +32,24 @@ void Logging::logPacket(char*** TxBuffer) {
         std::cerr << "Error opening log file." << std::endl;
     }
 }
+
+
+
+
+
+
+void Logging::logListingSend(Listing* ptrToList) {
+    std::ofstream outFile(filename, std::ios::app); // Open in append mode
+    if (outFile.is_open()) {
+
+        time_t currentTime = time(0); //determines the current dat and time on system
+        char* timeString = ctime(&currentTime); //converts time to string 
+
+        outFile << "Time: " << timeString << std::endl << "Title: " << ptrToList->Title << std::endl << "Location: " << ptrToList->Location << std::endl << "Condition: " << ptrToList->Condition << std::endl << "Estimated Worth: " << ptrToList->EstimatedWorth << std::endl << "Delivery: " << ptrToList->Delivery << std::endl << "Swap Idea (Looking For)" << ptrToList->LookingFor << std::endl << std::endl;
+
+        outFile.close();
+    }
+    else {
+        std::cerr << "Error opening log file." << std::endl;
+    }
+}

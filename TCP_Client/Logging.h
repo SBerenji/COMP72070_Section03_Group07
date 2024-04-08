@@ -14,6 +14,8 @@ public:
 
 	void logPacket(char*** TxBuffer);
 
+	void logListingSend(Listing* ptrToList);
+
 private:
 	std::string filename;
 };
