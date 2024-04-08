@@ -41,8 +41,6 @@ int GetSocketType(SOCKET socket)
 }
 
 
-
-
 namespace IntegrationTests
 {
 	TEST_CLASS(IntegrationTests)
@@ -171,37 +169,6 @@ namespace IntegrationTests
 
 		}
 
-
-
-		/////// <summary>
-		/////// This test ensures that the Deserialization function successfully deserializes the serialized data passed to it.
-		//////  In order to test this funciton 
-		/////// </summary>
-		//TEST_METHOD(Serialization_and_Deserialiation)
-		//{
-		//	// Arrange
-		//	Packet* packet = CreatePacket();
-		//	packet->GetBody()->Data = new char[10]; // Assuming data length is 10
-		//	packet->GetBody()->Data = "Testing";
-		//	packet->GetHead()->Length = 10; // Set the length of the head
-
-		//	int totalSize = 0;
-		//	char* serializedData = SerializeData(packet, totalSize); // Serialize the packet to get the serialized data
-
-
-		//	Packet* deserializedPacket = CreatePacket();  // Create a new packet to deserialize into
-
-		//	Deserialization(deserializedPacket, serializedData); // Deserializing the data into the new packet
-
-		//	// Assert 
-		//	Assert::AreEqual(10, (int)deserializedPacket->GetHead()->Length);
-		//	Assert::IsNotNull(deserializedPacket->GetBody()->Data);
-
-		//	// Clean up
-		//	DestroyPacket(packet);
-		//	FreeBuffer(serializedData);
-		//	DestroyPacket(deserializedPacket);
-		//}
 
 
 		///// <summary>

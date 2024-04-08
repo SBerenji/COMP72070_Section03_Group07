@@ -239,6 +239,7 @@ unsigned int CalculateChecksum() {
 char* SerializeMyPostCountData(Packet* Pkt, int& totalSize) {
 	if (Pkt->GetTxBuffer()) {
 		delete[] Pkt->GetTxBuffer();
+		Pkt->GetTxBuffer() = nullptr; 
 	}
 	
 	totalSize = (sizeof(*(Pkt->GetHead())) + (sizeof(Pkt->GetBody()->User)));
@@ -257,6 +258,8 @@ char* SerializeMyPostCountData(Packet* Pkt, int& totalSize) {
 char* SerializeData(Packet* Pkt, int& TotalSize) {
 	if (Pkt->GetTxBuffer()) {
 		delete[] Pkt->GetTxBuffer();
+		Pkt->GetTxBuffer() = nullptr;
+
 	}
 
 	Pkt->GetTail()->Checksum = CalculateChecksum();
@@ -283,6 +286,7 @@ char* SerializeData(Packet* Pkt, int& TotalSize) {
 char* SerializeHeaderOnlyPkt(Packet* Pkt, int& TotalSize) {
 	if (Pkt->GetTxBuffer()) {
 		delete[] Pkt->GetTxBuffer();
+		Pkt->GetTxBuffer() = nullptr;
 	}
 
 	TotalSize = sizeof(*(Pkt->GetHead()));
