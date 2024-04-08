@@ -437,13 +437,18 @@ int GetUserUploadedProfilePhoto(SOCKET& ConnectionSocket, RequestLogger** loggin
 
     SQLiteDatabase sqldb(dbPath);
 
+    std::ostringstream oss;
+
+    std::string query;
+
+    int clientID;
+
     // SQL command to create table
     const char* sqlCreateTable = "CREATE TABLE IF NOT EXISTS UsersWithProfile ("
         "id INTEGER NOT NULL,"
         "username TEXT NOT NULL,"
         "password TEXT NOT NULL,"
-        "email TEXT NOT NULL,"
-        "PRIMARY KEY(id, email),"
+        "email TEXT PRIMARY KEY,"
         "profile_picture BLOB NOT NULL);";
 
 
@@ -458,6 +463,30 @@ int GetUserUploadedProfilePhoto(SOCKET& ConnectionSocket, RequestLogger** loggin
     sqlite3_stmt* stmt = nullptr;
 
     int SignUpdataInsertionReturn = sqldb.SignUpWithImageDataInsert(&stmt, **Pkt, **signup);
+
+
+
+    /*const char* sql = "INSERT INTO UsersWithProfile (username, password, email, profile_picture) VALUES (?, ?, ?, ?, ?)";
+
+    sqlite3_prepare_v2(sqldb.getDB(), sql, -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, clientID);
+    sqlite3_bind_text(stmt, 2, (**signup).username, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, (**signup).password, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 4, (**signup).email, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_blob(stmt, 5, (**signup).ImageStructArray, (**Pkt)->GetHead()->Length - (sizeof((**signup).username) + sizeof((**signup).password) + sizeof((**signup).email)), SQLITE_STATIC);
+
+    int rc = sqlite3_step(stmt);
+
+    if (rc != SQLITE_DONE) {
+        std::cerr << "Failed to execute statement: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
+
+        sqlite3_finalize(stmt);
+
+        return -1;
+    }
+
+    std::cout << "Data inserted successfully!" << std::endl;*/
 
     if (SignUpdataInsertionReturn == -1) {
         return SignUpdataInsertionReturn;
@@ -1285,7 +1314,7 @@ int SendCountOfListingsForPostLogin(SOCKET& ConnectionSocket, RequestLogger** lo
 
 
 
-int SendPostListingIfAnyToClient(SOCKET& ConnectionSocket, RequestLogger** logginginfo, Packet** dataTransferPkt) {
+int SendPostListingIfAnyToClient(SOCKET& ConnectionSocket, RequestLogger** logginginfo, Packet*** Pkt, Packet** dataTransferPkt) {
     std::string dbPath = "database.db";
 
     SQLiteDatabase sqldb(dbPath);
@@ -1299,7 +1328,7 @@ int SendPostListingIfAnyToClient(SOCKET& ConnectionSocket, RequestLogger** loggi
 
     if ((*dataTransferPkt)->GetHead()->Length > 0) {
 
-        oss << "SELECT * FROM listings WHERE id != '" << (*dataTransferPkt)->GetBody()->User << "';";
+        oss << "SELECT * FROM listings WHERE id != '" << (**Pkt)->GetBody()->User << "';";
         query_str.clear();
 
         query_str = oss.str();
@@ -1476,6 +1505,8 @@ int CheckSignUpUserExists(SOCKET& ConnectionSocket, RequestLogger** logginginfo,
 
     std::ostringstream oss;
 
+    std::string query;
+
     oss << "SELECT username, email FROM UsersWithProfile WHERE username = '" << (**check).username << "';";
 
     std::string withProfile_query_str = oss.str();
@@ -1514,7 +1545,7 @@ int CheckSignUpUserExists(SOCKET& ConnectionSocket, RequestLogger** logginginfo,
     }
 
     /*Close the database connection*/
-    sqlite3_close(sqldb.getDB());
+    //sqlite3_close(sqldb.getDB());
 
     Packet* pkt = CreatePacket();
 
@@ -1533,6 +1564,12 @@ int CheckSignUpUserExists(SOCKET& ConnectionSocket, RequestLogger** logginginfo,
 
     SetHeaderInformation(pkt, source, source_size, destination, destination_size, Route, Route_size, Authorization, length);
 
+    
+
+
+    
+
+
     int TotalSize = 0;
 
     char* TxBuffer = SerializeUserCheckingData(pkt, TotalSize);
@@ -1550,6 +1587,71 @@ int CheckSignUpUserExists(SOCKET& ConnectionSocket, RequestLogger** logginginfo,
     else {
         std::cout << "Response for User Check Successfully sent!! Wohoooooo" << std::endl;
     }
+
+
+
+    if (!Authorization) {
+        oss.str("");
+        oss.clear();
+        query.clear();
+
+        int clientID;
+
+        oss << "SELECT MAX(id) FROM UsersWithProfile;";
+
+        query = oss.str();
+
+        sqlite3_stmt* stmt;
+
+
+        int rc = sqlite3_prepare_v2(sqldb.getDB(), query.c_str(), -1, &stmt, NULL);
+
+        if (rc != SQLITE_OK) {
+            std::cerr << "SQL error: " << sqlite3_errmsg(sqldb.getDB()) << std::endl;
+
+            return -1;
+        }
+
+
+        // Step through each row
+        if (sqlite3_step(stmt) == SQLITE_ROW) {
+            clientID = sqlite3_column_int(stmt, 0);
+
+            clientID++;
+        }
+
+
+        sqlite3_finalize(stmt);
+        stmt = nullptr;
+
+
+        char* TxBuffer = new char[sizeof(clientID)];
+
+
+        memset(TxBuffer, 0, sizeof(clientID));
+
+
+        memcpy(TxBuffer, &clientID, sizeof(clientID));
+
+
+        int sendSize = send(ConnectionSocket, TxBuffer, sizeof(clientID), 0);
+
+        if (sendSize < 0) {
+            std::cout << "Error in Sending" << std::endl;
+
+            return -1;
+        }
+
+        /*Close the database connection*/
+        sqldb.closeDatabase(&stmt);
+    }
+
+    else {
+        /*Close the database connection*/
+        sqlite3_close(sqldb.getDB());
+    }
+
+
 
     DestroyPacket(pkt);
 
@@ -1665,7 +1767,7 @@ int RouteCheck(SOCKET& ConnectionSocket, int clientID, RequestLogger* logginginf
 
         result_SendCountOfListingsForPostLogin = SendCountOfListingsForPostLogin(ConnectionSocket, &logginginfo, &Pkt, &dataTransferPacket);
 
-        result_SendPostListingIfAnyToClient = SendPostListingIfAnyToClient(ConnectionSocket, &logginginfo, &dataTransferPacket);
+        result_SendPostListingIfAnyToClient = SendPostListingIfAnyToClient(ConnectionSocket, &logginginfo, &Pkt, &dataTransferPacket);
 
         DestroyPacket(dataTransferPacket);
     }
