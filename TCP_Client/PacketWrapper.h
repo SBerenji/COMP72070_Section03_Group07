@@ -47,6 +47,8 @@ extern "C" {
 
 	//__declspec(dllexport) void Deserialization(Packet* Pkt, char* src);
 
+	__declspec(dllexport) unsigned int DeserializeBufferToClientID(char** TxBuffer);
+
 	__declspec(dllexport) void DeserializationWithoutTail(Packet* Pkt, char* src);
 
 	__declspec(dllexport) unsigned int DeserializeClientID(char* src);

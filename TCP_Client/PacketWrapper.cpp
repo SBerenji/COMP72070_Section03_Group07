@@ -138,6 +138,14 @@ void DeserializePostCountBuffer(Packet* pkt, char* src, int& numberOfPosts) {
 //	memcpy(Pkt->GetTail(), src + sizeof(*(Pkt->GetHead())) + sizeof(Pkt->GetBody()->User) + Pkt->GetHead()->Length, sizeof(*(Pkt->GetTail())));
 //}
 
+unsigned int DeserializeBufferToClientID(char** TxBuffer) {
+	unsigned int clientID;
+
+	memcpy(&clientID, *TxBuffer, sizeof(clientID));
+
+	return clientID;
+}
+
 
 void DeserializationWithoutTail(Packet* Pkt, char* src) {
 	memcpy(Pkt->GetHead(), src, sizeof(*(Pkt->GetHead())));

@@ -353,6 +353,15 @@ namespace WPF_Front_End.View.UserControls
 
                 else
                 {
+                    recvBuffer = IntPtr.Zero;
+
+                    int recvSize_new = Packet.recvData(MySocket.ClientSocket, ref recvBuffer, 50);
+
+                    globalVariables.ClientID = Packet.DeserializeBufferToClientID(ref recvBuffer);
+
+                    Packet.FreeBuffer(ref recvBuffer);
+
+
                     SignUp signup = new SignUp();
 
                     globalVariables.username = username.Text;
@@ -371,6 +380,7 @@ namespace WPF_Front_End.View.UserControls
 
                     if (globalVariables.imageUploaded)
                     {
+
                         int imageSize = globalVariables.ImageArray.Length;
 
                         signup.ImageStructArray = Packet.AllocateHeapMemory(imageSize);

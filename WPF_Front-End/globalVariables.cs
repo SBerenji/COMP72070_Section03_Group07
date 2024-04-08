@@ -379,6 +379,10 @@ namespace WPF_Front_End
 
 
         [DllImport(dllpath)]
+        public static extern uint DeserializeBufferToClientID(ref IntPtr TxBuffer);
+
+
+        [DllImport(dllpath)]
         public static extern void DeserializationWithoutTail(IntPtr Pkt, byte[] src);
 
 
