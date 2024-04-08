@@ -37,7 +37,7 @@ namespace SystemTests_TestStack
         /// they will receive a message that the user does not exist and they should sign up instead.
         /// </summary>
         [TestMethod]
-        public void TestLogInPage_wrong_credentials()
+        public void TEST_SYS_28_LogInPage_wrong_credentials()
         {
             // Retrieve the window by its title
             myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -93,7 +93,7 @@ namespace SystemTests_TestStack
         /// they will be directed to the post log in page
         /// </summary>
         [TestMethod]
-        public void TestLogInPage_correct_credentials()
+        public void TEST_SYS_28_LogInPage_correct_credentials()
         {
             // Retrieving the window by its title
             myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -149,7 +149,7 @@ namespace SystemTests_TestStack
         /// This test verifies that the user can succesfully log out of their account 
         /// </summary>
         [TestMethod]
-        public void TestLogout()
+        public void TEST_SYS_28_Logout()
         {
             // Retrieve the window by its title
             myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -240,7 +240,7 @@ namespace SystemTests_TestStack
         /// This test verifies that if the user is not authorized they will not have access to the 'Create Post', 'Messages', and 'My Posts' pages
         /// </summary>
         [TestMethod]
-        public void TestPreLogInPageAccessAuthorization()
+        public void TEST_SYS_35_PreLogInPageAccessAuthorization()
         {
             // Retrieve the window by its title
             Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -291,7 +291,7 @@ namespace SystemTests_TestStack
         /// This test verifies that the user can navigate to all of the tabs once they are logged in
         /// </summary>
         [TestMethod]
-        public void TestPostLogInPageAccessAuthorization()
+        public void TEST_SYS_35_PostLogInPageAccessAuthorization()
         {
 
             // Retrieve the window by its title
@@ -369,7 +369,7 @@ namespace SystemTests_TestStack
         /// This test verifies that the user can sign up by entering their username, email, and password
         /// </summary>
         [TestMethod]
-        public void TestUserSignUp()
+        public void TEST_SYS_28_TestUserSignUp()
         {
             // Retrieve the window by its title
             Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -446,7 +446,7 @@ namespace SystemTests_TestStack
         /// </summary>
 
         [TestMethod]
-        public void TestUserSignUpError()
+        public void TEST_SYS_28_TestUserSignUpError()
         {
             // Retrieve the window by its title
             Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -521,7 +521,7 @@ namespace SystemTests_TestStack
         // IMPORTANT NOTE: IN ORDER TO RUN THIS TEST YOU CAN COPY 'TestImage.jpeg' FROM THE 'Test_Images' directory
         // in the project directory AND PASTE IT IN 'DOWNLOAD' DIRECTORY OF YOUR LAPTOP
         [TestMethod]
-        public void TestUserSignUpWithImage()
+        public void TEST_SYS_28_SignUpWithImage()
         {
             // Retrieve the window by its title
             Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -598,7 +598,7 @@ namespace SystemTests_TestStack
             var addressBarTextBox = fileExplorerWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByText("File name:"));
             //addressBarTextBox.Enter("../../../../Test_Images");
 
-            addressBarTextBox.Enter("TestImage.jpeg");   // Resulotuion: 506 x 506
+            addressBarTextBox.Enter("TestImage.jpeg");   // Resolution: 506 x 398  Size: 46.9 KB
 
             var openButton = fileExplorerWindow.Get<Button>(SearchCriteria.ByText("Open"));
             openButton.Click();
@@ -635,7 +635,7 @@ namespace SystemTests_TestStack
         // IMPORTANT NOTE: IN ORDER TO RUN THIS TEST YOU CAN COPY 'TestImage4.jpeg' FROM THE 'Test_Images' directory
         // in the project directory AND PASTE IT IN 'DOWNLOAD' DIRECTORY OF YOUR LAPTOP
         [TestMethod]
-        public void Test_CreatingPost()
+        public void TEST_SYS_27_CreatingPost()
         {
 
             // Retrieve the window by its title
@@ -744,9 +744,8 @@ namespace SystemTests_TestStack
 
             // Finding and selecting the desired image file by entering its file name
             var addressBarTextBox = fileExplorerWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByText("File name:"));
-            //addressBarTextBox.Enter("../../../../Test_Images");
 
-            addressBarTextBox.Enter("TestImage4.jpeg");   // Resulotuion: 1500 x 1125  Size: 73.9 KB
+            addressBarTextBox.Enter("TestImage4.jpeg");   // Resolution: 1500 x 1125  Size: 73.9 KB
 
             var openButton = fileExplorerWindow.Get<Button>(SearchCriteria.ByText("Open"));
             openButton.Click();
@@ -777,238 +776,263 @@ namespace SystemTests_TestStack
         /// </summary>
         // IMPORTANT NOTE: IN ORDER TO RUN THIS TEST YOU CAN COPY 'TestImage5.jpeg' FROM THE 'Test_Images' directory
         // in the project directory AND PASTE IT IN 'DOWNLOAD' DIRECTORY OF YOUR LAPTOP
-        //[TestMethod]
-        //public void Test_DeletePosts()
-        //{
+        [TestMethod]
+        public void TEST_SYS_33_DeletePosts()
+        {
 
-        //    // Retrieve the window by its title
-        //    myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
+            // Retrieve the window by its title
+            myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
 
-        //    // Finding the "Log In" button 
-        //    Button loginButton = myWindow.Get<Button>(SearchCriteria.ByText("Log In"));
+            // Finding the "Log In" button 
+            Button loginButton = myWindow.Get<Button>(SearchCriteria.ByText("Log In"));
 
-        //    // Clicking the "Log In" button
-        //    loginButton.Click();
+            // Clicking the "Log In" button
+            loginButton.Click();
 
-        //    // Switching to the log in window
-        //    Window nextPageWindow = wpfApp.GetWindow("LogIn", InitializeOption.NoCache);
+            // Switching to the log in window
+            Window nextPageWindow = wpfApp.GetWindow("LogIn", InitializeOption.NoCache);
 
-        //    // Finding the username text box by its Automation ID within the log in window
-        //    var element = nextPageWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("UsernameTextBox"));
-        //    Assert.IsNotNull(element, "Element not found");
+            // Finding the username text box by its Automation ID within the log in window
+            var element = nextPageWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("UsernameTextBox"));
+            Assert.IsNotNull(element, "Element not found");
 
-        //    if (element != null)
-        //    {
-        //        // Entering username into the text box
-        //        element.Enter("Sudhan");
-        //    }
+            if (element != null)
+            {
+                // Entering username into the text box
+                element.Enter("Saba");
+            }
 
 
-        //    //Finding the password text box by its Automation ID within the log in window
-        //    var passwordTextBox = nextPageWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("PasswordTextBlock"));
-        //    Assert.IsNotNull(passwordTextBox, "Password text box not found");
+            //Finding the password text box by its Automation ID within the log in window
+            var passwordTextBox = nextPageWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("PasswordTextBlock"));
+            Assert.IsNotNull(passwordTextBox, "Password text box not found");
 
-        //    // Entering password into the text box
-        //    passwordTextBox.Enter("Legend27");
+            // Entering password into the text box
+            passwordTextBox.Enter("Legend27");
 
-        //    //Finding and clicking the login button within the log in window
-        //    Button logInButton = nextPageWindow.Get<Button>(SearchCriteria.ByAutomationId("LogInButton"));
-        //    logInButton.Click();
+            //Finding and clicking the login button within the log in window
+            Button logInButton = nextPageWindow.Get<Button>(SearchCriteria.ByAutomationId("LogInButton"));
+            logInButton.Click();
 
 
-        //    Thread.Sleep(500);
+            Thread.Sleep(500);
 
-        //    Window postLogInPage = wpfApp.GetWindow("NewHomeScreenPostLogin", InitializeOption.NoCache);
-        //    Assert.IsNotNull(postLogInPage, "Page not found");
+            Window postLogInPage = wpfApp.GetWindow("NewHomeScreenPostLogin", InitializeOption.NoCache);
+            Assert.IsNotNull(postLogInPage, "Page not found");
 
-        //    Button createPostButton = postLogInPage.Get<Button>(SearchCriteria.ByText("Create Post"));
+            Button createPostButton = postLogInPage.Get<Button>(SearchCriteria.ByText("Create Post"));
 
-        //    createPostButton.Click();
-        //    Thread.Sleep(500);
+            createPostButton.Click();
+            Thread.Sleep(500);
 
-        //    // verifying the presence of the CreatePost window
-        //    Window createPostPage = wpfApp.GetWindow("CreatePost", InitializeOption.NoCache);
-        //    Assert.IsNotNull(createPostPage, "Page not found");
+            // verifying the presence of the CreatePost window
+            Window createPostPage = wpfApp.GetWindow("CreatePost", InitializeOption.NoCache);
+            Assert.IsNotNull(createPostPage, "Page not found");
 
-        //    // Filling out all the information in the create post tab
-        //    var titleTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("titleTextBox"));
-        //    Assert.IsNotNull(titleTextBox, "Title text box not found");
-        //    titleTextBox.Enter("Harry Potter books");
 
 
-        //    var locationTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("locationTextBox"));
-        //    Assert.IsNotNull(locationTextBox, "Location text box not found");
-        //    locationTextBox.Enter("Kitchener");
+            // Filling out all the information in the create post tab
+            var titleTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("titleTextBox"));
+            Assert.IsNotNull(titleTextBox, "Title text box not found");
+            titleTextBox.Enter("Map");
 
-        //    var conditionTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("conditionTextBox"));
-        //    Assert.IsNotNull(conditionTextBox, "Condition text box not found");
-        //    conditionTextBox.Enter("Had them for 10 years but they look new");
 
+            var locationTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("locationTextBox"));
+            Assert.IsNotNull(locationTextBox, "Location text box not found");
+            locationTextBox.Enter("Waterloo");
 
-        //    var worthTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("worthTextBox"));
-        //    Assert.IsNotNull(worthTextBox, "worth text box not found");
-        //    worthTextBox.Enter("About $200");
 
 
-        //    var deliveryTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("deliveryTextBox"));
-        //    Assert.IsNotNull(deliveryTextBox, "worth text box not found");
-        //    deliveryTextBox.Enter("Pick-up");
+            var conditionTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("conditionTextBox"));
+            Assert.IsNotNull(conditionTextBox, "Condition text box not found");
+            conditionTextBox.Enter("New");
 
 
-        //    var lookingForTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("LookingForTextBox"));
-        //    Assert.IsNotNull(lookingForTextBox, "worth text box not found");
-        //    lookingForTextBox.Enter("I'm looking for Jane Austen books");
 
+            var worthTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("worthTextBox"));
+            Assert.IsNotNull(worthTextBox, "worth text box not found");
+            worthTextBox.Enter("About $10");
 
-        //    // Adding the image of the item by browsing the file explorer
 
-        //    // coordinates of where to click on the sign up page to access the file explorer 
-        //    int targetX = 730;
-        //    int targetY = 365;
+            var deliveryTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("deliveryTextBox"));
+            Assert.IsNotNull(deliveryTextBox, "worth text box not found");
+            deliveryTextBox.Enter("Drop off");
 
-        //    // Simulate a mouse click on the specified coordinates
-        //    AttachedMouse attachedMouse = createPostPage.Mouse;
 
-        //    Thread.Sleep(1000);
+            var lookingForTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("LookingForTextBox"));
+            Assert.IsNotNull(lookingForTextBox, "worth text box not found");
+            lookingForTextBox.Enter("I want to swap with a globe");
 
-        //    attachedMouse.Click(new System.Windows.Point(targetX, targetY));
 
+            // Adding the image of the item by browsing the file explorer
 
-        //    // Waiting for the file dialog window to appear
-        //    var fileExplorerWindow = createPostPage.ModalWindow("Open");
+            // coordinates of where to click on the sign up page to access the file explorer 
+            int targetX = 730;
+            int targetY = 365;
 
-        //    Assert.IsNotNull(fileExplorerWindow);
+            // Simulate a mouse click on the specified coordinates
+            AttachedMouse attachedMouse = createPostPage.Mouse;
 
+            Thread.Sleep(1000);
 
-        //    // Finding and selecting the desired image file by entering its file name
-        //    var addressBarTextBox = fileExplorerWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByText("File name:"));
+            attachedMouse.Click(new System.Windows.Point(targetX, targetY));
 
-        //    addressBarTextBox.Enter("TestImage5.jpeg");   // Resulotuion: 1200 x 1200
 
-        //    var openButton = fileExplorerWindow.Get<Button>(SearchCriteria.ByText("Open"));
-        //    openButton.Click();
+            // Waiting for the file dialog window to appear
+            var fileExplorerWindow = createPostPage.ModalWindow("Open");
 
+            Assert.IsNotNull(fileExplorerWindow);
 
-        //    //Finding and clicking the sign up button within the sign up window
-        //    Button postingButton = createPostPage.Get<Button>(SearchCriteria.ByAutomationId("PostClick"));
-        //    postingButton.Click();
 
-        //    Thread.Sleep(500);
+            // Finding and selecting the desired image file by entering its file name
+            var addressBarTextBox = fileExplorerWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByText("File name:"));
 
+            addressBarTextBox.Enter("TestImage6.jpeg");   // Resolution: 3000 x 2050  Size: 1.94 MB
 
-        //    // Verifying the content of the popped up message box
-        //    Window messageBox = createPostPage.MessageBox("");
+            var openButton = fileExplorerWindow.Get<Button>(SearchCriteria.ByText("Open"));
+            openButton.Click();
 
-        //    Assert.IsNotNull(messageBox, "Message box not found");
 
-        //    var label = messageBox.Get<Label>(SearchCriteria.Indexed(0));
-        //    Assert.AreEqual("Item successfully Posted!! You can now view your post from 'My Posts' tab.", label.Text);
+            //Finding and clicking the sign up button within the sign up window
+            Button postingButton = createPostPage.Get<Button>(SearchCriteria.ByAutomationId("PostClick"));
+            postingButton.Click();
 
+            Thread.Sleep(500);
 
-        //    Thread.Sleep(500);
 
-        //    int targetXX = 1120;
-        //    int targetYY = 600;
+            // Verifying the content of the popped up message box
+            Window messageBox = createPostPage.MessageBox("");
+            
+            Assert.IsNotNull(messageBox, "Message box not found");
 
-        //    // Simulate a mouse click on the specified coordinates
-        //    AttachedMouse attachedMouseOkButton = createPostPage.Mouse;
+            var label = messageBox.Get<Label>(SearchCriteria.Indexed(0));
+            Assert.AreEqual("Item successfully Posted!! You can now view your post from 'My Posts' tab.", label.Text);
 
-        //    Thread.Sleep(500);
 
-        //    attachedMouseOkButton.Click(new System.Windows.Point(targetXX, targetYY));
+            Thread.Sleep(500);
 
+            int targetXX = 1120;
+            int targetYY = 600;
 
-        //    Button myPostsButton = createPostPage.Get<Button>(SearchCriteria.ByText("My Posts"));
-        //    myPostsButton.Click();
+            // Simulate a mouse click on the specified coordinates
+            AttachedMouse attachedMouseOkButton = createPostPage.Mouse;
 
-        //    Window mypostsWindow = wpfApp.GetWindow("NewMyPostsScreen", InitializeOption.NoCache);
-        //    Assert.IsNotNull(mypostsWindow, "Page not found");
+            Thread.Sleep(500);
 
-        //    var mypostsItemWindow = mypostsWindow.Get<Label>(SearchCriteria.ByText("I'm looking for Jane Austen books"));
-        //    Assert.IsNotNull(mypostsItemWindow, "Not found");
+            attachedMouseOkButton.Click(new System.Windows.Point(targetXX, targetYY));
 
 
-        //    //var scrollBar = mypostsWindow.ScrollBars.Vertical;
+            Button myPostsButton = createPostPage.Get<Button>(SearchCriteria.ByText("My Posts"));
+            myPostsButton.Click();
 
-        //    // Variable to keep track of whether we can still scroll down
-        //    IVScrollBar scrollBar = mypostsWindow.ScrollBars.Vertical;
 
-        //    // Variable to keep track of whether we can still scroll down
-        //    bool canScroll = true;
+            Window mypostsWindow = wpfApp.GetWindow("NewMyPostsScreen", InitializeOption.NoCache);
+            Assert.IsNotNull(mypostsWindow, "Page not found");
 
-        //    while (canScroll)
-        //    {
-        //        // Scroll down using the appropriate method provided by TestStack.White
-        //        scrollBar.ScrollDown();
+            var mypostsItemWindow = mypostsWindow.Get<Label>(SearchCriteria.ByText("I want to swap with a globe"));
+            Assert.IsNotNull(mypostsItemWindow, "Not found");
 
-        //        // Check if we can still scroll down
-        //        canScroll = scrollBar.IsScrollable;
+            Thread.Sleep(500);
 
-        //        // Sleep for a short duration to allow the UI to update
-        //        Thread.Sleep(500); // Adjust sleep duration as needed
-        //    }
+            int targetXXX = 1120;
+            int targetYYY = 550;
 
+            // Simulate a mouse click on the specified coordinates
+            AttachedMouse attachedMouseOkButton2 = createPostPage.Mouse;
 
+            Thread.Sleep(500);
 
+            attachedMouseOkButton2.Click(new System.Windows.Point(targetXXX, targetYYY));
 
+            // Verifying the content of the popped up message box
+            Window messageBoxDelete = mypostsWindow.MessageBox("");
 
+            Assert.IsNotNull(messageBoxDelete, "Message box not found");
 
+            var label2 = messageBoxDelete.Get<Label>(SearchCriteria.Indexed(0));
+            Assert.AreEqual("Post Successfully deleted!! Please switch to another screen and come back to see the changes.", label2.Text);
 
 
 
 
-        //var scrollBar = mypostsWindow.ScrollBars.Vertical;
-        //scrollBar.ScrollDownLarge();
+            //var scrollBar = mypostsWindow.ScrollBars.Vertical;
 
+            // Variable to keep track of whether we can still scroll down
+            //IVScrollBar scrollBar = mypostsWindow.ScrollBars.Vertical;
 
-        //Thread.Sleep(2000);
+            //// Variable to keep track of whether we can still scroll down
+            //bool canScroll = true;
 
-        // Scroll to the maximum position to go to the bottom
-        //verticalScrollBar.ScrollDown(ScrollAmount.SmallIncrement);
+            //while (canScroll)
+            //{
+            //    // Scroll down using the appropriate method provided by TestStack.White
+            //    scrollBar.ScrollDown();
 
-        //System.Windows.Point referenceElementPosition = mypostsItemWindow.Bounds.Location;
+            //    // Check if we can still scroll down
+            //    canScroll = scrollBar.IsScrollable;
 
-        //// Calculate the target coordinates relative to the reference element
-        ////double offsetX = 20; // Adjust this value as needed
-        ////double offsetY = 10; // Adjust this value as needed
-        //Thread.Sleep(2000);
+            //    // Sleep for a short duration to allow the UI to update
+            //    Thread.Sleep(500); // Adjust sleep duration as needed
+            //}
 
-        //double targetXXX = referenceElementPosition.X;
-        //double targetYYY = referenceElementPosition.Y;
 
-        //Thread.Sleep(2000);
 
-        //// Simulate a mouse click on the specified coordinates
-        //AttachedMouse deleteMouseOkButton = mypostsWindow.Mouse;
 
-        //Thread.Sleep(500);
 
-        //deleteMouseOkButton.Click(new System.Windows.Point(targetXXX, targetYYY));
 
+            //var scrollBar = mypostsWindow.ScrollBars.Vertical;
+            //scrollBar.ScrollDownLarge();
 
 
+            //Thread.Sleep(2000);
 
+            // Scroll to the maximum position to go to the bottom
+            //verticalScrollBar.ScrollDown(ScrollAmount.SmallIncrement);
 
-        //Window mypostsItemWindow = wpfApp.GetWindow("MyPostsItem", InitializeOption.NoCache);
-        //Assert.IsNotNull(mypostsItemWindow, "Page not found");
+            //System.Windows.Point referenceElementPosition = mypostsItemWindow.Bounds.Location;
 
-        //var postContentLabel = mypostsItemWindow.Get<TestStack.White.UIItems.Label>(SearchCriteria.ByAutomationId("lookingFor"));
-        //Assert.IsNotNull(postContentLabel, "Post content label not found");
+            //// Calculate the target coordinates relative to the reference element
+            ////double offsetX = 20; // Adjust this value as needed
+            ////double offsetY = 10; // Adjust this value as needed
+            //Thread.Sleep(2000);
 
-        //// Then you can assert the text of the post content label to match the expected post content
-        //Assert.AreEqual("I'm looking for Jane Austen books", postContentLabel.Text, "Post content doesn't match expected");
+            //double targetXXX = referenceElementPosition.X;
+            //double targetYYY = referenceElementPosition.Y;
 
+            //Thread.Sleep(2000);
 
+            //// Simulate a mouse click on the specified coordinates
+            //AttachedMouse deleteMouseOkButton = mypostsWindow.Mouse;
 
-        //var myItemPosted = mypostsItemWindow.Get<Text>(SearchCriteria.ByText("My Posts"));
+            //Thread.Sleep(500);
 
+            //deleteMouseOkButton.Click(new System.Windows.Point(targetXXX, targetYYY));
 
-        // wpfApp.Kill();
 
 
 
 
-        
+            //Window mypostsItemWindow = wpfApp.GetWindow("MyPostsItem", InitializeOption.NoCache);
+            //Assert.IsNotNull(mypostsItemWindow, "Page not found");
+
+            //var postContentLabel = mypostsItemWindow.Get<TestStack.White.UIItems.Label>(SearchCriteria.ByAutomationId("lookingFor"));
+            //Assert.IsNotNull(postContentLabel, "Post content label not found");
+
+            //// Then you can assert the text of the post content label to match the expected post content
+            //Assert.AreEqual("I'm looking for Jane Austen books", postContentLabel.Text, "Post content doesn't match expected");
+
+
+
+            //var myItemPosted = mypostsItemWindow.Get<Text>(SearchCriteria.ByText("My Posts"));
+
+
+            wpfApp.Kill();
+
+        }
+
+
+
+
 
         /// </summary>
         /// This test will verify that the users will have to fill out all the information in order to be able to post 
@@ -1070,37 +1094,38 @@ namespace SystemTests_TestStack
             Window createPostPage = wpfApp.GetWindow("CreatePost", InitializeOption.NoCache);
             Assert.IsNotNull(createPostPage, "Page not found");
 
+
+
+
             // Filling out all the information in the create post tab
             var titleTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("titleTextBox"));
             Assert.IsNotNull(titleTextBox, "Title text box not found");
-            titleTextBox.Enter("Map");
+            titleTextBox.Enter("Harry Potter books");
 
 
             var locationTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("locationTextBox"));
             Assert.IsNotNull(locationTextBox, "Location text box not found");
-            locationTextBox.Enter("Waterloo");
-
-
+            locationTextBox.Enter("Kitchener");
 
             var conditionTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("conditionTextBox"));
             Assert.IsNotNull(conditionTextBox, "Condition text box not found");
-            conditionTextBox.Enter("New");
-
+            conditionTextBox.Enter("Had them for 10 years but they look new");
 
 
             var worthTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("worthTextBox"));
             Assert.IsNotNull(worthTextBox, "worth text box not found");
-            worthTextBox.Enter("About $10");
+            worthTextBox.Enter("About $200");
 
 
             var deliveryTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("deliveryTextBox"));
             Assert.IsNotNull(deliveryTextBox, "worth text box not found");
-            deliveryTextBox.Enter("Drop off");
+            deliveryTextBox.Enter("Pick-up");
 
 
             var lookingForTextBox = createPostPage.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByAutomationId("LookingForTextBox"));
             Assert.IsNotNull(lookingForTextBox, "worth text box not found");
-            lookingForTextBox.Enter("I want to swap with a globe");
+            lookingForTextBox.Enter("I'm looking for Jane Austen books");
+
 
 
             //Finding and clicking the sign up button within the sign up window
@@ -1173,7 +1198,50 @@ namespace SystemTests_TestStack
 
             //Thread.Sleep(500);
 
-            wpfApp.Kill();
+            //    wpfApp.Kill();
+
+            //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /// This test also ensures that the client and server can handle images that are larger than 1 MB
+
+
+
+
+
+
+
+            /// </summary>
+            /// This test will verify that the users will have to fill out all the information in order to be able to post 
+            /// and they cannot leave any of the fields blank
+            /// </summary>
+
+
+
+
+
+
+
+
+
+            /// <summary>
+            /// This test verifies that the users are limited to using JPEG files and if they try to drag and drop another type of file,
+            /// they will be prevented from uploading it
+            /// </summary>
+            // IMPORTANT NOTE: IN ORDER TO RUN THIS TEST YOU CAN COPY 'testImage.jpeg' FROM THE 'Test_Images' directory
+            // in the project directory AND PASTE IT IN 'DOWNLOAD' DIRECTORY OF YOUR LAPTOP
 
         }
 
@@ -1182,50 +1250,7 @@ namespace SystemTests_TestStack
 
 
 
-
-
-
-
-
-
-
-
-        /// This test also ensures that the client and server can handle images that are larger than 1 MB
-
-
-
-
-
-
-
-        /// </summary>
-        /// This test will verify that the users will have to fill out all the information in order to be able to post 
-        /// and they cannot leave any of the fields blank
-        /// </summary>
-
-
-
-
-
-
-
-
-
-        /// <summary>
-        /// This test verifies that the users are limited to using JPEG files and if they try to drag and drop another type of file,
-        /// they will be prevented from uploading it
-        /// </summary>
-        // IMPORTANT NOTE: IN ORDER TO RUN THIS TEST YOU CAN COPY 'testImage.jpeg' FROM THE 'Test_Images' directory
-        // in the project directory AND PASTE IT IN 'DOWNLOAD' DIRECTORY OF YOUR LAPTOP
-
-
-
-
-
-
-
-
-    }
+        }
 }
 
 
