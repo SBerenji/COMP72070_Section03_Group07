@@ -245,14 +245,5 @@ namespace WPF_Front_End.View.UserControls
                 unauthorized.ShowDialog();
             }
         }
-
-
-       
-
-
-
-
-
-
     }
 }

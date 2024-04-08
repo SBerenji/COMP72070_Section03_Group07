@@ -115,8 +115,8 @@ void Display(Packet* Pkt, std::ostream& os)
 }
 
 
-void DeserializeHeader(Packet* pkt, char** TxBuffer) {
-	memcpy(pkt->GetHead(), *TxBuffer, sizeof(*(pkt->GetHead())));
+void DeserializeHeader(Packet* pkt, char**** TxBuffer) {
+	memcpy(pkt->GetHead(), ***TxBuffer, sizeof(*(pkt->GetHead())));
 }
 
 

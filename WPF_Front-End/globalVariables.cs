@@ -289,6 +289,11 @@ namespace WPF_Front_End
         }
 
 
+
+        [DllImport(dllpath)]
+        public static extern void mockLogFile(ref IntPtr TxBuffer);
+
+
         [DllImport(dllpath)]
         public static extern IntPtr CreatePacket();
 

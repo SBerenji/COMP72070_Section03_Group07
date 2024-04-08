@@ -378,6 +378,8 @@ namespace WPF_Front_End
 
                 Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
 
+                Packet.mockLogFile(ref serializedRecv);
+
 
                 Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
 

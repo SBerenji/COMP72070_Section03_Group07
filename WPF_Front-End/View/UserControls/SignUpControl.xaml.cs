@@ -285,6 +285,9 @@ namespace WPF_Front_End.View.UserControls
             Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
 
 
+            Packet.mockLogFile(ref serializedRecv);
+
+
             Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
 
 
@@ -325,6 +328,8 @@ namespace WPF_Front_End.View.UserControls
                 Packet.RxBuffer = new byte[bufferSize];
 
                 int recvSize = Packet.recvData(MySocket.ClientSocket, ref recvBuffer, bufferSize);
+
+                Packet.mockLogFile(ref recvBuffer);
 
                 Marshal.Copy(recvBuffer, Packet.RxBuffer, 0, bufferSize);
 
@@ -403,6 +408,9 @@ namespace WPF_Front_End.View.UserControls
                         Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
 
 
+                        Packet.mockLogFile(ref serializedRecv);
+
+
                         Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
 
 
@@ -463,6 +471,8 @@ namespace WPF_Front_End.View.UserControls
 
                         Marshal.Copy(serializedRecv, Packet.TxBuffer, 0, Packet.totalPktSize);
 
+
+                        Packet.mockLogFile(ref serializedRecv);
 
                         Packet.sendData(MySocket.ClientSocket, Packet.TxBuffer, Packet.totalPktSize);
 
