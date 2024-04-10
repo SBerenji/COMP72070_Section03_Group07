@@ -1745,9 +1745,11 @@ int RouteCheck(SOCKET& ConnectionSocket, int clientID, RequestLogger* logginginf
 
         result_LoginCheck_UserDoesntExist = LoginCheck_UserDoesntExist(ConnectionSocket, &logginginfo, &tableName);
 
-        result_LoginCheck_UserExistsIn_UsersWithProfile = LoginCheck_UserExistsIn_UsersWithProfile(ConnectionSocket, &logginginfo, &tableName, &log, &cred);
+        if (result_LoginCheck_UserDoesntExist == 0) {
+            result_LoginCheck_UserExistsIn_UsersWithProfile = LoginCheck_UserExistsIn_UsersWithProfile(ConnectionSocket, &logginginfo, &tableName, &log, &cred);
 
-        result_LoginCheck_UserExistsIn_UsersWithoutProfile = LoginCheck_UserExistsIn_UsersWithoutProfile(ConnectionSocket, &logginginfo, &tableName, &log, &cred);
+            result_LoginCheck_UserExistsIn_UsersWithoutProfile = LoginCheck_UserExistsIn_UsersWithoutProfile(ConnectionSocket, &logginginfo, &tableName, &log, &cred);
+        }
     }
 
 
