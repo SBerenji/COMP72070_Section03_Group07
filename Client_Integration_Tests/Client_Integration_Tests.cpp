@@ -119,7 +119,8 @@ namespace IntegrationTests
 
 
 		/// <summary>
-		/// This test ensures that the sendData function of client can send a complete packet of log in information to the server after estalishing a connection with the server
+		/// This test ensures that the sendData function of client can send a complete packet of log in information to the server after estalishing 
+		/// a connection with the server
 		///// </summary>
 		TEST_METHOD(TEST_CLI_25_SendPacketWithLogInBody)
 		{
@@ -166,18 +167,16 @@ namespace IntegrationTests
 
 			// Assert
 			Assert::AreEqual(1, sendDataResult);
-
 		}
 
 
 
 		///// <summary>
 		///// This test ensures that the setupConnection returns a clientsocket upon successfully establishing a connection with the server
-		//// This test should not pass whithout running the server
 		///// </summary>
 		// False positive
 
-		TEST_METHOD(TEST_CLI_25_succesfulConnectionToServer)
+		TEST_METHOD(TEST_CLI_18_ConnectionToServer)
 		{
 			// Arrange
 			SOCKET clientSocket;
@@ -195,7 +194,7 @@ namespace IntegrationTests
 		/////// This test ensures that the setupConnection returns 0 if unsuccesful in establishing a connection to the server 
 		/////// Server will not run while executing this test in order to show the functionality of the function
 		/////// </summary>
-		TEST_METHOD(TEST_CLI_25_succesfulConnectionToServer_true_negative)
+		TEST_METHOD(TEST_CLI_18_succesfulConnectionToServer)
 		{
 			// Arrange
 			SOCKET clientSocket;
@@ -209,7 +208,6 @@ namespace IntegrationTests
 		}
 
 
-		// test the acutal funcitonality of the closeSocket function
 
 
 
