@@ -37,7 +37,7 @@ namespace SystemTests_TestStack
         /// they will receive a message that the user does not exist and they should sign up instead.
         /// </summary>
         [TestMethod]
-        public void TEST_SYS_28_LogInPage_wrong_credentials()
+        public void TEST_SYS_13_LogInPage_wrong_credentials()
         {
             // Retrieve the window by its title
             myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -93,7 +93,7 @@ namespace SystemTests_TestStack
         /// they will be directed to the post log in page
         /// </summary>
         [TestMethod]
-        public void TEST_SYS_28_LogInPage_correct_credentials()
+        public void TEST_SYS_14_LogInPage_correct_credentials()
         {
             // Retrieving the window by its title
             myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -149,7 +149,7 @@ namespace SystemTests_TestStack
         /// This test verifies that the user can succesfully log out of their account 
         /// </summary>
         [TestMethod]
-        public void TEST_SYS_28_Logout()
+        public void TEST_SYS_15_Logout()
         {
             // Retrieve the window by its title
             myWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -240,7 +240,7 @@ namespace SystemTests_TestStack
         /// This test verifies that if the user is not authorized they will not have access to the 'Create Post', 'Messages', and 'My Posts' pages
         /// </summary>
         [TestMethod]
-        public void TEST_SYS_35_PreLogInPageAccessAuthorization()
+        public void TEST_SYS_12_PreLogInPageAccessAuthorization()
         {
             // Retrieve the window by its title
             Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -291,7 +291,7 @@ namespace SystemTests_TestStack
         /// This test verifies that the user can navigate to all of the tabs once they are logged in
         /// </summary>
         [TestMethod]
-        public void TEST_SYS_35_PostLogInPageAccessAuthorization()
+        public void TEST_SYS_16_PostLogInPageAccessAuthorization()
         {
 
             // Retrieve the window by its title
@@ -369,7 +369,7 @@ namespace SystemTests_TestStack
         /// This test verifies that the user can sign up by entering their username, email, and password
         /// </summary>
         [TestMethod]
-        public void TEST_SYS_28_TestUserSignUp()
+        public void TEST_SYS_17_TestUserSignUp()
         {
             // Retrieve the window by its title
             Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -446,7 +446,7 @@ namespace SystemTests_TestStack
         /// </summary>
 
         [TestMethod]
-        public void TEST_SYS_28_TestUserSignUpError()
+        public void TEST_SYS_18_TestUserSignUpError()
         {
             // Retrieve the window by its title
             Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -519,9 +519,9 @@ namespace SystemTests_TestStack
         /// This test verifies that the user can sign up by entering their username, email, and password, and profile image
         /// </summary>
         // IMPORTANT NOTE: IN ORDER TO RUN THIS TEST YOU CAN COPY 'TestImage.jpeg' FROM THE 'Test_Images' directory
-        // in the project directory AND PASTE IT IN 'DOWNLOAD' DIRECTORY OF YOUR LAPTOP
+        // in the project directory AND PASTE IT IN THE DIRECTORY THAT OPENS WHEN CLICKING ON THE IMAGE UPLOADING SECTION OF THE SIGN UP PAGE
         [TestMethod]
-        public void TEST_SYS_28_SignUpWithImage()
+        public void TEST_SYS_17_SignUpWithImage()
         {
             // Retrieve the window by its title
             Window preLogInWindow = wpfApp.GetWindow("NewHomeScreenPreLogin", InitializeOption.NoCache);
@@ -544,7 +544,6 @@ namespace SystemTests_TestStack
             {
                 signUpTextBox.Enter("Student2");
             }
-
 
 
             //Finding the email text box by its Automation ID within the sign up window
@@ -633,9 +632,9 @@ namespace SystemTests_TestStack
         /// </summary>
 
         // IMPORTANT NOTE: IN ORDER TO RUN THIS TEST YOU CAN COPY 'TestImage4.jpeg' FROM THE 'Test_Images' directory
-        // in the project directory AND PASTE IT IN 'DOWNLOAD' DIRECTORY OF YOUR LAPTOP
+        // in the project directory AND PASTE IT IN THE DIRECTORY THAT OPENS WHEN CLICKING ON THE IMAGE UPLOADING SECTION OF THE SIGN UP PAGE
         [TestMethod]
-        public void TEST_SYS_27_CreatingPost()
+        public void TEST_SYS_05_CreatingPost()
         {
 
             // Retrieve the window by its title
@@ -775,9 +774,9 @@ namespace SystemTests_TestStack
         /// This test will verify that the users can delete the posts they created from the My Posts tab
         /// </summary>
         // IMPORTANT NOTE: IN ORDER TO RUN THIS TEST YOU CAN COPY 'TestImage5.jpeg' FROM THE 'Test_Images' directory
-        // in the project directory AND PASTE IT IN 'DOWNLOAD' DIRECTORY OF YOUR LAPTOP
+        // in the project directory AND PASTE IT IN THE DIRECTORY THAT OPENS WHEN CLICKING ON THE IMAGE UPLOADING SECTION OF THE SIGN UP PAGE
         [TestMethod]
-        public void TEST_SYS_33_DeletePosts()
+        public void TEST_SYS_10_DeletePosts()
         {
 
             // Retrieve the window by its title
@@ -1040,7 +1039,7 @@ namespace SystemTests_TestStack
         /// </summary>
 
         [TestMethod]
-        public void TEST_SYS_32_ImageNotIncluded()
+        public void TEST_SYS_09_ImageNotIncluded()
         {
 
             // Retrieve the window by its title
@@ -1144,113 +1143,12 @@ namespace SystemTests_TestStack
             Assert.AreEqual("Please Fill all the details!!", label.Text);
 
 
-
-
-
-
-
-
-
-
-
-
-
-            //// Adding the image of the item by browsing the file explorer
-
-            //// coordinates of where to click on the sign up page to access the file explorer 
-            //int targetX = 730;
-            //int targetY = 365;
-
-            //// Simulate a mouse click on the specified coordinates
-            //AttachedMouse attachedMouse = createPostPage.Mouse;
-
-            //Thread.Sleep(1000);
-
-            //attachedMouse.Click(new System.Windows.Point(targetX, targetY));
-
-
-            //// Waiting for the file dialog window to appear
-            //var fileExplorerWindow = createPostPage.ModalWindow("Open");
-
-            //Assert.IsNotNull(fileExplorerWindow);
-
-            //// Finding and selecting the desired image file by entering its file name
-            //var addressBarTextBox = fileExplorerWindow.Get<TestStack.White.UIItems.TextBox>(SearchCriteria.ByText("File name:"));
-
-            //addressBarTextBox.Enter("TestImage6.jpeg");   // Resulotuion: 3000 x 2050  Size: 1.94 MB
-
-            //var openButton = fileExplorerWindow.Get<Button>(SearchCriteria.ByText("Open"));
-            //openButton.Click();
-
-
-            ////Finding and clicking the sign up button within the sign up window
-            //Button postingButton2 = createPostPage.Get<Button>(SearchCriteria.ByAutomationId("PostClick"));
-            //postingButton2.Click();
-
-            //Thread.Sleep(500);
-
-            //Window messageBox = createPostPage.MessageBox("");
-
-            //Assert.IsNotNull(messageBox, "Message box not found");
-
-            //var label = messageBox.Get<Label>(SearchCriteria.Indexed(0));
-            //Assert.AreEqual("Item successfully Posted!! You can now view your post from 'My Posts' tab.", label.Text);
-
-            //Thread.Sleep(500);
-
-            //    wpfApp.Kill();
-
-            //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            /// This test also ensures that the client and server can handle images that are larger than 1 MB
-
-
-
-
-
-
-
-            /// </summary>
-            /// This test will verify that the users will have to fill out all the information in order to be able to post 
-            /// and they cannot leave any of the fields blank
-            /// </summary>
-
-
-
-
-
-
-
-
-
-            /// <summary>
-            /// This test verifies that the users are limited to using JPEG files and if they try to drag and drop another type of file,
-            /// they will be prevented from uploading it
-            /// </summary>
-            // IMPORTANT NOTE: IN ORDER TO RUN THIS TEST YOU CAN COPY 'testImage.jpeg' FROM THE 'Test_Images' directory
-            // in the project directory AND PASTE IT IN 'DOWNLOAD' DIRECTORY OF YOUR LAPTOP
+             wpfApp.Kill();
 
         }
 
 
-
-
-
-
-        }
+    }
 }
 
 
